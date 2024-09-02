@@ -1,0 +1,88 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 1'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+# Examples
+
+```{r}
+A <- matrix(c(1,1,2,-1),nrow = 2, byrow = TRUE)
+b <- c(1,2)
+x <- solve(A,b)
+print(x)
+```
+
+```{r}
+col1 <- c(1,2)
+col2 <- c(1,-1)
+
+result <- x[1] * col1 + x[2] * col2
+print(result)
+```
+# Assignment
+
+        Pick one of the exercises in the readings this week.  Solve the exercise as best as you         can.  If you have issues, explicate them, so that all of us can help.
+
+## Reading
+
+        Read:   linear algebra text, Chapters SLE, V, M
+        Read:   lecture notes
+
+**First Course in Linear Algebra > Vectors (v) > Exercise C11 > Page 80**
+
+$$
+2 \begin{pmatrix}
+\ \ 1 \\
+\ \ 2 \\
+-1 \\
+\end{pmatrix}
+\quad + \ 4 \begin{pmatrix}
+2 \\
+0 \\
+x \\
+\end{pmatrix}
+\quad = \begin{pmatrix}
+11 \\
+6 \\
+17 \\
+\end{pmatrix}
+$$
+
+Based on the reading, the formula for this linear equation is equivalent to
+
+$2(1)+4(2)=11$
+
+$2(2)+4(0)=6$
+
+$2(-1)+4(x)=17$
+
+Since the first two linear formulas are already solved, I need only solve for x:
+
+$-2+4x=17$
+
+&emsp; &nbsp; &darr;
+
+$4x=19$
+
+```{r}
+19/4
+```
+## Check
+
+```{r}
+2*(-1)+4*(4.75)
+```
+
+
+
+
+
