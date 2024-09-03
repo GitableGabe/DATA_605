@@ -1,0 +1,103 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 2'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+**Reading** Linear Algebra Text, Chapters VS, D
+
+*Page 270*
+
+**Question** *M12*
+
+Let V be the set $C^2$ with the usual scalar multiplication, but with vector addition
+defined by
+
+$$
+\begin{pmatrix}
+\ x \\
+\ y \\
+\end{pmatrix}
+\quad + \begin{pmatrix}
+z \\
+w \\
+\end{pmatrix}
+\quad = \begin{pmatrix}
+y+w \\
+x+z \\
+\end{pmatrix}
+$$
+
+Determine whether or not V is a vector space with these operations.
+ 
+Page 257 states
+
+        Subsection VS
+        Vector Spaces
+        
+        Here is one of the two most important definitions in the entire course.
+        
+        Definition VS Vector Space
+
+        Suppose that V is a set upon which we have defined two operations: (1) vector addition,
+        which combines two elements of V and is denoted by “+”, and (2) scalar multiplication,
+        which combines a complex number with an element of V and is denoted by juxtaposition.
+        Then V , along with the two operations, is a vector space over C if the following ten
+        properties hold.
+
+One of the 10 proofs is 
+
+* **Z Zero Vector**
+There is a vector, $0$, called the zero vector, such that $u + 0 = u$ for all $u \in V$.
+
+which is normally true for the addition of a 0 vector because of how addition usually takes place:
+
+$$
+\begin{pmatrix}
+\ x \\
+\ y \\
+\end{pmatrix}
+\quad + \begin{pmatrix}
+0 \\
+0 \\
+\end{pmatrix}
+\quad = \begin{pmatrix}
+x+0 \\
+y+0 \\
+\end{pmatrix}
+$$
+
+But the question explicitly states *"with vector addition defined by"* the example provided, making the below statement true. 
+
+$$
+\begin{pmatrix}
+\ x \\
+\ y \\
+\end{pmatrix}
+\quad + \begin{pmatrix}
+0 \\
+0 \\
+\end{pmatrix}
+\quad = \begin{pmatrix}
+y+0 \\
+x+0 \\
+\end{pmatrix}
+\quad = \begin{pmatrix}
+y \\
+x \\
+\end{pmatrix}
+\quad \neq \begin{pmatrix}
+x \\
+y \\
+\end{pmatrix}
+$$
+
+And since no true additive exists, $V$ is not a vector.
