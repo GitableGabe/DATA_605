@@ -1,0 +1,127 @@
+---
+title: 'DATA 605: Computational Mathematics Homework 1'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  html_document:
+    df_print: paged
+  html_notebook: default
+urlcolor: blue
+---
+
+# Instructions
+
+**Submit: In this course, I accept only knitted .pdfs that contain code, figures, and commentary in a professional format.**
+
+1.  **Geometric Transformation of Shapes Using Matrix Multiplication**
+
+**Context:** In computer graphics and data visualization, geometric transformations are fundamental. These transformations, such as translation, scaling, rotation, and reflection, can be applied to shapes to manipulate their appearance.
+
+**Task:** Create a simple shape (like a square or triangle) using point plots in R. Implement R code to apply different transformations (scaling, rotation, reflection) to the shape by left multiplying a transformation matrix by each of the point vectors. Demonstrate these transformations through animated plots.
+
+**Create a Shape:** Define a simple shape (e.g., a square) using a set of point coordinates.
+
+Apply Transformations:
+
+* Scaling: Enlarge or shrink the shape.
+* Rotation: Rotate the shape by a given angle.
+* Reflection: Reflect the shape across an axis.
+
+**Animate Transformations:** Use a loop to incrementally change the transformation matrix and visualize the effect on the shape over time.
+
+**Plot:** Display the original shape and its transformations in your compiled pdf.  Demonstrate the effect of the transformations with fixed images. 
+
+2.  **Matrix Properties and Decomposition**
+
+**Proofs**
+
+* Prove that $AB\neq BA$
+* Prove that $A^T A$ is always symmetric.
+* Prove that the determinant of $A^T A$ is non-negative
+* Singular Value Decomposition (SVD) and Image Compression
+
+**Context:**  Every time you upload a photo to social media, algorithms often compress your image to reduce file size without significantly degrading quality. One of the key techniques used in this process is Singular Value Decomposition (SVD), which is another form of matrix factorization.
+
+**Task:**  Write an R function that performs Singular Value Decomposition (SVD) on a grayscale image (which can be represented as a matrix). Use this decomposition to compress the image by keeping only the top k singular values and their corresponding vectors. Demonstrate the effect of different values of k on the compressed image's quality. You can choose any open-access grayscale image that is appropriate for a professional program.  
+
+**Instructions:**
+
+* **Read an Image:** Convert a grayscale image into a matrix.
+* **Perform SVD:** Factorize the image matrix $A$ into $U \sum V^T$ using R's built-in svd() function.
+* **Compress the Image:** Reconstruct the image using only the top k singular values and vectors.
+* **Visualize the Result:** Plot the original image alongside the compressed versions for various values of k (e.g., k = 5, 20, 50).
+
+3.  **Matrix Rank, Properties, and Eigenspace**
+
+**Determine the Rank of the Given Matrix:**
+
+Find the rank of the matrix $A$. Explain what the rank tells us about the linear independence of the rows and columns of matrix $A$. Identify if there are any linear dependencies among the rows or columns.
+
+$$
+A = \begin{pmatrix}
+1 & 4 & 1 & 3\\
+-2 & -3 & 4 & 1 \\
+5 & 6 & 2 & 8 \\
+-1 & -2 & 3 & 7\\
+\end{pmatrix}
+$$
+
+**Matrix Rank Boundaries:**
+
+* Given an $m\times n$ matrix where $m > n$, determine the maximum and minimum possible rank, assuming that the matrix is non-zero.
+* Prove that the rank of a matrix equals the dimension of its row space (or column space). Provide an example to illustrate the concept.
+
+**Rank and Row Reduction:**
+
+* Determine the rank of matrix $B$. Perform a row reduction on matrix $B$ and describe how it helps in finding the rank. Discuss any special properties of matrix $B$ (e.g., is it a rank-deficient matrix?).
+ 
+
+**Compute the Eigenvalues and Eigenvectors:**
+
+Find the eigenvalues and eigenvectors of the matrix $A$.  Write out the characteristic polynomial and show your solution step by step. After finding the eigenvalues and eigenvectors, verify that the eigenvectors are linearly independent. If they are not, explain why.
+
+$$
+A = \begin{pmatrix}
+3 & 1 & 2\\
+0 & 5 & 4 \\
+0 & 0 & 2 \\
+\end{pmatrix}
+$$
+
+**Diagonalization of Matrix:**
+
+* Determine if matrix $A$ can be diagonalized. If it can, find the diagonal matrix and the matrix of eigenvectors that diagonalizes $A$.
+* Discuss the geometric interpretation of the eigenvectors and eigenvalues in the context of transformations. For instance, how does matrix $A$ stretch, shrink, or rotate vectors in $R^3$?
+
+4.  **Project: Eigenfaces from the LFW (Labeled Faces in the Wild) Dataset**
+
+**Context:** Eigenfaces are a popular application of Principal Component Analysis (PCA) in computer vision. They are used for face recognition by finding the principal components (eigenvectors) of the covariance matrix of a set of facial images. These principal components represent the "eigenfaces" that can be combined to approximate any face in the dataset.
+
+**Task:** Using the LFW (Labeled Faces in the Wild) dataset, build and visualize eigenfaces that account for 80% of the variability in the dataset. The LFW dataset is a well-known dataset containing thousands of labeled facial images, available for academic research.
+
+**Instructions:**
+
+1. **Download the LFW Dataset:**
+
++ The dataset can be accessed and downloaded using the lfw module from the sklearn library in Python or by manually downloading it from the LFW website.
++ In this case, we'll use the lfw module from Python's sklearn library.
+
+2. **Preprocess the Images:**
+
++ Convert the images to grayscale and resize them to a smaller size (e.g., 64x64) to reduce computational + complexity.
++ Flatten each image into a vector.
+
+3. **Apply PCA:**
+
++ Compute the PCA on the flattened images.
++ Determine the number of principal components required to account for 80% of the variability.
+
+4. **Visualize Eigenfaces:**
+
++ Visualize the first few eigenfaces (principal components) and discuss their significance.
++ Reconstruct some images using the computed eigenfaces and compare them with the original images.
+
+**Provide knitted R or Python code.  ONLY Knitted PDF files are acceptable for submission in this course.  All text, graphics, proofs, and content must be in a professional document that addresses all requirements. **
