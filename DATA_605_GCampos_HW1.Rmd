@@ -3,11 +3,11 @@ title: 'DATA 605: Computational Mathematics Homework 1'
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  pdf_document:
-    latex_engine: xelatex
-  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
   html_document:
     df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
   html_notebook: default
 urlcolor: blue
 ---
@@ -16,7 +16,15 @@ urlcolor: blue
 
 **Submit: In this course, I accept only knitted .pdfs that contain code, figures, and commentary in a professional format.**
 
-1.  **Geometric Transformation of Shapes Using Matrix Multiplication**
+## Libraries
+
+```{r}
+library("ggplot2")
+library("gganimate")
+```
+
+
+# 1.  **Geometric Transformation of Shapes Using Matrix Multiplication**
 
 **Context:** In computer graphics and data visualization, geometric transformations are fundamental. These transformations, such as translation, scaling, rotation, and reflection, can be applied to shapes to manipulate their appearance.
 

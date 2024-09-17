@@ -1,0 +1,66 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 3'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_notebook: default
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+urlcolor: blue
+---
+
+Week 3 Discussion:
+
+Pick one of the exercises in the readings this week.  Solve the exercise as best as you can.  If you have issues, explicate them, so that all of us can help.
+
+In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.
+
+Reading:
+
+Linear algebra text, Chapter E
+
+C27
+
+For matrix
+
+$$
+\begin{bmatrix}
+\ \ \ \ \ \ 0 & 4 & -1 & 1\\
+\ -2 & 6 & -1 & -1\\
+\ -2 & 8 & -1 & -1\\
+\ -2 & 8 & -3 & 1 \\
+\end{bmatrix}
+$$
+
+the characteristic polynomial of a is $p_a (x)=(x+2)(x-2)^2 (x-4)$. Find the eigenvalues and corresponding eigenspaces of A.
+
+```{r}
+#Define matrix A
+A<- 
+  matrix(c(0,4,-1,1,
+           -2,6,-1,-1,
+           -2,8,-1,-1,
+           -1,8,-3,1),nrow=4, byrow=TRUE)
+print(A)
+```
+
+```{r}
+# Calculate eigenvalues and eigenvectors
+eigen_result<-eigen(A)
+```
+
+```{r}
+# Display eigenvalues
+
+paste("Eigenvalues:", paste(eigen_result$values, collapse = ", "))
+```
+
+
+```{r}
+# Display eigenvectors
+paste("Eigenvectors:", paste(eigen_result$vectors, collapse = ", "))
+```
+
