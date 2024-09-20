@@ -1,0 +1,93 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 3'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+Week 4 Discussion:
+
+Pick one of the exercises in the readings this week.  Solve the exercise as best as you can.  If you have issues, explicate them, so that all of us can help.
+
+In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.
+
+Reading:
+
+Linear algebra text, Chapters LT & R
+
+Question 
+
+**C20**
+
+*Page 498*
+
+Determine if the linear transformation $T: P_2 → M_{22}$ is (a) injective, (b) surjective (c) invertible
+
+$$ T(a + bx + cx^2) =\begin{bmatrix} a + 2b - c & 2a + 2b \\ -a + b - 4c & 3a + 2b + 2c \end{bmatrix}$$ 
+
+Determine if the transformation $T$ is:
+* Injective (1-to-1): Distinct inputs and outputs
+* Surjective: For every possible output there is at least one input that produces it.
+* Invertible: if its Injective & Surjective
+
+(a) Injective:
+
+Set 
+
+$T(a + bx + cx^2)=0$
+
+meaning
+
+$$\begin{bmatrix} a + 2b - c & 2a + 2b \\ -a + b - 4c & 3a + 2b + 2c \end{bmatrix}=
+\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$$
+
+which translates to 
+
+$a + 2b - c = 0$
+
+$2a + 2b = 0$
+
+$-a + b - 4c = 0$
+
+$3a + 2b + 2c = 0$
+
+and if we just solve for 
+$2a + 2b = 0 \rightarrow 2a=-2b \rightarrow a=-b$
+then substitute for 
+$a + 2b - c = 0 \rightarrow -b+2b-c=0 \rightarrow b-c=0 \rightarrow b=c$
+then substitute 
+$-a + b - 4c = 0 \rightarrow -(-b)+b-4b=0 \rightarrow 2b-4b=0 \rightarrow -2b=0 \rightarrow b=0$
+$\therefore a=-b=c=0$ is the only solution for $T(a + bx + cx^2)=0$
+making the matrix injective.
+
+(b) surjective
+
+To check surjectivity, we need to see if every matrix in the output can be created by some choice of aa, bb, and cc. In other words, for any matrix we choose
+
+$$\begin{bmatrix} p & q \\ r & s \end{bmatrix}$$
+
+$a + 2b - c = p$
+
+$2a + 2b = q$
+
+$-a + b - 4c = r$
+
+$3a + 2b + 2c = s$
+
+So 4 equations, 3 unknowns, preventing the solution for $$\begin{bmatrix} p & q \\ r & s \end{bmatrix}$$ meaning the matrix is not surjective.
+
+(c) invertible
+
+$$ (f \text{ is injective} \land f \text{ is surjective}) \implies f \text{ is invertible} $$
+
+but since its not surjective this is not true and $\therefore$ it is not invertible
+
+
+
