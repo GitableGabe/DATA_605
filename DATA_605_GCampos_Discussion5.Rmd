@@ -1,0 +1,57 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 5'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+Week 5 Discussion:
+
+Pick one of the exercises in the readings this week.  Solve the exercise as best as you can.  If you have issues, explicate them, so that all of us can help.
+
+You may use any exercise, even if assigned
+
+In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.
+
+Reading:
+
+Probability textbook, Chapters 1, 2 and 5
+
+**Chapter 1 Question 4 Page 13**
+
+Consider the bet that all three dice will turn up sixes at least once in n rolls of three dice. Calculate f(n), the probability of at least one triple-six when three dice are rolled n times. Determine the smallest value of n necessary for a favorable bet that a triple-six will occur when three dice are rolled n times. (DeMoivre would say it should be about 216 log 2 = 149.7 and so would answer 150—see Exercise 1.2.17. Do you agree with him?)
+
+$P(triple-six)= \frac{1}{6} \times \frac{1}{6}\times\frac{1}{6}=\frac{1}{216}$
+$P(no \ triple-six) = 1 -\frac{1}{216}=\frac{215}{216}$
+
+"Favorable bet" basically wants at least one triple-six in terms of favorable or non-favorable outcome, so 50%.
+$\therefore$ 
+$1-(\frac{215}{216})^n \geq 0.5$
+
+Which is the least amount of times a rice is rolled where the probability of a favorable outcome is greater than half.
+
+Manipulating the formula we get
+
+$\frac{215}{216}^n\leq0.5$
+
+and we need to use the natural logarithm to solve for this inequality.
+
+$n \geq \frac{ln(0.5)}{ln \frac{215}{216}}$
+
+which is
+
+```{r}
+ln_50<-log(0.5)
+ln_215_216<-log(215/216)
+ln_50/ln_215_216
+```
+
+So yes I agree with DeMoivre and answer 150
+
