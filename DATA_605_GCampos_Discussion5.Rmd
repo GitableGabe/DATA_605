@@ -54,4 +54,3 @@ ln_50/ln_215_216
 ```
 
 So yes I agree with DeMoivre and answer 150
-

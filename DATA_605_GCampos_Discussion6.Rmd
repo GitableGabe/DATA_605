@@ -1,0 +1,54 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 6'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+Week 6 Discussion:
+
+Pick one of the exercises in the readings this week.  Solve the exercise as best as you can.  If you have issues, explicate them, so that all of us can help.
+
+You may use any exercise, even if assigned
+
+**In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.**
+
+Reading:
+
+Probability and stats text, Chapters 3 and 4
+
+**Chapter 3.2 Question 10 Page 114 **
+
+Find integers $n$ and $r$ such that the following equation is true:
+
+$\binom{13}{5}+2\binom{13}{6}+\binom{13}{7}=\binom{n}{r}$
+
+We can just solve for each to get the sum
+
+```{r}
+target <- choose(13,5)+(2*choose(13,6))+choose(13,7)
+target
+```
+
+and from there we can manually search for the best combination or use the below function to find it
+
+
+```{r}
+for (n in 1:20) {
+  for (r in 1:floor(n / 2)) {  # Restrict r to be at most n/2
+    if (choose(n, r) == target) {
+      print(paste("n =", n, "r =", r, "binomial =", choose(n, r)))
+    }
+  }
+}
+```
+
+
+
