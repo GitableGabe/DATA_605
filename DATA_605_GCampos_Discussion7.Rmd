@@ -1,0 +1,125 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 7'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+# Week 7 Discussion:
+
+Pick one of the exercises in the readings this week.  Solve the exercise as best as you can.  If you have issues, explicate them, so that all of us can help.
+
+You may use any exercise, even if assigned
+
+**In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.**
+
+Reading:
+
+Probability text, Chapters 5 and 6
+
+**Chapter 5 Question 14 Page 199**
+
+On the average, only 1 person in 1000 has a particular rare blood type.
+
+## (a)
+
+Find the probability that, in a city of 10,000 people, no one has this
+blood type.
+
+* The variables here are 
+
+  * $n=10,000\ (number \ of \ people)$
+
+  * $p= \frac{1}{1000}=0.001 \ ( prob\ of\ rare \ blood)$
+
+  * $q=1-p=.999 \ (prob \ of \ no \ rare \ blood)$
+
+
+
+* Our Probability Mass function helps us find $\lambda$ to use with the Poisson Distribution to find our answer:
+
+$P(X=0) = (q)^n=(0.999)^{10,000} \ (Probability \ of \ 0 \ people \ with \ rare \ blood \ type)$
+
+
+
+* **Poisson Distribution**
+
+$\lambda=n \cdot p =10$
+$P(X=0)=e^{-\lambda} \cdot \frac{\lambda^0}{0!}=e^{-10}\cdot 1 =e^{-10}$
+
+In R
+
+```{r}
+n<-10000
+p<-1/1000
+dpois(0,n*p)
+```
+or approximately
+
+```{r}
+
+format(dpois(0,n*p),digits=5,scientific = FALSE)
+```
+
+
+## (b)
+
+How many people would have to be tested to give a probability greater
+than 1/2 of finding at least one person with this blood type?
+
+* $n=?$
+* $p=0.001$
+* $q=0.999$
+* $P(at \ least \ one)=1-P(X=0)$
+* From our last problem $P(X=0)=e^{-\lambda}$
+
+$\therefore P(at \ least \ one)=1-e^{-\lambda}$ where $\lambda = n \cdot 0.001$
+
+and 
+
+$P(at \ least \ one)$ is greater than 1/2 or 0.5
+
+$\therefore 1-e^{-\lambda}>0.5$ is our equation which reduced becomes
+
+$e^{-\lambda}<0.5$ and to solve is 
+$-\lambda<ln(0.5)$
+
+In R we can just calculate
+
+```{r}
+n_2 <- ceiling(log(0.5) / -p)
+n_2
+```
+
+
+Alternatively ou can find the minium n using the functions below and the previously defined $p$ a function to define lambda and another to loop down to the minimum n
+
+```{r}
+lambda <- function(n){
+  n * p  # expected value for different n
+} 
+
+# Function to find the minimum n such that P(at least one) > 1/2
+find_min_n <- function() {
+  n <- 1
+  while (dpois(0, lambda(n)) > 0.5) {
+    n <- n + 1
+  }
+  return(n)
+}
+
+min_n <- find_min_n()
+min_n
+```
+
+
+
+
+
