@@ -1,0 +1,270 @@
+---
+title: 'DATA 605: Computational Mathematics Midterm'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  html_document:
+    df_print: paged
+  html_notebook: default
+urlcolor: blue
+---
+
+
+# Library
+
+```{r}
+library(pracma)
+```
+
+
+# Market Transition Analysis
+Customer monthly movement between your product and competitors is represented by the following monthly market transition matrix M. Assume you and your tow competitors have 100 customers each on the first month. About how many customers would you expect to have at the beginnin of the third month. You are represented by the first row and your competitors are column/rows 2 and 3.
+
+```{r}
+M <- matrix(c(0.6, 0.3, 0.1, 
+              0.2, 0.5, 0.3, 
+              0.2, 0.2, 0.6), 
+            nrow = 3, byrow = TRUE)
+```
+
+
+```{r}
+init_cust <- c(100, 100, 100)
+
+#2nd month
+mon2_customers <- M %*% init_cust
+mon3_customers<-M%*%mon2_customers
+mon3_customers
+```
+
+```{r}
+mon3_customers_mine <- mon3_customers[1]
+mon3_customers_mine
+```
+
+
+I believe the math and approach is right, that's why I selected cannot be estimated. I did toy with the idea of using the .2 for the following rows or the values of the other columns as a probability, but I understand those values as the likelihood of customers leaving competitor one and then two in the following rows respectively. So I was too confused to find a better choice.
+
+# System Failure Risk Assessment
+Analyze the risk of a system failures during the first year of production, assuming a average rate of failure of 1 every 8 months. What is the probability of experiencing 0 failers in the first year, using Poisson distribution?
+
+```{r}
+
+lambda <- 1.5  
+failures <- dpois(0, lambda)
+failures
+```
+
+# Inventory Management
+
+Given the following unit cost supply matrix $S$ (supplier cost for three parts from four warehouses) and demand matrix %D% (#parts by type demanded by three stores), compute the matrix $S \times D^t$
+
+```{r}
+S <- matrix(c(100, 200, 150, 
+              120, 180, 160, 
+              130, 170, 140,
+              140, 160, 130), 
+            nrow = 4, byrow = TRUE)
+S
+```
+
+
+```{r}
+D <- matrix(c(300, 400, 250, 
+              280, 350, 270, 
+              260, 330, 290), 
+            nrow = 3, byrow = TRUE)
+D
+```
+
+```{r}
+D_t<-t(D)
+D_t
+```
+
+```{r}
+Q4_ans<-S%*%D_t
+Q4_ans
+```
+# High-Priority Order Fulfillment
+
+Your distribution center is responsible for fulfilling customer orders for a new product that has limited availability. The product is in high demand, and you have a total of 20 units available for immediate shipment. Out of these, you have recieved 10 high-priority orders from key customers who have paid extra for expedited delivery, and 10 low-priority orders from regular customers. 
+Due to operational constraints, your warehouse can only process and ship 5 units of the product at a time. Given the urgency of the high-priority orders, your goal is to maximize the number of these orders that are fulfilled. However, the selection process for shipping the 5 units is random due to the mixed placement of orders in the system.
+
+If you randomly select 5 units to ship from the 20 available, what is the probability that exactly 3 of these units will fulfill high-priority orders?
+
+```{r}
+#number of units
+N <- 20 
+# number of high-priority units
+H <- 10
+# if we select 5
+n <- 5
+# prob of 3 high priority
+h <- 3
+
+# Calculate the probability using hypergeometric distribution
+Q5_ans <- choose(H, h) * choose(N - H, n - h) / choose(N, n)
+
+Q5_ans
+```
+
+# Customer Support Waiting Time Analysis
+
+Your customer support center has been experiencing variability in response times due to fluctuations in call volume and staffing levels. Historical data shows that the time a customer waits for support follows an exponential distribution with an average waiting time of 5 minutes.
+
+Management is concerned about customer satisfaction, particularly with customers who experience longer-than-expected wait times. Specifically, they want to understand the probability that a customer will wait more than 10 minutes for support. This information is crucial for planning resources and improving service levels.
+
+Given that the waiting time $T$ for customer support follows an exponential distribution with an average rate of 5 minutes, calculate the probability that a customer will wait more than 10 minutes.
+
+
+Exponential Distribution
+$\therefore \lambda = \frac{1}{mean}=\frac{1}{5_{minutes}}=0.2minutes^-1$
+$P(T>t)=e^{-\lambda t}=e^{-0.2 \times 10}=e^{-2}\approx0.1353$
+
+```{r}
+lambda<-1/5
+t=10
+Q6_ans<-exp(-lambda*t)
+Q6_ans
+```
+
+# Supply Chain Risk Assessment
+
+Your supply chain involves 5 different suppliers, each with a lead time uniformly distributed between 1 and 20 days. Calculate the probability that the minimum lead time among these suppliers is less than or equal to 5 days. Select the closest answer. (Hint: order statistics) 
+
+Upload Your Analysis: Upload your pdf analysis for all questions at the end of this test.
+
+5 suppliers
+1 day is $a$ or lower bount
+20 days is $b$ or upper bound
+5 day threshold so $x$
+Culmulative Distro is $F(x)=\frac{x-1}{20-1}=\frac{x-1}{19}$
+$F(5)=\frac{5-1}{19}=\frac{4}{19}$
+$Fx_{(1)}(5)=1-(1-F(5))^5=1-(1-\frac{4}{19})^5=1-(\frac{15}{19})^5 \approx 0.2477$
+so $P(X_{(1)} \leq 5 =1-0.2477 \approx 0.7523)$
+
+I believe my calculations are wrong based on the R chunk so I decided to go with .65 which is the nearest result
+
+```{r}
+# Parameters
+x <- 5
+n <- 5
+a <- 1
+b <- 20
+
+
+# Calculate F(5)
+Uniform_dist <- (x - a) / (b - a)
+
+# Calculate P(X_min <= 5)
+P_lead_time_min <- 1 - (1 - Uniform_dist)^n
+P_lead_time_min
+
+
+```
+
+# Maintenance Scheduling
+
+Your company owns a crucial machine expected to last 8 years. Calculate the probability that it will not fail in the first 6 years using a geometric probability distribution. Select the closest answer.  
+
+```{r}
+
+p <- 1/8    
+q <- 1 - p  
+yrs <- 6
+
+# Calculate the probability of not failing in the first 6 years
+P_q <- (q)^yrs
+P_q
+
+```
+
+
+# Risk Analysis
+
+You are tasked with managing the risks associated with investments in three critical areas for an upcoming product launch: Marketing, Research & Development (R&D), and Distribution. To better understand and mitigate these risks, a Principal Component Analysis (PCA) will be performed on the standardized correlation matrix that captures the relationships between these three investment areas.
+
+The standardized correlation matrix (below) provides a measure of how the investments in Marketing, R&D, and Distribution are interrelated. Each entry in this matrix represents the correlation between two of these investment areas, indicating how changes in one area might be associated with changes in another.
+
+The goal is to perform PCA on this correlation matrix to identify the primary sources of risk and their corresponding magnitudes. PCA will help determine the principal components (eigenvectors) that capture the most variance in the data, effectively pinpointing the largest contributors to risk.
+
+Find the absolute value of the largest eigenvalue from the PCA. This eigenvalue quantifies the proportion of total variance explained by the first principal component, representing the most significant source of risk.
+
+```{r}
+R<-matrix(c(1.00, 0.50, 0.30, 
+            0.50, 1.00, 0.40, 
+            0.30, 0.40, 1.00), 
+            nrow = 3, byrow = TRUE)
+R
+```
+
+```{r}
+largest_eigenvalue <- abs(max(eigen(R)$values))
+print(largest_eigenvalue)
+
+
+```
+
+# Profitability Analysis
+
+The profitability of the smart coffee maker depends on selling at least 10,000 units. The unit cost is $50, the selling price is $100, and the sales distribution is as follows:
+
+* 10,000 units: probability 0.25
+* 12,000 units: probability 0.35
+* 15,000 units: probability 0.30
+* 18,000 units: probability 0.10
+
+Calculate the expected profit.
+
+```{r}
+cost <- 50
+price <- 100
+profit_per <- price - cost
+
+# Define the sales volumes and their probabilities
+sales <- c(10000, 12000, 15000, 18000)
+prob <- c(0.25, 0.35, 0.30, 0.10)
+
+# Calculate total profits for each sales volume
+total_profits <- sales * profit_per
+
+# Calculate expected profit
+exp_profit <- sum(total_profits * prob)
+
+# Print the result
+print(exp_profit)
+
+```
+
+# Production Cost Impact
+
+The production cost matrix $A$ for three departments is given below. Decompose $A$ into its LU components and determine the element in the third row, second column of the $L$ matrix.  In production planning, LU decomposition can be used to allocate costs or resources across different departments or products. For instance, if you need to calculate the contribution of different factors to the total production cost repeatedly, LU decomposition streamlines this process. 
+
+```{r}
+A<-matrix(c(100, 200, 150, 
+            180, 250, 230, 
+            130, 160, 140), 
+            nrow = 3, byrow = TRUE)
+A
+```
+
+* Row 1: Costs associated with Manufacturing
+* Row 2: Costs associated with Marketing
+* Row 3: Costs associated with R&D
+
+Use pracma package to perfom LU decomposition on Matrix A
+
+```{r}
+lu_decomp<-lu(A)
+lu_decomp
+```
+
+```{r}
+L<-lu_decomp$L
+L[3,2]
+```
+

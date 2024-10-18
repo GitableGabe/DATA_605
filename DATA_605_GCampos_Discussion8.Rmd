@@ -1,0 +1,69 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 8'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+# Week 8 Discussion:
+
+Pick one of the exercises in the readings this week.  Solve the exercise as best as you can.  If you have issues, explicate them, so that all of us can help.
+
+You may use any exercise, even if assigned
+
+**In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.**
+
+Reading:
+
+Probability text, Chapters 7 and 8
+
+**Chapter 7.2 Question 9 Page 302**
+
+Assume that the service time for a customer at a bank is exponentially distributed with mean service time 2 minutes. Let $X$ be the total service time for 10 customers. Estimate the probability that $X>22$ minutes.
+
+**Manually**
+
+* $X~Exponential(\lambda)$ has a Probability Distribution Function (PDF) of $fx(x)=\lambda e^{-\lambda x}, x>0$
+
+* Sum $S_n=X_1 + X_2 +... + X_n$ of $n$  independent and identically distributed (IID) exponential random variables w/rate $\lambda$ follows a Gamma distribution $S_n~Gamma(n,\lambda)$
+
+* $n$ is the shape parameter and $\lambda$ is the rate parameter and the PDF of the Gamma distribution is: $fs(s)=\frac{\lambda^n s^{n-1} e^{-\lambda s}}{\Gamma(n)},s>0$
+
+* Solve for $P(S_{10} \geq22)=\int_{22}^{\infty}\frac{(1/2)^10 s^9 e^{-s/2}}{9!}ds$
+
+* $\mu=\frac{n}{\lambda},\sigma^2 = \frac{n}{\lambda^2}$ for a Gamma Distribution so in this case $\mu = \frac{10}{\frac{1}{2}}=20,\sigma^2=\frac{10}{(\frac{1}{2})^2}=40,\sigma=\sqrt{40}=6.3246$
+
+* W/Normal Approximation, standarize 22 $P(\frac{S_{10}-\mu}{\sigma}\geq \frac{22-20}{\sqrt{40}})=P(Z\geq0.3162)\approx0.3759$
+
+**Using R for exact probability **
+
+Mean = 2
+Rate Parameter $\lambda$ = $\frac{1}{mean}=\frac{1}{2}=0.5$
+Gamma Distribution Probability Density Function $fx(x;k,\lambda)=\frac{\lambda^k x^{k-1}e^{-\lambda x}}{(k-1)!}$
+Cumulative Distribution Function (CDF) give $P(X\leq22)$ $\therefore P(X>22)=1-P(X\leq22)$
+we can solve doing below
+
+
+```{r}
+# Define parameters
+lambda <- 0.5  # Rate parameter (1 / mean service time)
+k <- 10        # Number of customers
+x_value <- 22  # Total service time threshold
+
+# Calculate the probability P(X > 22)
+p_less_than_22 <- pgamma(x_value, shape = k, rate = lambda)
+
+# P(X > 22) = 1 - P(X <= 22)
+p_greater_than_22 <- 1 - p_less_than_22
+
+# Output the result
+p_greater_than_22
+```
+
