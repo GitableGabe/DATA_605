@@ -1,0 +1,184 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 10'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+Week 10 Discussion:
+
+Pick one of the exercises in the readings this week.  Solve the exercise as best as you can.  If you have issues, explicate them, so that all of us can help.
+
+You may use any exercise, even if assigned
+
+**In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.**
+
+Reading:
+
+Probability and stats text, Chapters 11 and 12
+
+**Chapter 11.3 Question 1 Page 442 **
+
+Which of the following Matrices are transition for regular Markov chains?
+
+Determining whether a given matrix P is a transition matrix requires the following:
+
+i. Each row sums to 1
+ii. Chain is regular: if there exists some power of $k$ such that $P^k$ are positive. Implies it is possible to go from any state to any state.
+
+(a)
+
+$$
+P = \begin{pmatrix}
+.5 & .5 \\
+.5 & .5 \\
+\end{pmatrix} \ \
+$$
+
+(b)
+
+$$
+P = \begin{pmatrix}
+.5 & .5 \\
+1 & 0 \\
+\end{pmatrix} \ \
+$$
+
+(c)
+
+$$
+P = \begin{pmatrix}
+\frac{1}{3} & 0 & \frac{2}{3} \\
+0 & 1 & 0 \\
+0 & \frac{1}{5} & \frac{4}{5}\\
+\end{pmatrix} \ \
+$$
+
+(d)
+
+$$
+P = \begin{pmatrix}
+0 & 1 \\
+1 & 0 \\
+\end{pmatrix} \ \
+$$
+
+(e)
+
+$$
+P = \begin{pmatrix}
+\frac{1}{2} & \frac{1}{2} & 0\\
+0 & \frac{1}{2} & \frac{1}{2} \\
+\frac{1}{3} & \frac{1}{3} & \frac{1}{3}\\
+\end{pmatrix} \ \
+$$
+
+it was just easier to make a function to test the conditions so I did.
+
+```{r}
+# Define the matrix P
+P_a <- matrix(c(0.5, 0.5,
+              0.5, 0.5), 
+            nrow = 2, byrow = TRUE)
+
+P_b <- matrix(c(0.5, 0.5,
+              1, 1), 
+            nrow = 2, byrow = TRUE)
+
+P_c <- matrix(c(1/3, 0, 2/3,
+              0, 1, 0,
+              0, 1/5, 4/5), 
+            nrow = 3, byrow = TRUE)
+
+P_d <- matrix(c(0, 1,
+              1, 0), 
+            nrow = 2, byrow = TRUE)
+
+P_e <- matrix(c(1/2, 1/2, 0,
+              0, 1/2, 1/2,
+              1/3, 1/3, 1/3), 
+            nrow = 3, byrow = TRUE)
+
+# Function to check if a matrix is valid
+is_valid_transition_matrix <- function(P) {
+  # Check if all entries are non-negative and sum to 1 for each row
+  if (any(P < 0) || any(rowSums(P) != 1)) {
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+is_regular <- function(P, max_iter = 10) {
+  P_k <- P
+  
+  for (k in 1:max_iter) {
+    cat("P^", k, ":\n")
+    print(P_k)
+    
+    # Check if all entries are positive and that it is not the same as the previous matrix
+    if (all(P_k > 0) && !all(P_k == P)) {
+      return(TRUE)  # The matrix is regular
+    }
+    
+    # Multiply the matrix by itself to get the next power
+    P_k <- P_k %*% P
+  }
+  
+  return(FALSE)
+}
+
+```
+
+```{r}
+# Test if the matrix is regular
+if (is_valid_transition_matrix(P_a)) {
+  print(is_regular(P_a))
+} else {
+  print("The matrix is not a valid transition matrix.")
+}
+```
+
+```{r}
+# Test if the matrix is regular
+# Test if the matrix is regular
+if (is_valid_transition_matrix(P_b)) {
+  print(is_regular(P_b))
+} else {
+  print("The matrix is not a valid transition matrix.")
+}
+```
+
+```{r}
+# Test if the matrix is regular
+if (is_valid_transition_matrix(P_c)) {
+  print(is_regular(P_c))
+} else {
+  print("The matrix is not a valid transition matrix.")
+}
+```
+
+
+```{r}
+# Test if the matrix is regular
+if (is_valid_transition_matrix(P_d)) {
+  print(is_regular(P_d))
+} else {
+  print("The matrix is not a valid transition matrix.")
+}
+```
+
+```{r}
+# Test if the matrix is regular
+if (is_valid_transition_matrix(P_e)) {
+  print(is_regular(P_e))
+} else {
+  print("The matrix is not a valid transition matrix.")
+}
+```

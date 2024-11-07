@@ -1,0 +1,87 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 11'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+# Library
+
+```{r}
+library(dplyr)
+```
+
+# Assignment
+
+Week 11 Discussion:
+
+Using R, build a  regression model for data that interests you. Conduct residual analysis.  Was the linear model appropriate? Why or why not?
+
+In this course, do not attach files to any of the discussion posts.  Provide your code and commentary plus figures directly in the text box.  Many students don't download files or open other links.
+
+You must start a thread before you can read and reply to other threads
+
+Global Health Observatory data repository
+World Health Organization 
+[Life expectancy and Healthy life expectancy Data by Country Dataset](https://apps.who.int/gho/data/node.main.688)
+
+
+## Load Data
+
+```{r}
+df1 <- read.csv("LifeExpectancy.csv", header = FALSE)
+header_row1 <- as.character(df1[1, ])
+header_row2 <- as.character(df1[2, ])
+merged_headers <- paste(header_row1, header_row2, sep = "_")
+merged_headers <- gsub("_", " ", merged_headers) # Replace underscores with spaces
+merged_headers <- trimws(merged_headers)         # Trim spaces
+df1 <- df1[-c(1, 2), ]
+colnames(df1) <- merged_headers
+df1 <- type.convert(df1, as.is = TRUE)
+head(df1)
+```
+
+```{r}
+names(df1)
+```
+
+
+```{r}
+summary(df1)
+```
+
+```{r}
+# Convert categorical variables to factors if needed
+df1$`Countries, territories and areas` <- as.factor(df1$`Countries, territories and areas`)
+df1$Year <- as.numeric(df1$Year)  # Ensure 'Year' is numeric for regression
+
+# Define the regression model
+model <- lm(`Life expectancy at birth (years) Both sexes` ~ df1$`Life expectancy at birth (years) Female` + Year, data = df1)
+
+# Summarize the model to view results
+summary(model)
+
+```
+
+```{r}
+coef(model)
+plot(model$residuals)
+summary(model)$r.squared
+```
+
+
+Interpretation
+Median score: 0.0683 indicates its fairly accurate
+Range: based on the Min & Max the values are close to actual values, being off at most by approximately 4.7 years
+Life expectancy at birth female: 0.968866 indicates that the life expectancy of both sexes increases for each year of life expectancy at birth for females, making it a strong predictor. But this is relatively obvious with the data only including 2 sexes.
+Coefficient for year: 0.013413, is interesting as it claims and increase of life expectancy for each year for both sexes, e.g. over a period of 3 years, the life expectancy increased by 15 days.
+R-Squared:0.9856298 indicates a strong model which I already justified above. 
+
+I originally attempted to play with using Female life expectancy at birth with the life expectancy for the other variables (Male/Female/Both at 60 years), and the R-Squared showed it captured 76% of the variability, but I was having a bit of trouble describing the impact, hence I simplified my example of a regression model for submission of this assignment.

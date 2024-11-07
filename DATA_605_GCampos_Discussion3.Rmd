@@ -63,4 +63,3 @@ paste("Eigenvalues:", paste(eigen_result$values, collapse = ", "))
 # Display eigenvectors
 paste("Eigenvectors:", paste(eigen_result$vectors, collapse = ", "))
 ```
-
