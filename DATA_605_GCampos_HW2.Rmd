@@ -12,6 +12,13 @@ output:
 urlcolor: blue
 ---
 
+## Library
+
+```{r, warning=FALSE}
+library(expm)
+```
+
+
 ## Problem 1
 
 ### 1 (Bayesian)
@@ -58,24 +65,23 @@ p_default_given_positive
 
 If the average loss per defaulted loan is \$200,000 and the cost to run the credit scoring test on each borrower is $500, what is the total first-year cost for evaluating 10,000 borrowers?
 
-- $Expected Loss= P(Default|Positive) \times 200,000$
-- $Testing Cost = 10,000 \times Cost \ per \ test$
-- $Expected \ Borrowers= 10,000 \times prevalence$
-- $Expected Default Cost = Expected Borrowers \times 200,000$
-- $Total \ Cost = Testing \ Cost + Expected \ Default \ Cost$
+- $P(flagged)=(0.90 \times 0.02) + ((1-0.95) \times (1-0.02))$
+- $Number \ flagged = 10,000 \times P(flagged)$
+- $E[Defaults] \approx Number \ flagged \times P(Positive)$
+- $Cost=E[Defaults] \times 200,000$
 
 ```{r}
-cost_per_test<- 500
+n<-10000
 cost_default<- 200000
-total_borrowers<- 10000
-expected_loss<-p_default_given_positive*cost_default
-expected_borrowers<-10000*prevalence
-expected_default_cost<-expected_borrowers*cost_default
-testing_cost<-cost_per_test*total_borrowers
-format(expected_default_cost+testing_cost, scientific = FALSE)
+cost_test<-500
+p_flagged<- (0.90*0.02)+((1-0.95)*(1-0.02))
+n_flagged<- n*p_flagged
+e_default<-n_flagged*p_default_given_positive
+cost<-(e_default*200000)+(cost_test*n)
+format(cost, scientific = FALSE)
 ```
 
-**Answer:$45,000,000**
+**Answer:$41,000,000**
 
 ```{r}
 rm(list = ls())
@@ -123,6 +129,7 @@ sum(dbinom(0:5,8,0.7))
 ```
 
 **Answer:44.82262%**
+
 #### iv
 
 What is the expected number of dividend payments over 8 quarters?
@@ -133,7 +140,7 @@ $Expected \ number=n \times p$
 8*0.7
 ```
 
-**Answer: 5.6**
+**Answer: 5 (rounded down)**
 
 #### v
 
@@ -147,7 +154,7 @@ $Standard \ deviation = \sqrt{8 \times 0.7 \times (1-0.7)}$
 sqrt(8*0.7*(1-0.7))
 ```
 
-**Answer:1.296148**
+**Answer:1.296**
 
 ### 3 (Poisson)
 
@@ -173,7 +180,7 @@ we can just use R to solve
 ```{r}
 dpois(4, 12)
 ```
-**Answer: 0.532%**
+**Answer: 0.531%**
 
 
 #### ii
@@ -188,7 +195,7 @@ Using Poisson
 1-ppois(12, 12)
 ```
 
-**Answer: 42.40348%**
+**Answer: 42.40%**
 
 #### iii
 
@@ -207,40 +214,31 @@ What is the standard deviation of the number of such days?
 
 Assuming the number of days is for a 6-month period
 
-- $n = 6 \ months \times 12 \ days = 120$
-- $p=0.6$
-- $Standard \ deviation= \sqrt{n \times p \times (1-p)}= \sqrt{120 \times 0.6 \times (1-0.6)}$
+- $\sigma_{1 \ month} = \sqrt{\lambda}$
+- $\sigma_{6 \ months} = 6 \times\sqrt{\lambda}$ or just $\sqrt{72}$ from our previous problem
 
 ```{r}
-sqrt(120*0.6*(1-0.6))
+sqrt(72)
 ```
 
-**Answer: 5.366563 days**
+**Answer: 8.485281 days**
 
 #### v
 
 If an investment strategy requires at least 70 days of such price increases in a year for profitability, what is the percent utilization and what are your recommendations?
 
-I felt this was a trick question as I had trouble understanding how many days would be considered a work/trading day. 
+
 
 Assuming:
 
-- $2 \ weekend \ days \ for \ 52 \ weeks=2 \times 52=104 \ weekends$
-- $9 \ calendar \ holidays (US)$
-
-Than:
-
-- $365 \ days - (104+9)days=252 \ days$
-- $n=252$
-- $p=0.6$
-- $Expected \ number \ of \ days \ in \ a \ year =252 \times 0.6$
-- $Percent \ utilization= \frac{70 \ days}{Expected \ number \ of \ days \ in \ a \ year}$
+- $12 \ trading \ days \times 12 \ months = 144 \ days$
+- $\frac{Minimum \ Days \ Required}{Expected \ Days} \times 100= \frac{70}{144} \times 100$
 
 ```{r}
-(70/(252*0.6))*100
+(70/144)*100
 ```
 
-**Answer: 46.3% of the profitable days is made up of the 70 days in question, so obviously it has a high probability of success since we're expected to achieve more profitable days. I would still say move forward with confidence but monitor the market for any sudden changes in trends.**
+**Answer: 48.6% of the profitable days is made up of the 70 days in question, so obviously it has a high probability of success (100%) since we're expected to achieve more profitable days. I would still say move forward with confidence but monitor the market for any sudden changes in trends.**
 
 ### 4 (Hypergeometric)
 
@@ -267,7 +265,7 @@ R has a helpful function dyper() that uses parameters m for k which will give us
 dhyper(x=5,m=15,n=10,k=7)
 ```
 
-**Answer: 28.11213%**
+**Answer: 28.11%**
 
 #### ii
 
@@ -307,7 +305,7 @@ p_no_default<-1-p
 1-p_no_default^10
 ```
 
-**Answer: 4.888987%**
+**Answer: 4.89%**
 
 #### ii
 
@@ -319,7 +317,7 @@ Similar to above but $n=15$
 1-p_no_default^15
 ```
 
-**Answer: 7.243103%**
+**Answer: 7.24%**
 
 #### iii
 
@@ -370,7 +368,7 @@ We can use ppois() to solve this
 1-ppois(q = 2, lambda = 1)
 ```
 
-**Answer: 8.03014%*
+**Answer: 8.03%*
 
 #### ii
 
@@ -466,10 +464,10 @@ $f(t) = \lambda e^{-\lambda t}$
 in R we can us pexp() to solve
 
 ```{r}
-pexp(6, (1/8))
+1-pexp(6, (1/8))
 ```
 
-**Answer: 52.76334%**
+**Answer: 47.2%**
 
 #### iv
 
@@ -481,7 +479,7 @@ $1-f(t) \rightarrow 1 - \lambda e^{-\lambda t}$
 pexp(2, (1/8))
 ```
 
-**Answer: 22.11992%**
+**Answer: 22.2%**
 
 ## Problem 2
 
@@ -492,17 +490,17 @@ A company produces 5 different types of green pens and 7 different types of red 
 
 We can find this out by adding the combinations for choosing 0 and 1 green pen:
 
-The combinations for 0 green are  $\binom{5}{0}$ for green and $\binom{11}{6}$ for red
+The combinations for 0 green is  $\binom{5}{0}$ for green and $\binom{7}{5}$ for red
 
-while (without replacement) the combinations for 1 green is $\binom{5}{1}$ for green and $\binom{10}{6}$ for red.
+while (without replacement) the combinations for 1 green is $\binom{5}{1}$ for green and $\binom{7}{4}$ for red.
 
-So our answer is $\binom{5}{0} \cdot \binom{11}{6} + \binom{5}{1} \cdot \binom{10}{6}$
+So our answer is $\binom{5}{0} \cdot \binom{7}{5} + \binom{5}{1} \cdot \binom{7}{4}$
 
 ```{r}
-choose(5,0)*choose(11,6) + choose(5,1)*choose(10,6)
+choose(5,0)*choose(7,5) + choose(5,1)*choose(7,4)
 ```
 
-**ANSWER:1512**
+**ANSWER:196**
 
 ### 2 (Team Formation for a Project)
 
@@ -532,13 +530,13 @@ $5 \times 2 \times 3= 30$
 
 A quality control team draws 3 products from a batch of size N without replacement. What is the probability that at least one of the products drawn is defective if the defect rate is known to be consistent? 
 
-- $n=N$
-- $p=p$
-- $1-p=1-p$
-- $P(at \ least \ 1 \ defective)=1-P(no \ defective)$
-- $P(no \ defective)= (1-p) \times (1-p) \times (1-p)=(1-p)^3$
+- $n = N$
+- $R = Defect \ Rate$
+- $D = N \times R$
+- $P(no \ defects)=\frac{\binom{N-D}{3}}{\binom{N}{3}}=\frac{\binom{N-N \times R}{3}}{\binom{N}{3}}$
+- $P(At \ least \ 1 \ defective)= 1-\frac{\binom{N-N \times R}{3}}{\binom{N}{3}}$
 
-**Answer: $P(at \ least \ 1 \ defective)= 1 - (1-p)^3$**
+**Answer: $P(At \ least \ 1 \ defective)= 1-\frac{\binom{N-N \times R}{3}}{\binom{N}{3}}$ OR $P(at \ least \ 1 \ defective)= 1 - (1-R)^3$ Simplified**
 
 
 ### 5 (Business Strategy Choices)
@@ -580,7 +578,37 @@ choose(31,5)-choose(17,5)
 
 A business conference needs to schedule 9 different keynote sessions from three different industries: technology, finance, and healthcare. There are 4 potential technology sessions, 104 finance sessions, and 17 healthcare sessions to choose from. How many different schedules can be made? Express your answer in scientific notation rounding to the hundredths place.
 
-Answer: ____________________
+$Schedules \ for \ one \ combination=\binom{4}{x_{tech}} \times \binom{104}{x_{finance}} \times \binom{17}{x_{health}}$
+
+```{r}
+sessions <- 9
+tech_num <- 4
+finance_num <- 104
+health_num <- 17
+
+combinations_conference <- expand.grid(
+  tech = 1:min(tech_num, sessions-2),
+  finance = 1:min(finance_num, sessions-2),
+  healthcare = 1:min(health_num, sessions-2)
+)
+
+combinations_conference <- combinations_conference[rowSums(combinations_conference) == sessions,]
+
+schedule_counts <- choose(tech_num, combinations_conference$tech) *
+                   choose(finance_num, combinations_conference$finance) *
+                   choose(health_num, combinations_conference$healthcare)
+
+total_schedules <- sum(schedule_counts)
+
+total_schedules_sci <- formatC(total_schedules, format = 'e', digits = 2)
+
+total_schedules_sci
+
+
+```
+
+
+**Answer: 2.83e+12**
 
 ### 7 (Book Selection for Corporate Training)
 
@@ -652,11 +680,27 @@ format(total_schedules, scientific = TRUE, digits = 3)
 
 **Answer: $7.07 \times 10^2$**
 
+```{r}
+rm(list = ls())
+```
+
+
 ### 8 (Product Arrangement)
 
 A retailer is arranging 10 products on a display shelf. There are 5 different electronic gadgets and 5 different accessories. What is the probability that all the gadgets are placed together and all the accessories are placed together on the shelf? Express your answer as a fraction or a decimal number rounded to four decimal places.
 
-Answer: _______________
+- The different ways we can arrange all electronics gadgets or accessories together is $5!$
+- This can be ordered with either group leading $\therefore 2 \times 5!5! = favorable \ arrangement$
+- The random ways the arrangement of these groups can be ordered is $10!$
+
+$\therefore P(All \ gadgets\ \& \ accessories \ grouped) = \frac{2 \times 5!5!}{10!}$
+
+```{r}
+(2*factorial(5)*factorial(5))/factorial(10)
+```
+
+
+**Answer: 0.0079**
 
 ### 9 (Expected Value of a Business Deal)
 
@@ -664,19 +708,76 @@ A company is evaluating a deal where they either gain $4 for every successful co
 
 #### Step 1
 
+Given:
+- $P(X \leq Queen)=successful \ contract$
+- $P(successful \ contract)= \frac{44}{52}=\frac{11}{13}$ this accounts for 2-10, Jack & Queens in 4 suits
+- $P(unsuccessful \ contract) = 1- \frac{44}{52}=\frac{8}{52}$ this accounts for King and Ace in 4 suits
+
+Using the loss and gains with the probabilities we get $\$4 \times \frac{12}{13}+ (-\$16) \times \frac{4}{52}$
+
+```{r}
+4*(11/13)+(-16)*(8/52)
+```
+
+
+
 Find the expected value of the deal. Round your answer to two decimal places. Losses must be expressed as negative values.
-Answer: $_______________
+**Answer: $0.92**
 
 #### Step 2
 
 If the company enters into this deal 833 times, how much would they expect to win or lose? Round your answer to two decimal places. Losses must be expressed as negative values.
-Answer: $_______________
+
+$\$0.92 \times 833$
+
+```{r}
+0.92*833
+```
+
+
+**Answer: $766.36**
 
 ## Problem 3
 
 ### 1 (Supply Chain Risk Assessment)
 
-Let represent the lead times (in days) for the delivery of key components from different suppliers. Each lead time is uniformly distributed across a range of 1 to days, reflecting the uncertainty in delivery times. Let denote the minimum delivery time among all suppliers. Understanding the distribution of is crucial for assessing the earliest possible time you can begin production. Determine the distribution of to better manage your supply chain and minimize downtime.
+Let $X_1,X_2,...,X_n$ represent the lead times (in days) for the delivery of key components from $n=5$ different suppliers. Each lead time is uniformly distributed across a range of 1 to $k=20$ days, reflecting the uncertainty in delivery times. Let $Y$ denote the minimum delivery time among all suppliers. Understanding the distribution of $Y$ is crucial for assessing the earliest possible time you can begin production. Determine the distribution of $Y$ to better manage your supply chain and minimize downtime.
+
+```{r}
+n <- 5
+k <- 20
+y_values <- seq(1, k, by = 0.1)
+cdf <- 1 - (1 - (y_values - 1)/(k - 1))^n
+pdf <- n * (1 - (y_values - 1)/(k - 1))^(n - 1) * (1/(k - 1))
+plot(y_values,
+     cdf, type = "l",
+     col = "red", 
+     xlab = "Minimum Lead Time (Y) in Days",
+     ylab = "CDF",
+     main = "Distribution of Minimum Lead Time")
+lines(y_values,
+      pdf,
+      type="l",
+      col="lightgreen",
+      lwd = 2)
+legend("bottomright",
+       legend = c("CDF", "PDF"),
+   col = c("red",
+           "lightgreen"),
+   lty = 2,
+   lwd  = 2)
+```
+
+
+
+**Answer: To figure out a good lead time for production, we look at the CDF and PDF for a 20-day period. The CDF gives us the running total of the chances that supplies will arrive by each day, and the PDF shows the chance of arrival on a single day.**
+
+**Although precise data points are not displayed, we approximate based on visual trends observed in the plot. For example, if a 90% confidence level in supply arrival is desired, it seems appropriate to select approximately 7 days as the lead time, as the CDF approaches this threshold by day 7.2. This approach offers a pragmatic balance between operational confidence and production planning needs.**
+
+```{r}
+rm(list = ls())
+```
+
 
 ### 2 (Maintenance Planning for Critical Equipment)
 
@@ -686,17 +787,85 @@ Your organization owns a critical piece of equipment, such as a high-capacity ph
 
 Calculate the probability that the machine will not fail for the first 6 years. Also, provide the expected value and standard deviation. This model assumes each year the machine either fails or does not, independently of previous years.
 
+- $\lambda = 8$
+- $E[T]=\frac{1}{\lambda}$
+- $P(X>6)=(1-p) \cdot (1-p) \cdot (1-p) \cdot (1-p) \cdot (1-p) \cdot (1-p)= (1-p)^6$
+- $\sigma = \frac{\sqrt{1-p}}{p}$
+
+
+```{r}
+n<-6
+lambda <- 8
+E_t <- 1/lambda
+p_x_6 <- (1 - E_t)^n
+std_6 <- sqrt((1-E_t)/E_t^2)
+
+print(paste("Probability of no failure within the first 6 years is:", p_x_6))
+print(paste("The expected value is given: 8 years"))
+print(paste("Standard deviation is:", std_6))
+```
+
+**Answer:**
+
+- **Probability of no failure within the first 6 years is: 0.448795318603516**
+- **The expected value is given: 8 years**
+- **Standard deviation is: 7.48331477354788**
+
+
 #### b. Exponential Model
 
 Calculate the probability that the machine will not fail for the first 6 years. Provide the expected value and standard deviation, modeling the time to failure as a continuous process.
+
+```{r}
+pexp(n,E_t, lower.tail = FALSE)
+```
+
+**Answer:**
+
+- **$P(X>6)_{Exponential \ Model}= 47.24\%$ **
+- **$E[X]=8 \ years$ or $\frac{1}{lambda}=\frac{1}{8}$** 
+- **Standar Deviation is 8 years or $\frac{1}{lambda}=\frac{1}{8}$** 
 
 #### c. Binomial Model
 
 Calculate the probability that the machine will not fail during the first 6 years, given that it is expected to fail once every 8 years. Provide the expected value and standard deviation, assuming a fixed number of trials (years) with a constant failure probability each year.
 
+
+```{r}
+p_x_6_binom<-dbinom(0,n,1/lambda)
+E_x_binom<-n*(1/lambda)
+std__6_binom<-sqrt(n*(1/lambda)*(1-(1/lambda)))
+
+print(paste("Probability of no failure within the first 6 years is:", p_x_6_binom))
+print(paste("The expected value is ", E_x_binom))
+print(paste("Standard deviation is:", std__6_binom))
+```
+
+**Answer:**
+
+- **Probability of no failure within the first 6 years is: 0.448795318603516**
+- **The expected value is  0.75**
+- **Standard deviation is: 0.810092587300983**
+
 #### d. Poisson Model
 
 Calculate the probability that the machine will not fail during the first 6 years, modeling the failure events as a Poisson process. Provide the expected value and standard deviation.
+
+```{r}
+lambda_pois<-n*(1/lambda)
+std_6_pois<-sqrt(lambda_pois)
+p_x_6_pois<-dpois(0,lambda_pois)
+
+print(paste("Probability of no failure within the first 6 years is:", p_x_6_pois))
+print(paste("The expected value is ", lambda_pois))
+print(paste("Standard deviation is:", std_6_pois))
+```
+
+**Answer:**
+
+- **Probability of no failure within the first 6 years is: 47.24\%**
+- **The expected value is  0.75**
+- **Standard deviation is: 0.866025403784439**
 
 ## Problem 4
 
@@ -709,6 +878,32 @@ You are managing two independent servers in a data center. The time until the ne
 
 **Question:** What is the distribution of the total time until both servers have failed at least once? Use the moment generating function (MGF) to find the distribution of the sum of the times to failure.
 
+Expectation
+
+- $E[T_A]=\frac{1}{\lambda_a}=\frac{1}{0.5}=2$
+- $E[T_B]=\frac{1}{\lambda_a}=\frac{1}{0.3}\approx 3.333$
+- $\therefore E[T]=2+3.333=5.333 \ hours$
+
+Variance 
+
+- $\sigma^2=Var(T)=Var(T_A)+Var(T_B)$
+- $Var(T_A)=\frac{1}{(0.5)^2}=\frac{1}{0.25}= 4 \ hours^2$
+- $Var(T_B)=\frac{1}{(0.3)^2}=\frac{1}{0.09}\approx 11.11 \ hours^2$
+- $\sigma^2 = 4 + 11.11 = 15.11 \ hours^2$
+
+Moment Generating Function
+
+- $M_T(s)=M_{T_A}(s) \cdot M_{T_B}(s)$ where $M_{T_x}(s)=\frac{\lambda x}{\lambda_x -s} \ for \ s<\lambda_x$
+- Substituting to get the distribution: $M_t(s)=\frac{0.5}{0.5-s} \cdot \frac{0.3}{0.3-s}$
+
+I am aware the question only asks for the distribution but I felt the parameters were needed to fully answer
+
+**Answer**
+
+- **$E[T]=5.333 \ hours$**
+- **$\sigma^2 = 15.11 \ hour^2$**
+- **$M_t(s)=\frac{0.5}{0.5-s} \cdot \frac{0.3}{0.3-s}$**
+
 ### 2 Sum of Independent Normally Distributed Random Variables
 
 **Scenario:** An investment firm is analyzing the returns of two independent assets, Asset X and Asset Y. The returns on these assets are normally distributed:
@@ -718,6 +913,15 @@ You are managing two independent servers in a data center. The time until the ne
 
 **Question:** Find the distribution of the combined return of the portfolio consisting of these two assets using the moment generating function (MGF).
 
+- $M_{(t)}=exp(t\mu + \frac{1}{2}t^2\sigma^2)$
+- $Asset \ X = M_{x}(t) = exp(t \cdot 0.05 + \frac{1}{2}t^2 \cdot 0.04)= exp(0.05t+0.02t^2)$
+- $Asset \ Y = M_{y}(t)=exp(t \cdot 0.07 + \frac{1}{2}t^2 \cdot 0.09)=exp(0.07t + 0.045t^2)$
+- $M_{z}(t)=exp(0.05t+0.02t^2)+exp(0.07t + 0.045t^2)$
+- $M_{z}(t)=exp(0.12t+0.065t^2)$
+
+**Answer: $Z \sim N(12\%,6.5\%)$**
+
+
 ### 3 Scenario
 
 A call center receives calls independently from two different regions. The number of calls received from Region A and Region B in an hour follows a Poisson distribution:
@@ -726,6 +930,15 @@ A call center receives calls independently from two different regions. The numbe
 * Region B: $X_B \sim Poisson(\lambda_B = 5)$
 
 **Question:** Determine the distribution of the total number of calls received in an hour from both regions using the moment generating function (MGF).
+
+- $M_{x}(t)=exp(\lambda(e^t-1))$
+- $M_{x_A}(t)=exp(\lambda_A(e^t-1))=exp(3(e^t-1))$
+- $M_{x_B}(t)=exp(\lambda_B(e^t-1))=exp(5(e^t-1))$
+- $M_{Z}(t)=exp(3(e^t-1)) \cdot exp(5(e^t-1))$
+- $M_{Z}(t)=exp(8(e^t-1))$
+- $\lambda=8$
+
+**Answer: MGF follows Poisson Distribution $\sigma^2=8 , \ \lambda=8 \ \therefore$ the distribution of the total number of calls is 8 calls per hour.**
 
 ## Problem 5
 
@@ -750,15 +963,58 @@ The company wants to analyze the long-term behavior of its customer base.
 
 Construct the transition matrix for this Markov Chain.
 
+```{r}
+t_matrix <- matrix(c(0.80,0.15,0.05,
+                              0.30,0.50,0.20,
+                              0.00,0.00,1.00),
+                            nrow = 3, byrow = TRUE)
+rownames(t_matrix) <- c('Retention', 'At-Risk', 'Churn')
+colnames(t_matrix) <- c('Retention', 'At-Risk', 'Churn')
+
+t_matrix
+```
+**Answer:**
+
+$$
+\begin{pmatrix}
+0.80 & 0.15 & 0.05 \\
+0.30 & 0.50 & 0.20 \\
+0.00 & 0.00 & 1.00
+\end{pmatrix}
+$$
+
 #### (b)
 
 If a customer starts as satisfied (State 1), what is the probability that they will eventually churn (move to State 3)?
+
+- create sub-matrix for transient states (1&2, 3 doesn't have any) $Q$.
+- sub-matrix from transient to absorption states $R$.
+- Fundamental matrix $N=(I-Q)^{-1}$.
+- Create the absorption probability matrix $B=N \times R$.
+
+```{r}
+Q <- t_matrix[1:2, 1:2]
+R <- t_matrix[1:2, 3]
+N <- solve(diag(2) - Q)
+B <- N %*% R
+B
+```
+
+**Answer: Probability of being absorbed from either is 1.0**
 
 #### (c)
 
 Determine the steady-state distribution of this Markov Chain. What percentage of customers can the company expect to be in each state in the long run?
 
-### 2: Inventory Management in a Warehouse
+We can keep multiplying the transition matrix by itself until it settles into a steady pattern. Here, we'll raise it to the 100th power and check out the final probabilities.
+
+```{r}
+round(t_matrix %^% 100)
+```
+
+**Answer: 100%**
+
+### 2 Inventory Management in a Warehouse
 
 **Scenario:** A warehouse tracks the inventory levels of a particular product using a Markov Chain model. The inventory levels are categorized into three states:
 
@@ -779,10 +1035,48 @@ The warehouse management wants to optimize its restocking strategy by understand
 
 Construct the transition matrix for this Markov Chain.
 
+```{r}
+t2_matrix <- matrix(c(0.70,0.25,0.05,
+                              0.20,0.50,0.30,
+                              0.10,0.40,0.50),
+                            nrow = 3, byrow = TRUE)
+rownames(t2_matrix) <- c('High', 'Medium', 'Low')
+colnames(t2_matrix) <- c('High', 'Medium', 'Low')
+t2_matrix
+```
+
+**Answer:**
+
+$$
+\begin{pmatrix}
+0.70 & 0.25 & 0.05 \\
+0.20 & 0.50 & 0.30 \\
+0.10 & 0.40 & 0.50
+\end{pmatrix}
+$$
+
 #### (b)
 
-If the warehouse starts with a high inventory level (State 1), what is the probability that it will eventually end up in a low inventory level (State 3)? 
+If the warehouse starts with a high inventory level (State 1), what is the probability that it will eventually end up in a low inventory level (State 3)?
+
+```{r}
+p_limit <- t2_matrix %^% 100
+p_limit
+```
+
+**Answer: $P(Low)=26.6\%$**
 
 #### (c)
 
 Determine the steady-state distribution of this Markov Chain. What is the long-term expected proportion of time that the warehouse will spend in each inventory state?
+
+```{r}
+eig_decom <- eigen(t(t2_matrix))
+stdy_sta <- eig_decom$vectors[,1]
+stdy_sta <- stdy_sta/sum(stdy_sta)
+stdy_sta
+```
+
+Alternative method to the steady-state distribution, is the eigenvector corresponding to the dominant eigenvalue of the transposed transition matrix. 
+
+**Answer: The normalized vectors of the dominant eigenvalue or 0.3466667, 0.3866667, 0.2666667**
