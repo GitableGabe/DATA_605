@@ -3,11 +3,11 @@ title: 'DATA 605: Computational Mathematics Homework 2'
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  pdf_document:
-    latex_engine: xelatex
-  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
   html_document:
     df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
   html_notebook: default
 urlcolor: blue
 ---

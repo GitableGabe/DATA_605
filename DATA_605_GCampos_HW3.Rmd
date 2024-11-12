@@ -1,0 +1,67 @@
+---
+title: 'DATA 605: Computational Mathematics Homework 3'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+## Library
+
+#Problem 1 - Transportation Safety
+
+## Task
+
+### 1 Data Visualization
+
+### i
+
+Create a scatter plot of stopping distance (dist) as a function of speed (speed).
+
+### ii
+
+Add a regression line to the plot to visually assess the relationship.
+
+## Build a Linear Model
+
+### i
+
+Construct a simple linear regression model where stopping distance (dist) is the dependent variable and speed (speed) is the independent variable.
+
+### ii
+
+Summarize the model to evaluate its coefficients, R-squared value, and p-value.
+
+## Model Quality Evaluation
+
+### i
+
+Calculate and interpret the R-squared value to assess the proportion of variance in stopping distance explained by speed.
+
+### ii
+
+Perform a residual analysis to check the assumptions of the linear regression model, including linearity, homoscedasticity, independence, and normality of residuals.
+
+## Residual Analysis
+
+### i
+
+Plot the residuals versus fitted values to check for any patterns.
+
+### ii
+
+Create a Q-Q plot of the residuals to assess normality.
+
+### iii
+
+Perform a Shapiro-Wilk test for normality of residuals.
+
+### iv
+
+Plot a histogram of residuals to further check for normality.
