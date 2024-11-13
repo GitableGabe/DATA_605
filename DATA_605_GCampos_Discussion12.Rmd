@@ -27,3 +27,69 @@ In this course, do not attach files to any of the discussion posts.  Provide you
 # Data
 
 [Kaggle Medical Cost Personal Datasets](https://www.kaggle.com/datasets/mirichoi0218/insurance)
+
+```{r}
+df_ins <- read.csv("insurance.csv")
+```
+
+```{r}
+dim(df_ins)
+```
+
+```{r}
+sum(is.na(df_ins))
+```
+
+# Quadratic
+
+$ax^2+bx+c=0$
+
+Ill make a quadratic using the bmi column which allows the model to capture any non-linear relationship between bmi and charges.
+
+```{r}
+df_ins$quadratic<-df_ins$bmi^2
+```
+
+# Dichotomous
+
+Dichotomous are nominal variables with 2 levels or categories.
+
+Gender is categorized this way, therefore it will be multiplied by the quadratic variable bmi. In doing so I can assess whether the relationship between bmi and charges differs by gender.
+
+```{r}
+df_ins$gender_binary <- ifelse(df_ins$sex == "male", 1, 0)
+df_ins$dichotomous<-df_ins$bmi*df_ins$gender_binary
+```
+
+
+# Linear Model
+
+```{r}
+lm <- lm(charges ~ gender_binary + dichotomous + bmi + children + smoker + region + age,data = df_ins)
+summary(lm)
+```
+
+```{r}
+residual<- resid(lm)
+plot(residual, col = 'dark red')
+
+```
+
+
+```{r}
+hist(residual, col = "steelblue")
+```
+
+```{r}
+qqnorm(residual, col = 'steelblue')
+qqline(residual)
+```
+
+
+The result show:
+
+- $R^2 = 0.7509$ indicates $\approx 75%$  of variance is captured which makes this a good model with high statistical relevance.
+- bmi coefficient of 336.88 means that for each additional increase in bmi, charges will increase approximately by $336.88
+- the low p-value for bmi indicates it is highly statistically significant, making it a strong predictor.
+- dichotomous is 4.59, representing the interaction effect between bmi and gender_binary. This indicates that for each unit increase of bmi, the charges between males (gender_binary=1) and females (gender_binary=0) is expected to increase by 4.59.
+- the high p-value of $\approx 90.3$ means it is not statistically significant.
