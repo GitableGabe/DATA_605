@@ -1,0 +1,56 @@
+---
+title: 'DATA 605: Computational Mathematics Discussion Board 13'
+author: "Gabriel Campos"
+date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
+  html_notebook: default
+urlcolor: blue
+---
+
+# Week 13 Discussion:
+
+Using R, provide the solution for any exercise in either Chapter 4 or Chapter 7 of the calculus textbook. If you are unsure of your solution, post your concerns.
+
+Page 179 Exercise 4.2 Question 3
+
+Water flows onto a flat surface at a rate of $5\frac{cm^3}{s}$ forming a circular puddle $10mm$ deep. How fast is the radius growing when the radius is: (a) 1 cm?  (b) 10 cm?  (c) 100 cm?
+
+First we just need to define our variables:
+
+- We can express $\frac{dV}{dt}=5\frac{cm^3}{s}$ as the rate of the puddle increasing
+- The water flow surface/ circular puddle describes a cylinder. Formula for a cylinder is $Volume=Area \ base \ \times \ Height$
+- $Area \ Base_{circular} = \pi r^2$
+- Height is given as $10mm$ and when converted to centimeters it becomes $1 \ cm$
+- $\therefore \ V=\pi r^2 (1)$
+- We can use the derivative on the Volume formula $V=\pi h r^2$ making $\frac{dV}{dt}=\frac{d}{dt}(\pi r^2)$ 
+- which gives us $\frac{dV}{dt}=2 \pi r\frac{dr}{dt}$
+- Simplifying this we get: $\frac{\frac{dV}{dt}}{2 \pi r } = \frac{dr}{dt}$ 
+- Substitute the rate to get $\frac{5}{2 \pi r } = \frac{dr}{dt}$
+
+**How fast is the radius growing** is defined by $\frac{dr}{dt}$ therefore this is what we are looking for.
+
+our height is given for sections a - c.
+
+(a) 1 cm? $\frac{5}{2 \pi r_{\ 1 \ cm}}$ $\rightarrow$ $\frac{5}{2 \pi (1)}$
+
+```{r}
+5/(2*pi*1)
+```
+
+(b) 10 cm? $\frac{5}{2 \pi r_{\ 10 \ cm}}$ $\rightarrow$ $\frac{5}{2 \pi (10)}$
+
+```{r}
+5/(2*pi*10)
+```
+
+(c) 100 cm? $\frac{5}{2 \pi r_{\ 100 \ cm}}$ $\rightarrow$ $\frac{5}{2 \pi (100)}$
+
+```{r}
+5/(2*pi*100)
+```
+
