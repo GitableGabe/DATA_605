@@ -1623,7 +1623,7 @@ display: none;
 <h1 class="title toc-ignore">DATA 605: Computational Mathematics
 Homework 3</h1>
 <h4 class="author">Gabriel Campos</h4>
-<h4 class="date">Last edited November 17, 2024</h4>
+<h4 class="date">Last edited November 21, 2024</h4>
 
 </div>
 
@@ -1634,7 +1634,8 @@ Homework 3</h1>
 data(cars)
 # libraries
 library(ggplot2)
-library(ggthemes)</code></pre>
+library(ggthemes)
+library(lmtest)</code></pre>
 </div>
 <div id="problem-1" class="section level1">
 <h1>Problem 1</h1>
@@ -1707,6 +1708,21 @@ and p-value.</p>
 ## Residual standard error: 15.38 on 48 degrees of freedom
 ## Multiple R-squared:  0.6511, Adjusted R-squared:  0.6438 
 ## F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12</code></pre>
+<ul>
+<li><strong>Intercept &amp; Speed</strong> of -17.5791 just indicates
+the stopping distance at 0 mph. The value is not important only because
+logically a vehicle not in motion (0mph) does not require stopping
+distance. The value of <span class="math inline">\(3.9324\)</span>
+indicates for every 1 mph <span class="math inline">\(3.9324 \
+ft\)</span> is needed to stop. Therefore a minimum speed of <span class="math inline">\(\approx 4.48 \ mph\)</span> is needed before any
+distance is actually needed to stop.</li>
+<li><strong>R-Squared</strong> value of <span class="math inline">\(0.6511\)</span> indicates <span class="math inline">\(\approx 65\%\)</span> of variance is captured by
+this relationship, so its a moderate indicator, and there may be several
+more and potentially stronger factor that can be used to predict the
+distance needed to stop.</li>
+<li><strong>P-Value</strong> of <span class="math inline">\(1.49e^{12}\)</span> indicates that the
+relationship is statistically significant.</li>
+</ul>
 </div>
 </div>
 <div id="section-2" class="section level3">
@@ -1716,12 +1732,66 @@ and p-value.</p>
 <h4>i</h4>
 <p>Calculate and interpret the R-squared value to assess the proportion
 of variance in stopping distance explained by speed.</p>
+<ul>
+<li><strong>R-Squared</strong> as indicated above this means <span class="math inline">\(\approx 65\%\)</span> of the variance is captured,
+making this a moderate factor to stopping distance.</li>
+<li><strong>R-Squared Adjusted</strong> Frankly, there is only 2
+attributes to this table, so adjusting according to the number of
+predictors of the model makes little difference, therefore the variance
+of <span class="math inline">\(0.6438\)</span> or <span class="math inline">\(\approx 64\%\)</span> is relatively the same to
+the original, and the remaining factors would include attributes not
+collected in our dataset.</li>
+</ul>
 </div>
 <div id="ii-2" class="section level4">
 <h4>ii</h4>
 <p>Perform a residual analysis to check the assumptions of the linear
 regression model, including linearity, homoscedasticity, independence,
 and normality of residuals.</p>
+<p><strong>In order to do this without repeating the steps for Section 4
+we leverage the various functions in R through the package <a href="https://cran.r-project.org/web/packages/lmtest/index.html">lmtest</a></strong></p>
+<pre class="r"><code>cars_resid_model &lt;- resid(cars_model)
+cars_fitted_values &lt;- fitted(cars_model)</code></pre>
+<pre class="r"><code>summary(cars_resid_model)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## -29.069  -9.525  -2.272   0.000   9.215  43.201</code></pre>
+<pre class="r"><code>lmtest::bptest(cars_model)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  cars_model
+## BP = 3.2149, df = 1, p-value = 0.07297</code></pre>
+<pre class="r"><code>cor(cars_model$fitted.values, cars$dist)</code></pre>
+<pre><code>## [1] 0.8068949</code></pre>
+<pre class="r"><code>dwtest(cars_model)</code></pre>
+<pre><code>## 
+##  Durbin-Watson test
+## 
+## data:  cars_model
+## DW = 1.6762, p-value = 0.09522
+## alternative hypothesis: true autocorrelation is greater than 0</code></pre>
+<pre class="r"><code>ks.test(cars_model$residuals, &quot;pnorm&quot;, mean=mean(cars_model$residuals, sd = sd(cars_model$residuals)))</code></pre>
+<pre><code>## 
+##  Asymptotic one-sample Kolmogorov-Smirnov test
+## 
+## data:  cars_model$residuals
+## D = 0.49833, p-value = 3.283e-11
+## alternative hypothesis: two-sided</code></pre>
+<ul>
+<li>We have an mean of 0 which is ideal</li>
+<li>A correlation of <span class="math inline">\(0.8068949\)</span>
+suggests strong linearity since it is close to 1.</li>
+<li>the <span class="math inline">\(p-value&gt;0.05\)</span> through the
+<em>Breusch-Pagan test</em> ( <strong>bptest()</strong> ) which it is at
+<span class="math inline">\(0.7297\)</span> indicates
+homoscedasticity.</li>
+<li>the <span class="math inline">\(p-value\)</span> through the
+<em>Durbin-Watson test</em> ( <strong>dwtest()</strong> ) of <span class="math inline">\(0.09522\)</span> indicated residuals are
+independent or has no significant autocorrelation in residuals.</li>
+<li>the <span class="math inline">\(p-value\)</span> through the
+<em>Kolmogorav-Smirnov test</em> ( <strong>ks.test()</strong> ) of <span class="math inline">\(3.283 \times 10^-11\)</span>/ indicates its not
+normally distributed.</li>
+</ul>
 </div>
 </div>
 <div id="section-3" class="section level3">

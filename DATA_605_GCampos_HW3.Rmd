@@ -109,6 +109,9 @@ Calculate and interpret the R-squared value to assess the proportion of variance
 
 Perform a residual analysis to check the assumptions of the linear regression model, including linearity, homoscedasticity, independence, and normality of residuals.
 
+**In order to do this without repeating the steps for Section 4 we leverage the various functions in R through the package [lmtest](https://cran.r-project.org/web/packages/lmtest/index.html)**
+
+
 ```{r}
 cars_resid_model <- resid(cars_model)
 cars_fitted_values <- fitted(cars_model)
@@ -121,6 +124,28 @@ summary(cars_resid_model)
 ```{r}
 lmtest::bptest(cars_model)
 ```
+
+```{r}
+cor(cars_model$fitted.values, cars$dist)
+```
+
+
+```{r}
+dwtest(cars_model)
+```
+
+```{r, warning=FALSE}
+ks.test(cars_model$residuals, "pnorm", mean=mean(cars_model$residuals, sd = sd(cars_model$residuals)))
+```
+
+
+
+
+- We have an mean of 0 which is ideal
+- A correlation of  $0.8068949$ suggests strong linearity since it is close to 1.
+- the $p-value>0.05$ through the *Breusch-Pagan test* ( **bptest()** ) which it is at $0.7297$ indicates homoscedasticity. 
+- the $p-value$ through the *Durbin-Watson test* ( **dwtest()** ) of $0.09522$ indicated residuals are independent or has no significant autocorrelation in residuals.
+- the $p-value$ through the *Kolmogorav-Smirnov test* ( **ks.test()** ) of $3.283 \times 10^-11$/ indicates its not normally distributed.
 
 
 ### 4
