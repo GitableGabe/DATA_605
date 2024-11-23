@@ -478,7 +478,7 @@ The results reveal that transformed healthcare expenditures positively correlate
 
 Build a multiple regression model to investigate the combined effect of the proportion of MDs and total healthcare expenditures on life expectancy. Specifically, use the model:
 
-$LifeExp=b_0+b_1 \cdot PropMD + b_2 \cdot TotExp + b_3 \cdot (PropMD \times TotExp)$
+$LifeExp=b_0+b_1 \times PropMD + b_2 \times TotExp + b_3 \times (PropMD \times TotExp)$
 
 - interpret the F-statistic, R-squared value, standard error, and p-values.
 - Evaluate the interaction term (PropMD * TotExp). 
@@ -550,7 +550,7 @@ How does the presence of more MDs amplify or diminish the effect of healthcare e
 
 What policy recommendations can be drawn from this analysis?
 
-Since the results basically describe diminishing returns on excessive increase of MDs or Expenditures, a balance between the two is ideal. For low-spending countries, increasing MDs can offset decreased life expectancy, while in high spending countries, increasing MDs may not produce substantial improvement in life expectancy.
+Since the results basically describe diminishing returns on excessive increase of MDs or Expenditures, a balance between the two is ideal. For low-spending countries, increasing MDs can offset decreased life expectancy, while in high spending conutries, increasing MDs may not produce substantial improvement in life expectancy.
 
 ## Question 5
 
@@ -563,34 +563,19 @@ Using the multiple regression model from Question 4, forecast the life expectanc
 The proportion of MDs is 0.03 (PropMD = 0.03).
 The total healthcare expenditure is 14 (TotExp = 14).
 
-In order to forecast I will use the $predict()$ function which takes in two parameters: a fitted model object and a dataframe. For the prediction, we are specifically  interested in the interaction model. The use of the interaction model is because it captures the complexity of this nuance relationship, including the diminishing returns, while maintaining a relatively high level of statistical significance.
-
-```{r}
-who_para <- data.frame(PropMD = 0.03, TotExp = 14)
-pred_life_exp <- predict(who_model_tMD_int, newdata = who_para)
-pred_life_exp
-```
-
-
 **Discussion**
 
 ### i
 
-Does this forecast seem realistic?
-
-No it does not.
+Does this forecast seem realistic? 
 
 ### ii
 
 Why or why not? 
 
-Life span of the oldest person in history was only 122 in 1875, and it is very uncommon for individuals with the most optimal healthcare available, to live many years past 100.
-
 ### iii
 
 Consider both the potential strengths and limitations of using this model for forecasting in real-world policy settings.
-
-The data is suited for a curve model, as noted before. The data not actually being linear, potential outliers and the impact of the interaction between the variables magnitude effectively created this unrealistic prediction.
 
 # Problem 3
 
@@ -614,73 +599,6 @@ Where:
 - $Q$ is the order quantity.
 - $S$ is the fixed ordering cost per order ($8.25).
 - $H$ is the holding cost per unit per year ($3.75).
-
-**NOTE**
-
-- $Ordering \ Cost = \frac{D}{Q} \times S$
-- $Holding \ Cost = \frac{Q}{2} \times H$
-
-*As per the equation and description*
-
-We can substitute and calculate for:
-
-$C(Q)=\frac{D}{Q} \times S + \frac{Q}{2} \times H$
-
-to get
-
-$\rightarrow C(Q)=\frac{110}{Q} \times 8.25 + \frac{Q}{2} \times 3.75$
-
-and simplify to 
-
-$\rightarrow C(Q)=\frac{907.5}{Q} + \frac{3.75Q}{2}$
-
-the derivative for both is going to essentially be the power rule $f'(x) = n \cdot x^{n-1}$
-
-$\frac{d}{dQ}(\frac{907.5}{Q})\rightarrow\frac{d}{dQ}(907.5 \times Q^{-1})$
-
-which becomes
-
-$-907.5 \times Q^{-2} = -\frac{907.5}{Q^2}$
-
-and derivative for 
-
-$\frac{d}{dQ}(\frac{3.75Q}{2}) \rightarrow \frac{d}{dQ} \frac{3.75}{2} \times Q^1$
-
-becomes just $\frac{3.75}{2}$
-
-so our equation becomes
-
-$\frac{dC(Q)}{dQ} = -\frac{907.5}{Q^2} + \frac{3.75}{2}$
-
-To find our critical point we can set to $0$
-
-$-\frac{907.5}{Q^2} + \frac{3.75}{2}=0 \rightarrow \frac{907.5}{Q^2} = \frac{3.75}{2} \rightarrow 907.5 = \frac{3.75}{2} \times Q^2 \rightarrow 1815 = 3.75 \times Q^2 \rightarrow Q^2 =484$
-
-finally when we find the square root we get
-
-$Q = \sqrt{484} = 22$
-
-So a critical point given is $Q=22$
-
-We can use the 2nd derivative to confirm if this is a minimum or maximum. In theory, but confirming if the 2nd derivative is positive, our graph would essentially concave up, ensuring positive values and therefore confirming $Q=22$ is a minimum quantity to meet demand. A negative equation from the 2nd derivative would indicate a concave down suggesting the opposite and hence it is a maximum.
-
-$\frac{d^2C(Q)}{dQ^2}(-\frac{907.5}{Q^2} + \frac{3.75}{2})$ 
-
-can be solved like the first equation by finding the derivative for each, however the derivative of a constant (the 2nd term) is just 0, wo we will just solve for the first term.
-
-$\frac{d^2C(Q)}{dQ^2}(-\frac{907.5}{Q^2}) \rightarrow \frac{d^2C(Q)}{dQ^2}(-907.5 \times Q^{-2}) \rightarrow -2 \times -907.5  \times Q^{-3}$
-
-which simplified is
-
-$\frac{1815}{Q^3}$ showing that for $Q>0$ the second derivative is always positive, confirming $Q=22$ is a minimum.
-
-The minimize total inventory costs is just solving for 
-
-$\frac{D}{Q} \rightarrow \frac{110}{22} = 5$
-
-**Answer:** $\therefore Optimal \ Order \ Quantity (Q) = 22 \ units$
-
-$No. \ Annual \ Orders = 5 \ orders$
 
 ## Question 2
 
