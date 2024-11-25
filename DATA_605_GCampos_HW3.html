@@ -1623,7 +1623,7 @@ display: none;
 <h1 class="title toc-ignore">DATA 605: Computational Mathematics
 Homework 3</h1>
 <h4 class="author">Gabriel Campos</h4>
-<h4 class="date">Last edited November 23, 2024</h4>
+<h4 class="date">Last edited November 24, 2024</h4>
 
 </div>
 
@@ -2424,7 +2424,7 @@ per order ($8.25).</li>
 <li><span class="math inline">\(H\)</span> is the holding cost per unit
 per year ($3.75).</li>
 </ul>
-<p><strong>NOTE</strong></p>
+<p><strong>Solution</strong></p>
 <ul>
 <li><span class="math inline">\(Ordering \ Cost = \frac{D}{Q} \times
 S\)</span></li>
@@ -2486,10 +2486,13 @@ a minimum.</p>
 <p>The minimize total inventory costs is just solving for</p>
 <p><span class="math inline">\(\frac{D}{Q} \rightarrow \frac{110}{22} =
 5\)</span></p>
-<p><strong>Answer:</strong> <span class="math inline">\(\therefore
-Optimal \ Order \ Quantity (Q) = 22 \ units\)</span></p>
+<div id="answer" class="section level3">
+<h3>Answer</h3>
+<p><span class="math inline">\(\therefore Optimal \ Order \ Quantity (Q)
+= 22 \ units\)</span></p>
 <p><span class="math inline">\(No. \ Annual \ Orders = 5 \
 orders\)</span></p>
+</div>
 </div>
 <div id="question-2-1" class="section level2">
 <h2>Question 2</h2>
@@ -2508,6 +2511,44 @@ campaign.</li>
 the revenue is maximized by finding the critical points of the revenue
 function and determining which point provides the maximum value. What is
 the maximum revenue the company can expect from this campaign?</p>
+<p><strong>Solution</strong></p>
+<p>As in <strong>Problem 3, Question 1</strong> we need to find the
+critical point of the derivative, than use the second derivative to
+decide if it is the maximum or minimum.</p>
+<p><span class="math inline">\(\therefore
+R&#39;(t)=\frac{dR}{dt}(-3150t^{-4}-220t+6530)\)</span></p>
+<p>using the <strong>power rule</strong> becomes</p>
+<ul>
+<li><span class="math inline">\(\frac{d}{dt}(-3150t^{-4})=-4 \cdot -3150
+t^{-4-1}=12600t^{-5}\)</span></li>
+</ul>
+<p><span class="math inline">\(or \ \frac{12600}{t^5}\)</span></p>
+<ul>
+<li><p><span class="math inline">\(\frac{d}{dt}(-220t)=-220\)</span></p></li>
+<li><p><span class="math inline">\(\frac{d}{dt}(6530)=0\)</span></p></li>
+</ul>
+<p>resulting in</p>
+<p><span class="math inline">\(R&#39;(t)=\frac{12600}{t^5}-220\)</span></p>
+<p>If we solve for the critical point we get</p>
+<p><span class="math inline">\(\frac{12600}{t^5}-220 \rightarrow
+\frac{12600}{t^5}=220\)</span></p>
+<p><span class="math inline">\(\rightarrow t^5 = \frac{12600}{220} =
+57.27273\)</span></p>
+<p><span class="math inline">\(t= \sqrt[5]{57.27273}=2.24693 \
+days\)</span></p>
+<p><span class="math inline">\(R&#39;&#39;(t)=\frac{d}{dt}(\frac{12600}{t^5}-220)=-5
+\cdot \frac{12600}{t^6}\)</span></p>
+<p><span class="math inline">\(=-\frac{63000}{t^6}\)</span></p>
+<p>So for <span class="math inline">\(t&gt;0\)</span> , <span class="math inline">\(R&#39;&#39;(t)&lt;0\)</span> <em>(since</em> <span class="math inline">\(t^6&gt;0\)</span> <em>)</em> making <span class="math inline">\(t=2.24693\)</span> the maximum.</p>
+<p>Lastly we can plug in for <span class="math inline">\(R(2.24693)\)</span></p>
+<pre class="r"><code>(-3150*2.24693^(-4))-(220*2.24693)+6530</code></pre>
+<pre><code>## [1] 5912.094</code></pre>
+<div id="answer-1" class="section level3">
+<h3>Answer</h3>
+<p>The revenue maximizes at <span class="math inline">\(\approx 2.25 \
+days\)</span></p>
+<p>The maximum revenue that is expected is <span class="math inline">\(\approx \$5912.09\)</span></p>
+</div>
 </div>
 <div id="question-3-1" class="section level2">
 <h2>Question 3</h2>
@@ -2522,6 +2563,33 @@ and <span class="math inline">\(x\)</span> is the quantity sold.</p>
 by this product between two quantity levels, <span class="math inline">\(x_1 = 2\)</span> and <span class="math inline">\(x_2 = 5\)</span>, where the price still generates
 sales. Compute the area under the demand curve between these two points,
 representing the total revenue generated over this range.</p>
+<ul>
+<li>Demand function: <span class="math inline">\(P(x)=2x-9.3\)</span></li>
+<li>Based on the function quantity is defined by <span class="math inline">\(x\)</span></li>
+<li>Revenue as a product of price and quantity is: <span class="math inline">\(\therefore P(x) \cdot (x) \rightarrow x \cdot
+(2x-9.3) = 2x^2-9.3x\)</span></li>
+</ul>
+<p>So what we want is <span class="math inline">\(\int_{x_1}^{x_2}R(x)dx=\int_{2}^{5}(2x^2-9.3x)dx\)</span></p>
+<p>Using the function drafted and the <span class="math inline">\(integrate()\)</span> function we can solve</p>
+<pre class="r"><code># Define the revenue function
+R &lt;- function(x) {
+  2 * x^2 - 9.3 * x
+}
+
+# Calculate the definite integral from x = 2 to x = 5
+result_p3_3 &lt;- integrate(R, lower = 2, upper = 5)
+
+# Print the result
+cat(&quot;The total revenue is:&quot;, result_p3_3$value, &quot;\n&quot;)</code></pre>
+<pre><code>## The total revenue is: -19.65</code></pre>
+<pre class="r"><code>cat(&quot;Estimated error:&quot;, result_p3_3$abs.error, &quot;\n&quot;)</code></pre>
+<pre><code>## Estimated error: 2.31373e-13</code></pre>
+<div id="answer-2" class="section level3">
+<h3>Answer</h3>
+<p>The total revenue generated over this range is -$19.65 indicating
+that the price at the upper level of 5 units, is too low to generate
+revenue.</p>
+</div>
 </div>
 <div id="question-4-1" class="section level2">
 <h2>Question 4</h2>
@@ -2540,6 +2608,72 @@ dollars.</li>
 <p>Use calculus to find the value of <span class="math inline">\(x\)</span> that maximizes profit. Calculate the
 maximum profit that can be achieved and determine if this optimal sales
 level is feasible given market conditions.</p>
+<p><strong>Solution</strong></p>
+<p>In line with previous steps I will use the first derivative to find
+the critical points when set to 0 and use the second derivative to
+indicate if it is a minimum or maximum. Finally I will substitute for my
+answer.</p>
+<p><span class="math inline">\(\Pi&#39;(x) =\frac{d}{dx}(
+xln(9x)-\frac{x^6}{6})\)</span></p>
+<p><span class="math inline">\(\rightarrow
+\frac{d}{dx}[xln(9x)]=\frac{d}{dx}[x] \cdot ln(9x) + x \cdot
+\frac{d}{dx}[ln(9x)]\)</span></p>
+<p><strong>NOTE:</strong> <span class="math inline">\([ln(u(x))]&#39;=\frac{1}{ux}\cdot
+u&#39;(x)\)</span> when using the chain rule</p>
+<p><span class="math inline">\(= 1ln(9x) + x \cdot \frac{1}{9x} \cdot
+\frac{d}{dx}[9x] =ln(9x) + \frac{9x \cdot \frac{d}{dx}[x]}{9x} =
+ln(9x)+\frac{d}{dx}x\)</span></p>
+<p>which just equals</p>
+<p><span class="math inline">\(ln(9x)+1\)</span></p>
+<p>and</p>
+<p><span class="math inline">\(\frac{d}{dx}(-\frac{x^6}{6})=-6\cdot
+\frac{x^5}{6} = -x^5\)</span></p>
+<p>resulting in</p>
+<p><span class="math inline">\(\Pi &#39; (x) = ln(9x) +1 -x^5\)</span>
+and when set to 0</p>
+<p><span class="math inline">\(ln(9x)+1-x^5=0\)</span></p>
+<p>The problem can’t really be solved algebraically, so I will find the
+second derivative and use R to solve for it.</p>
+<p><span class="math inline">\(\Pi&#39;&#39;(x)=\frac{d}{dx}[ln(9x)+1-x^5]\)</span>
+and we know <span class="math inline">\(\frac{d}{dx}1=0\)</span> and
+<span class="math inline">\(\frac{d}{dx}-x^5=-5x^4\)</span></p>
+<p>for <span class="math inline">\(\frac{d}{dx}ln(9x)=\frac{1}{9x} \cdot
+\frac{d}{dx}[9x]=\frac{9 \cdot
+\frac{d}{dx}[x]}{9x}=\frac{1}{x}\)</span></p>
+<p>making <span class="math inline">\(\Pi&#39;&#39;(x)=\frac{1}{x}-5x^4\)</span> which
+confirms it is a maximum.</p>
+<p>Now solving for the first derivative’s critical point and pluggin
+into the original equation we get</p>
+<pre class="r"><code># Define the derivative of the profit function
+profit_derivative &lt;- function(x) {
+  log(9 * x) + 1 - x^5
+}
+
+# Use uniroot to find the critical point (root)
+profit_x_result &lt;- uniroot(profit_derivative, lower = 0.1, upper = 2) # Adjust bounds as needed
+critical_x &lt;- profit_x_result$root
+
+# Print the critical value of x
+cat(&quot;Critical x value:&quot;, critical_x, &quot;\n&quot;)</code></pre>
+<pre><code>## Critical x value: 1.280634</code></pre>
+<pre class="r"><code># Define the profit function
+profit_function &lt;- function(x) {
+  x * log(9 * x) - (x^6) / 6
+}
+
+# Calculate the maximum profit
+max_profit &lt;- profit_function(critical_x)
+cat(&quot;Maximum profit:&quot;, max_profit, &quot;\n&quot;)</code></pre>
+<pre><code>## Maximum profit: 2.395423</code></pre>
+<div id="answer-3" class="section level3">
+<h3>Answer</h3>
+<ul>
+<li>The value of <span class="math inline">\(x\)</span> that maximizes
+profit is <span class="math inline">\(1.280634\)</span></li>
+<li>The maximum profit achievable is <span class="math inline">\(\approx
+\$2.40\)</span></li>
+</ul>
+</div>
 </div>
 <div id="question-5-1" class="section level2">
 <h2>Question 5</h2>
@@ -2555,6 +2689,33 @@ dollars.</p>
 function over the interval <span class="math inline">\([1,e^6]\)</span>.
 If it is, calculate the probability that a customer spends between $1
 and $<span class="math inline">\(e^6\)</span>.</p>
+<p><strong>Solution</strong></p>
+<p>To test for a valid probability density function (PDF) we just have
+to test for the following.</p>
+<ol style="list-style-type: decimal">
+<li>Non-negativity: <span class="math inline">\(f(x)\geq 0\)</span> for
+all <span class="math inline">\(x\)</span> in the interval <span class="math inline">\([1,e^6]\)</span>. Since <span class="math inline">\(f(x)=\frac{1}{6x}\)</span> has a constant, and
+<span class="math inline">\(x \in [1,e^6]\)</span> we see this condition
+is already met.</li>
+<li>Normalization: Integral of <span class="math inline">\(f(x)\)</span>
+over <span class="math inline">\([1,e^6]\)</span> has to equal 1.</li>
+</ol>
+<p><span class="math inline">\(\int_1^{e^6}f(x)dx=\int_1^{e^6}\frac{1}{6x}dx=\frac{1}{6}\int_1^{e^6}\frac{1}{x}dx=\frac{1}{6}[ln(x)]_1^{e^6}=\frac{1}{6}(ln(e^6)-ln(1))\)</span></p>
+<p><strong>Note</strong></p>
+<p><span class="math inline">\(ln(e^a)=a\)</span> and <span class="math inline">\(ln(1)=0\)</span></p>
+<p><span class="math inline">\(\therefore \
+\frac{1}{6}(ln(e^6)-ln(1))=\frac{1}{6} \cdot 6 = 1\)</span> satisfying
+the second condition.</p>
+<div id="answer-4" class="section level3">
+<h3>Answer</h3>
+<ul>
+<li><span class="math inline">\(\int_1^{e^6}f(x)dx\)</span> is a valid
+PDF</li>
+<li>The probability that a customer spends between $1 and $<span class="math inline">\(e^6\)</span> satisfies the entire range of our PDF
+meaning it <span class="math inline">\(=1\)</span> or the customer will
+always spend between these amounts.</li>
+</ul>
+</div>
 </div>
 <div id="question-6" class="section level2">
 <h2>Question 6</h2>
@@ -2568,6 +2729,32 @@ market share at time <span class="math inline">\(t\)</span>.</p>
 <p>Integrate this function to find the cumulative market share <span class="math inline">\(N(t)\)</span> after <span class="math inline">\(t\)</span> days, given that the initial market
 share <span class="math inline">\(N(1)=6530\)</span>. What will the
 market share be after 10 days?</p>
+<p><strong>Solution</strong></p>
+<p>Noting that the initial value is <span class="math inline">\(6530\)</span> we should start by solving</p>
+<p><span class="math inline">\(N(1)=\int_1^1 \frac{500}{t^4+10} + C =
+6350\)</span> where our C accounts for a constant that results in <span class="math inline">\(6350\)</span> since the integral of a function
+from point <span class="math inline">\(a\)</span> to <span class="math inline">\(a\)</span> is always 0 <span class="math inline">\(\int_a^af(t)dt=0\)</span></p>
+<p>As a result we can conclude that <span class="math inline">\(C=6350\)</span> and can rewrite the function as
+<span class="math inline">\(6350 + \int_1^t
+\frac{500}{t^4+10}dt\)</span></p>
+<p>and we can solve using below</p>
+<pre class="r"><code># Define the function to integrate
+rate_of_change &lt;- function(t) {
+  500 / (t^4 + 10)
+}
+
+# Compute the definite integral from 1 to 10
+integral_value &lt;- integrate(rate_of_change, lower = 1, upper = 10)$value
+
+# plug in the initial value
+N_10 &lt;- 6350 + integral_value
+
+N_10</code></pre>
+<pre><code>## [1] 6399.54</code></pre>
+<div id="answer-5" class="section level3">
+<h3>Answer</h3>
+<p>The Marget share after 10 days will be <span class="math inline">\(\$6399.54\)</span></p>
+</div>
 </div>
 </div>
 <div id="problem-4" class="section level1">
@@ -2589,23 +2776,99 @@ function <span class="math inline">\(R(x)=e^x\)</span>, where <span class="math 
 of production is given by <span class="math inline">\(C(x)=ln(1+x)\)</span>. The company wants to
 maximize its profit, defined as <span class="math inline">\(\Pi(x)=R(x)-C(x)\)</span>.</p>
 <p><strong>Task</strong></p>
-<ol style="list-style-type: decimal">
-<li><p><strong>Approximate the Revenue Function:</strong> Use the Taylor
+<div id="section-4" class="section level3">
+<h3>1.</h3>
+<p><strong>Approximate the Revenue Function:</strong> Use the Taylor
 Series expansion around <span class="math inline">\(x=0\)</span>
 (Maclaurin series) to approximate the revenue function <span class="math inline">\(R(x)=e^x\)</span> up to the second degree. Explain
-why this approximation might be useful in a business context.</p></li>
-<li><p><strong>Approximate the Cost Function:</strong> Similarly,
+why this approximation might be useful in a business context.</p>
+<p><strong>Solution</strong></p>
+<p>The Taylor Series Expansion of a function f(x) is given by:</p>
+<p><span class="math inline">\(f(x)
+=f(a)+f&#39;(a)(x-a)+\frac{f&#39;&#39;(a)}{2!}(x-a)^2+\frac{f^{(3)}}{3!}(x-a)^3+...\)</span></p>
+<p>The Maclaurin series is the expansion point <span class="math inline">\(a=0\)</span> making the formula <span class="math inline">\(f(x)=f(0)+f&#39;(0)x+\frac{f&#39;&#39;(0)}{2!}x^2+....\)</span>
+and we are only interested to the 2nd degree.</p>
+<p>the derivative <span class="math inline">\(\frac{d}{dx}(e^x)=e^x\)</span> making these
+solutions all 1 b/c <span class="math inline">\(f(0)=e^0=1,f&#39;(0)=e^0=1,f&#39;&#39;(0)=e^0=1\)</span></p>
+</div>
+<div id="answer-6" class="section level3">
+<h3>Answer</h3>
+<p><span class="math inline">\(\therefore R(x) \approx
+1+x+\frac{x^2}{2}\)</span></p>
+<p>This is a useful business context in that approximations of how
+revenue changes can be done more rapidly with the simpler formula. This
+works very well with small values of <span class="math inline">\((x)\)</span> or number of units sold, b/c the
+denominator grows much faster, making higher terms <span class="math inline">\(\frac{x^3}{3!}\)</span> almost negligible, meaning
+this approximations really won’t lose much accuracy.</p>
+</div>
+<div id="section-5" class="section level3">
+<h3>2.</h3>
+<p><strong>Approximate the Cost Function:</strong> Similarly,
 approximate the cost function <span class="math inline">\(C(x)=ln(1+x)\)</span> using its Maclaurin series
 expansion up to the second degree. Discuss the implications of this
-approximation for decision-making in production.</p></li>
-<li><p><strong>Linear vs. Nonlinear Optimization:</strong> Using the
-Taylor Series expansions, approximate the profit function <span class="math inline">\(\Pi(x)\)</span>. Compare the optimization results
+approximation for decision-making in production.</p>
+<p><strong>Solution</strong></p>
+<p>The Taylor Series Expansion of a function f(x) is given by:</p>
+<p><span class="math inline">\(f(x)
+=f(a)+f&#39;(a)(x-a)+\frac{f&#39;&#39;(a)}{2!}(x-a)^2+\frac{f^{(3)}}{3!}(x-a)^3+...\)</span></p>
+<p>The Maclaurin series is the expansion point <span class="math inline">\(a=0\)</span> making the formula <span class="math inline">\(f(x)=f(0)+f&#39;(0)x+\frac{f&#39;&#39;(0)}{2!}x^2+....\)</span>
+and we are only interested to the 2nd degree.</p>
+<p>Here we have <span class="math inline">\(C(x)=ln(1+x), \
+C&#39;(x)=\frac{1}{1+x} ,C&#39;&#39;(x)= -\frac{1}{(1+x)^2}\)</span></p>
+<p><strong>NOTE</strong> <span class="math inline">\(f&#39;(a)\)</span>
+where <span class="math inline">\(f(a)=\frac{1}{1+a}=\frac{d}{da}(1+a)^{-1}=-1 \cdot
+(1+ a)^{-1-1}=-(1+a)^{-2}=-\frac{1}{(1+a)^2}\)</span></p>
+<p>Solving for 0 we get <span class="math inline">\(C(0)=0,C&#39;(0)=1,
+C&#39;&#39;(0)=-1\)</span></p>
+<p>Subsituting for <span class="math inline">\(C(x)=C(0)+C&#39;(0)x+\frac{C&#39;&#39;(0)}{2!}x^2=0+x-\frac{x^2}{2}\)</span></p>
+</div>
+<div id="answer-7" class="section level3">
+<h3>Answer</h3>
+<p><span class="math inline">\(C(x) \approx x-\frac{x^2}{2}\)</span></p>
+<p>Considering the equation is a logorithmic function, this simplified
+version would help to make decisions for a non-linear production cost,
+and is particularly accurate for small values of <span class="math inline">\(x\)</span>.</p>
+</div>
+<div id="section-6" class="section level3">
+<h3>3.</h3>
+<p><strong>Linear vs. Nonlinear Optimization:</strong> Using the Taylor
+Series expansions, approximate the profit function <span class="math inline">\(\Pi(x)\)</span>. Compare the optimization results
 when using the linear approximations versus the original nonlinear
 functions. What are the differences, and when might it be more
-appropriate to use the approximation?</p></li>
-</ol>
-<div id="submission" class="section level3">
-<h3>Submission</h3>
+appropriate to use the approximation?</p>
+<p><span class="math inline">\(\Pi(x)_{original}=R(x)-C(x)=e^x-ln(1+x)\)</span>
+<span class="math inline">\(\Pi(x)_{linear \
+approximation}=(1+x+\frac{x^2}{2})-(x-\frac{x^2}{2})=1+\frac{2x^2}{2}=1+x^2\)</span></p>
+<p>So we have</p>
+<p><span class="math inline">\(\Pi(x)_{linear \ approximation}
+=1+x^2\)</span> and <span class="math inline">\(\Pi&#39;(x)_{linear \
+approximation}=2x\)</span> where <span class="math inline">\(\Pi&#39;(0)_{linear \ approximation}=0\)</span>
+for our linear approximation</p>
+<p>and considering <span class="math inline">\(\Pi(x)=1+x^2\)</span> is
+a parabola, we assume there is no maximum within a finite value, so
+profit will just increase as <span class="math inline">\(x\)</span>
+grows.</p>
+<p>for our original nonlinear function we have</p>
+<p><span class="math inline">\(\Pi&#39;(x)_{original}=\frac{d}{dx}(e^x-ln(1+x))=e^x-\frac{1}{1+x}\)</span>
+and for <span class="math inline">\(\Pi&#39;(0)_{original}\)</span> I
+will use R to calculate using <span class="math inline">\(uniroot()\)</span></p>
+<pre class="r"><code># Define the function f(x) = e^x - 1/(1 + x)
+f_p4_1 &lt;- function(x) {
+  exp(x) - 1/(1 + x)
+}
+
+result_p4_1 &lt;- uniroot(f_p4_1, c(0, 2)) 
+
+cat(&quot;The optimal value of x is:&quot;, result_p4_1$root, &quot;\n&quot;)</code></pre>
+<pre><code>## The optimal value of x is: 0</code></pre>
+<p>For both functions I get 0 as the point of maximum profit. Despite
+retaining the same result, I feel the linear approximation over
+simplifies and stating that for all increases of x, it will yield a
+greater profit seems inaccurate, albiet the logorithmic original
+equation results in the same conclusion. With this linear approximation,
+I would likely only refer to it, so long as the values of <span class="math inline">\(x\)</span> remain small, as I believe it will
+quickly lose precision as it grows.</p>
+<p><strong>Submission</strong></p>
 <p>Provide your solutions using R-Markdown. Include the Taylor Series
 expansions, the approximated functions, and a discussion of the
 implications of using these approximations for business
@@ -2639,7 +2902,7 @@ Using the Taylor Series approximation, suggest an optimal investment
 amount <span class="math inline">\(x\)</span> that balances risk and
 return.</p></li>
 </ol>
-<div id="submission-1" class="section level3">
+<div id="submission" class="section level3">
 <h3>Submission</h3>
 <p>Present your results in R-Markdown, including the Taylor Series
 expansions, comparisons between the original and approximated functions,
@@ -2671,7 +2934,7 @@ approximation, suggest a pricing strategy that could maximize profit.
 Explain how the Taylor Series approximation helps in making this
 decision.</p></li>
 </ol>
-<div id="submission-2" class="section level3">
+<div id="submission-1" class="section level3">
 <h3>Submission</h3>
 <p>Include your analysis in R-Markdown, with Taylor Series expansions,
 comparisons of the approximated and original functions, and a discussion
@@ -2708,7 +2971,7 @@ recommend a level of investment that could achieve a target growth rate.
 Discuss the limitations of using Taylor Series approximations for such
 policy recommendations.</p>
 </div>
-<div id="submission-3" class="section level3">
+<div id="submission-2" class="section level3">
 <h3>Submission</h3>
 <p>Provide your answers in R-Markdown, with the Taylor Series
 expansions, comparisons between the approximated and original functions,
