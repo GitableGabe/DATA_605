@@ -3,11 +3,11 @@ title: 'DATA 605: Computational Mathematics Homework 3'
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  html_document:
-    df_print: paged
-  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
   pdf_document:
     latex_engine: xelatex
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  html_document:
+    df_print: paged
   html_notebook: default
 urlcolor: blue
 ---
@@ -624,63 +624,45 @@ Where:
 
 We can substitute and calculate for:
 
-$C(Q)=\frac{D}{Q} \times S + \frac{Q}{2} \times H$
+$C(Q)=\frac{D}{Q} \times S + \frac{Q}{2} \times H$ to get $\rightarrow C(Q)=\frac{110}{Q} \times 8.25 + \frac{Q}{2} \times 3.75$
 
-to get
-
-$\rightarrow C(Q)=\frac{110}{Q} \times 8.25 + \frac{Q}{2} \times 3.75$
-
-and simplify to 
-
-$\rightarrow C(Q)=\frac{907.5}{Q} + \frac{3.75Q}{2}$
+and simplify to $\rightarrow C(Q)=\frac{907.5}{Q} + \frac{3.75Q}{2}$
 
 the derivative for both is going to essentially be the power rule $f'(x) = n \cdot x^{n-1}$
 
 $\frac{d}{dQ}(\frac{907.5}{Q})\rightarrow\frac{d}{dQ}(907.5 \times Q^{-1})$
 
-which becomes
+which becomes $-907.5 \times Q^{-2} = -\frac{907.5}{Q^2}$
 
-$-907.5 \times Q^{-2} = -\frac{907.5}{Q^2}$
-
-and derivative for 
-
-$\frac{d}{dQ}(\frac{3.75Q}{2}) \rightarrow \frac{d}{dQ} \frac{3.75}{2} \times Q^1$
+and derivative for $\frac{d}{dQ}(\frac{3.75Q}{2}) \rightarrow \frac{d}{dQ} \frac{3.75}{2} \times Q^1$
 
 becomes just $\frac{3.75}{2}$
 
-so our equation becomes
-
-$\frac{dC(Q)}{dQ} = -\frac{907.5}{Q^2} + \frac{3.75}{2}$
+so our equation becomes $\frac{dC(Q)}{dQ} = -\frac{907.5}{Q^2} + \frac{3.75}{2}$
 
 To find our critical point we can set to $0$
 
 $-\frac{907.5}{Q^2} + \frac{3.75}{2}=0 \rightarrow \frac{907.5}{Q^2} = \frac{3.75}{2} \rightarrow 907.5 = \frac{3.75}{2} \times Q^2 \rightarrow 1815 = 3.75 \times Q^2 \rightarrow Q^2 =484$
 
-finally when we find the square root we get
-
-$Q = \sqrt{484} = 22$
+finally when we find the square root we get $Q = \sqrt{484} = 22$
 
 So a critical point given is $Q=22$
 
 We can use the 2nd derivative to confirm if this is a minimum or maximum. In theory, but confirming if the 2nd derivative is positive, our graph would essentially concave up, ensuring positive values and therefore confirming $Q=22$ is a minimum quantity to meet demand. A negative equation from the 2nd derivative would indicate a concave down suggesting the opposite and hence it is a maximum.
 
 $\frac{d^2C(Q)}{dQ^2}(-\frac{907.5}{Q^2} + \frac{3.75}{2})$ 
-
+ 
 can be solved like the first equation by finding the derivative for each, however the derivative of a constant (the 2nd term) is just 0, wo we will just solve for the first term.
 
 $\frac{d^2C(Q)}{dQ^2}(-\frac{907.5}{Q^2}) \rightarrow \frac{d^2C(Q)}{dQ^2}(-907.5 \times Q^{-2}) \rightarrow -2 \times -907.5  \times Q^{-3}$
 
-which simplified is
+which simplified is $\frac{1815}{Q^3}$ showing that for $Q>0$ the second derivative is always positive, confirming $Q=22$ is a minimum.
 
-$\frac{1815}{Q^3}$ showing that for $Q>0$ the second derivative is always positive, confirming $Q=22$ is a minimum.
-
-The minimize total inventory costs is just solving for 
-
-$\frac{D}{Q} \rightarrow \frac{110}{22} = 5$
+The minimize total inventory costs is just solving for $\frac{D}{Q} \rightarrow \frac{110}{22} = 5$
 
 ### Answer
 
-$\therefore Optimal \ Order \ Quantity (Q) = 22 \ units$
+$\therefore \ \ Optimal \ Order \ Quantity (Q) = 22 \ units$
 
 $No. \ Annual \ Orders = 5 \ orders$
 
@@ -707,23 +689,15 @@ $\therefore R'(t)=\frac{dR}{dt}(-3150t^{-4}-220t+6530)$
 
 using the **power rule** becomes
 
-- $\frac{d}{dt}(-3150t^{-4})=-4 \cdot -3150 t^{-4-1}=12600t^{-5}$
-
-$or \ \frac{12600}{t^5}$
+- $\frac{d}{dt}(-3150t^{-4})=-4 \cdot -3150 t^{-4-1}=12600t^{-5}$ or $\frac{12600}{t^5}$
 
 - $\frac{d}{dt}(-220t)=-220$
 
 - $\frac{d}{dt}(6530)=0$
 
-resulting in
+resulting in $R'(t)=\frac{12600}{t^5}-220$
 
-$R'(t)=\frac{12600}{t^5}-220$
-
-If we solve for the critical point we get
-
-$\frac{12600}{t^5}-220 \rightarrow \frac{12600}{t^5}=220$ 
-
-$\rightarrow t^5 = \frac{12600}{220} = 57.27273$
+If we solve for the critical point we get $\frac{12600}{t^5}-220 \rightarrow \frac{12600}{t^5}=220 \rightarrow t^5 = \frac{12600}{220} = 57.27273$
 
 $t= \sqrt[5]{57.27273}=2.24693 \ days$
 
@@ -819,19 +793,9 @@ $\rightarrow \frac{d}{dx}[xln(9x)]=\frac{d}{dx}[x] \cdot ln(9x) + x \cdot \frac{
 
 $= 1ln(9x) + x \cdot \frac{1}{9x} \cdot \frac{d}{dx}[9x] =ln(9x) + \frac{9x \cdot \frac{d}{dx}[x]}{9x} = ln(9x)+\frac{d}{dx}x$
 
-which just equals
+which just equals to $ln(9x)+1$ and $\frac{d}{dx}(-\frac{x^6}{6})=-6\cdot \frac{x^5}{6} = -x^5$
 
-$ln(9x)+1$
-
-and 
-
-$\frac{d}{dx}(-\frac{x^6}{6})=-6\cdot \frac{x^5}{6} = -x^5$
-
-resulting in 
-
-$\Pi ' (x) = ln(9x) +1 -x^5$ and when set to 0
-
-$ln(9x)+1-x^5=0$
+resulting in $\Pi ' (x) = ln(9x) +1 -x^5$ and when set to 0 $ln(9x)+1-x^5=0$
 
 The problem can't really be solved algebraically, so I will find the second derivative and use R to solve for it.
 
@@ -1043,6 +1007,8 @@ cat("The optimal value of x is:", result_p4_1$root, "\n")
 
 ```
 
+### Answer
+
 For both functions I get 0 as the point of maximum profit. Despite retaining the same result, I feel the linear approximation over simplifies and stating that for all increases of x, it will yield a greater profit seems inaccurate, albiet the logorithmic original equation results in the same conclusion. With this linear approximation, I would likely only refer to it, so long as the values of $x$ remain small, as I believe it will quickly lose precision as it grows.
 
 **Submission**
@@ -1059,14 +1025,71 @@ A financial analyst is modeling the risk associated with a new investment. The r
 
 **Task**
 
-1. **Maclaurin Series Expansion:** Derive the Taylor Series expansion of $f(x)=\sqrt{x}$ around $x=0$  up to the second degree.
+### 1.
 
-2. **Practical Application:** Use the derived series to approximate the risk for small investment amounts (e.g., when $x$ is small). Compare the approximated risk with the actual function values for small and moderate investments. Discuss when this approximation might be useful in financial modeling.
+**Maclaurin Series Expansion:** Derive the Taylor Series expansion of $f(x)=\sqrt{x}$ around $x=0$  up to the second degree.
 
-3. **Optimization Scenario:** Suppose the goal is to minimize risk while maintaining a certain level of investment return. Using the Taylor Series approximation, suggest an optimal investment amount $x$
- that balances risk and return.
+**Solution**
 
-### Submission
+Like before we have to find $f'(x) \ and \ f''(x)$ then $f(0),f'(0) \ and \ f''(0)$
+
+- $f(x)=f^{\frac{1}{2}}$
+- $f'(x)=\frac{1}{2}x^{-\frac{1}{2}}$
+- $f''(x)=-\frac{1}{4}x^{-\frac{3}{2}}$
+
+For $f(0),f'(0) \ and \ f''(0)$ the answer is undefined. The best approach is to rework the function to account for a value that is close to but not 0.
+
+I will hence leverage the original taylor series to essentially re-center the Expansion and derive: $f(a)=\sqrt{a}, \ f'(a)=\frac{1}{2\sqrt{a}}, \ f''(a)=-\frac{1}{4a^{3/2}}$
+
+which makes the Taylor Series Expansion $f(x)\approx \sqrt{a}+\frac{1}{2\sqrt{a}}(x-a)-\frac{1}{8a^{3/2}}(x-a)^2$
+
+### 2.
+
+**Practical Application:** Use the derived series to approximate the risk for small investment amounts (e.g., when $x$ is small). Compare the approximated risk with the actual function values for small and moderate investments. Discuss when this approximation might be useful in financial modeling.
+
+```{r}
+# Define the exact function
+exact_sqrt_q4_p2 <- function(x) {
+  sqrt(x)
+}
+
+# Define the recentered Taylor expansion
+taylor_expansion_recentered_q4_p2 <- function(x, a) {
+  f_a <- sqrt(a)
+  f_prime_a <- 1 / (2 * sqrt(a))
+  f_double_prime_a <- -1 / (4 * a^(3/2))
+  f_a + f_prime_a * (x - a) + (f_double_prime_a / 2) * (x - a)^2
+}
+
+# Input values for x
+x_values_q4_p2 <- c(0.01, 0.05, 0.1, 0.2, 0.5)
+
+# Choose a recentering point
+a <- 0.1
+
+# Calculate exact values and recentered approximation
+exact_values_q4_p2 <- sapply(x_values_q4_p2, exact_sqrt_q4_p2)
+recentered_values_q4_p2 <- sapply(x_values_q4_p2, taylor_expansion_recentered_q4_p2, a = a)
+
+# Create a data frame for the results
+results_q4_p2 <- data.frame(
+  x = x_values_q4_p2,
+  Exact_Value = exact_values_q4_p2,
+  Recentered_Approximation = recentered_values_q4_p2
+)
+
+# Print the results
+print(results_q4_p2)
+
+```
+
+Just from the comparison, the values accuracy is better the closer it is to 0, but very quickly becomes inaccurate as it grows. My recommendation would be to use for values of very small sizes.
+
+### 3. 
+
+**Optimization Scenario:** Suppose the goal is to minimize risk while maintaining a certain level of investment return. Using the Taylor Series approximation, suggest an optimal investment amount $x$ that balances risk and return.
+
+**Submission**
 
 Present your results in R-Markdown, including the Taylor Series expansions, comparisons between the original and approximated functions, and your recommendations based on the analysis.
 
@@ -1081,13 +1104,19 @@ In a manufacturing process, the demand for a product decreases as the price incr
 
 **Task**
 
-1. **Taylor Series Expansion:** Expand the cost function $C(p)=e^p$ into a Taylor Series around $p=0$ up to the second degree. Discuss why approximating the cost function might be useful in a pricing strategy.
+### 1. 
 
-2. **Approximating Profit:** Using the Taylor Series expansion, approximate the profit function $\Pi(p)=pD(p)-C(p)$. Compare the results when using the original nonlinear cost function versus the approximated cost function. What differences do you observe, and when might the approximation be sufficient?
+**Taylor Series Expansion:** Expand the cost function $C(p)=e^p$ into a Taylor Series around $p=0$ up to the second degree. Discuss why approximating the cost function might be useful in a pricing strategy.
 
-3. **Pricing Strategy:** Based on the Taylor Series approximation, suggest a pricing strategy that could maximize profit. Explain how the Taylor Series approximation helps in making this decision.
+### 2.
 
-### Submission
+**Approximating Profit:** Using the Taylor Series expansion, approximate the profit function $\Pi(p)=pD(p)-C(p)$. Compare the results when using the original nonlinear cost function versus the approximated cost function. What differences do you observe, and when might the approximation be sufficient?
+
+### 3.
+
+**Pricing Strategy:** Based on the Taylor Series approximation, suggest a pricing strategy that could maximize profit. Explain how the Taylor Series approximation helps in making this decision.
+
+**Submission**
 
 Include your analysis in R-Markdown, with Taylor Series expansions, comparisons of the approximated and original functions, and a discussion of the implications for pricing strategy.
 
