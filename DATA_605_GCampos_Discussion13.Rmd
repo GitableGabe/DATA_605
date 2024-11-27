@@ -53,4 +53,3 @@ our height is given for sections a - c.
 ```{r}
 5/(2*pi*100)
 ```
-

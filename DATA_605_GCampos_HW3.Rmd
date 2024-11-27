@@ -3,11 +3,11 @@ title: 'DATA 605: Computational Mathematics Homework 3'
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  pdf_document:
-    latex_engine: xelatex
-  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
   html_document:
     df_print: paged
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  pdf_document:
+    latex_engine: xelatex
   html_notebook: default
 urlcolor: blue
 ---
@@ -938,11 +938,20 @@ A company's revenue from a product can be approximated by the function $R(x)=e^x
 
 **Solution**
 
+The Taylor series for $f(x)$ about $c=0$ is:
+
+$f(x)= \sum_{n=0}^{\infty}\frac{f^{(n)}(c)}{n!}(x-c)^n$
+
+Here:
+
+- $f^{(n)}(x)$ is the $n^{th}$ derivative of $f(x)$
+- $f^{(n)}(c)$ is the value of the $n^{th}$ derivative evaluated at $x=c$
+
 The Taylor Series Expansion of a function f(x) is given by:
 
-$f(x) =f(a)+f'(a)(x-a)+\frac{f''(a)}{2!}(x-a)^2+\frac{f^{(3)}}{3!}(x-a)^3+...$
+$f(x) =f(c)+f'(c)(x-c)+\frac{f''(c)}{2!}(x-c)^2+\frac{f^{(3)}(c)}{3!}(x-c)^3+...$
 
-The Maclaurin series is the expansion point $a=0$ making the formula $f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}x^2+....$ and we are only interested to the 2nd degree.
+The Maclaurin series is the expansion point $c=0$ making the formula $f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}x^2+....$ and we are only interested to the 2nd degree.
 
 the derivative $\frac{d}{dx}(e^x)=e^x$ making these solutions all 1 b/c $f(0)=e^0=1,f'(0)=e^0=1,f''(0)=e^0=1$
 
@@ -960,13 +969,13 @@ This is a useful business context in that approximations of how revenue changes 
 
 The Taylor Series Expansion of a function f(x) is given by:
 
-$f(x) =f(a)+f'(a)(x-a)+\frac{f''(a)}{2!}(x-a)^2+\frac{f^{(3)}}{3!}(x-a)^3+...$
+$f(x) =f(c)+f'(c)(x-c)+\frac{f''(c)}{2!}(x-c)^2+\frac{f^{(3)}}{3!}(x-c)^3+...$
 
 The Maclaurin series is the expansion point $a=0$ making the formula $f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}x^2+....$ and we are only interested to the 2nd degree.
 
 Here we have $C(x)=ln(1+x), \ C'(x)=\frac{1}{1+x} ,C''(x)= -\frac{1}{(1+x)^2}$
 
-**NOTE** $f'(a)$ where $f(a)=\frac{1}{1+a}=\frac{d}{da}(1+a)^{-1}=-1 \cdot (1+ a)^{-1-1}=-(1+a)^{-2}=-\frac{1}{(1+a)^2}$
+**NOTE** $f'(a)$ where $f(c)=\frac{1}{1+c}=\frac{d}{dc}(1+c)^{-1}=-1 \cdot (1+ c)^{-1-1}=-(1+c)^{-2}=-\frac{1}{(1+c)^2}$
 
 Solving for 0 we get $C(0)=0,C'(0)=1, C''(0)=-1$
 
@@ -1033,61 +1042,80 @@ A financial analyst is modeling the risk associated with a new investment. The r
 
 Like before we have to find $f'(x) \ and \ f''(x)$ then $f(0),f'(0) \ and \ f''(0)$
 
-- $f(x)=f^{\frac{1}{2}}$
-- $f'(x)=\frac{1}{2}x^{-\frac{1}{2}}$
-- $f''(x)=-\frac{1}{4}x^{-\frac{3}{2}}$
+- $f(x)=x^{\frac{1}{2}} \rightarrow \ \sqrt{x}$
+- $f'(x)=\frac{1}{2}x^{-1/2} \rightarrow \ \frac{1}{2\sqrt{x}}$
+- $f''(x)=-\frac{1}{4}x^{-3/2} \rightarrow \ -\frac{1}{4x^{3/2}}$
 
-For $f(0),f'(0) \ and \ f''(0)$ the answer is undefined. The best approach is to rework the function to account for a value that is close to but not 0.
+For $f(0),f'(0) \ and \ f''(0)$ the answer is undefined. The best approach is to rework and avoid direct evaluation at $x=0$.
 
-I will hence leverage the original taylor series to essentially re-center the Expansion and derive: $f(a)=\sqrt{a}, \ f'(a)=\frac{1}{2\sqrt{a}}, \ f''(a)=-\frac{1}{4a^{3/2}}$
+We can do this by directly applying the Taylor series around $x_0$ where $x_0$ is a value close to but not exactly zero.
 
-which makes the Taylor Series Expansion $f(x)\approx \sqrt{a}+\frac{1}{2\sqrt{a}}(x-a)-\frac{1}{8a^{3/2}}(x-a)^2$
+$\therefore \ \ f(x) \approx f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x=x_0)^2$ stopping at the second degree. 
+
+- $f(x_0)=\sqrt{x_0}$
+- $f'(x_0)=\frac{1}{2\sqrt{x_0}}$
+- $f''(x_0)=-\frac{1}{4x_{0}^{3/2}}$
+
+and after substituting in our Taylor series we get our :
+
+### Answer
+
+$f(x) \approx \sqrt{x_{0}}+\frac{1}{2\sqrt{x_0}}(x-x_0)-\frac{1}{8x_{0}^{3/2}}(x-x_0)^2$
 
 ### 2.
 
 **Practical Application:** Use the derived series to approximate the risk for small investment amounts (e.g., when $x$ is small). Compare the approximated risk with the actual function values for small and moderate investments. Discuss when this approximation might be useful in financial modeling.
 
 ```{r}
-# Define the exact function
-exact_sqrt_q4_p2 <- function(x) {
-  sqrt(x)
+# Function for the original function sqrt(x)
+f_p4q3 <- function(x) {
+  return(sqrt(x))
 }
 
-# Define the recentered Taylor expansion
-taylor_expansion_recentered_q4_p2 <- function(x, a) {
-  f_a <- sqrt(a)
-  f_prime_a <- 1 / (2 * sqrt(a))
-  f_double_prime_a <- -1 / (4 * a^(3/2))
-  f_a + f_prime_a * (x - a) + (f_double_prime_a / 2) * (x - a)^2
+# Function for the Taylor series approximation
+taylor_approx_p4q3 <- function(x, x0) {
+  f_x0 <- sqrt(x0)
+  f_prime_x0 <- 1 / (2 * sqrt(x0))
+  f_double_prime_x0 <- -1 / (4 * x0^(3/2))
+  
+  # Taylor series expansion up to second degree
+  return(f_x0 + f_prime_x0 * (x - x0) + (f_double_prime_x0 / 2) * (x - x0)^2)
 }
 
-# Input values for x
-x_values_q4_p2 <- c(0.01, 0.05, 0.1, 0.2, 0.5)
+# Define small and moderate investment amounts (x)
+x_values_p4q3 <- c(0.1, 0.5, 1, 2, 5, 10)  # Investment amounts
+x0 <- 1  # Point around which the Taylor series is expanded
 
-# Choose a recentering point
-a <- 0.1
+# Calculate actual risk and Taylor approximation
+actual_risk_p4q3 <- sapply(x_values_p4q3, f_p4q3)
+taylor_risk_p4q3 <- sapply(x_values_p4q3, taylor_approx_p4q3, x0 = x0)
 
-# Calculate exact values and recentered approximation
-exact_values_q4_p2 <- sapply(x_values_q4_p2, exact_sqrt_q4_p2)
-recentered_values_q4_p2 <- sapply(x_values_q4_p2, taylor_expansion_recentered_q4_p2, a = a)
+# Create a data frame for comparison
+comparison <- data.frame(Investment = x_values_p4q3, Actual_Risk = actual_risk_p4q3, Taylor_Approx = taylor_risk_p4q3)
 
-# Create a data frame for the results
-results_q4_p2 <- data.frame(
-  x = x_values_q4_p2,
-  Exact_Value = exact_values_q4_p2,
-  Recentered_Approximation = recentered_values_q4_p2
-)
+# Print the comparison
+print(comparison)
 
-# Print the results
-print(results_q4_p2)
+# Plot for visual comparison
+plot(x_values_p4q3, actual_risk_p4q3, type = "o", col = "lightblue", pch = 16, xlab = "Investment (x)", ylab = "Risk (f(x))", main = "Risk Approximation vs Actual")
+lines(x_values_p4q3, taylor_risk_p4q3, type = "o", col = "darkgreen", pch = 16)
+legend("topright", legend = c("Actual Risk", "Taylor Approximation"), col = c("lightblue", "darkgreen"), pch = 16)
 
 ```
+
+### Answer
 
 Just from the comparison, the values accuracy is better the closer it is to 0, but very quickly becomes inaccurate as it grows. My recommendation would be to use for values of very small sizes.
 
 ### 3. 
 
 **Optimization Scenario:** Suppose the goal is to minimize risk while maintaining a certain level of investment return. Using the Taylor Series approximation, suggest an optimal investment amount $x$ that balances risk and return.
+
+### Answer
+
+- Small investments (around x=1) give an accurate approximation.
+- moderate investments (around x=2), is reasonable with divergence.
+- Large investments the Taylor expansion is just not very useful because of how little it reflects real risk. In such a investment, utilize the original function or derive a more complex one.
 
 **Submission**
 
@@ -1108,17 +1136,90 @@ In a manufacturing process, the demand for a product decreases as the price incr
 
 **Taylor Series Expansion:** Expand the cost function $C(p)=e^p$ into a Taylor Series around $p=0$ up to the second degree. Discuss why approximating the cost function might be useful in a pricing strategy.
 
+**Solution**
+
+The Taylor series for $C(p)$ about $p$ is:
+
+$C(p)= \sum_{n=0}^{\infty}\frac{C^{(n)}(0)}{n!}(p-c)^n$
+
+Here:
+
+- $C^{(n)}(p)$ is the $n^{th}$ derivative of $C(p)$
+- $C^{(n)}(0)$ is the value of the $n^{th}$ derivative evaluated at $p=0$
+
+
+The expansion point $p=0$ makes the formula  $C(p)=C(0)+C'(0)p+\frac{C''(0)}{2!}p^2+....$ and we are only interested to the 2nd degree.
+
+the derivative $\frac{d}{dx}(e^x)=e^x$ making these solutions all 1 b/c $C(0)=e^0=1,C'(0)=e^0=1,C''(0)=e^0=1$
+
+### Answer
+
+$\therefore C(p) \approx 1+p+\frac{p^2}{2}$
+
+This would be useful because:
+
+- Simplification for Analysis: it easeir to calculate in this form
+- Price adjustment: Ease with calculating marginal profits means its easier to adjust prices.
+- Predicting is made simpler with the exclusion of the exponential, allowing for incremental predictions.
+
 ### 2.
 
 **Approximating Profit:** Using the Taylor Series expansion, approximate the profit function $\Pi(p)=pD(p)-C(p)$. Compare the results when using the original nonlinear cost function versus the approximated cost function. What differences do you observe, and when might the approximation be sufficient?
+
+First we need to substitute base on the scenario
+
+- Demand Function: $D(p)=1-p$
+- Cost Function: $C(p)=e^p$
+
+$\therefore \ \ \Pi(p)=pD(p)-C(p) \rightarrow p(1-p)-e^p = p-p^2-e^p$
+
+We can substitute the Taylor approximation ($C(p) \approx 1 +p + \frac{p^2}{p}$) to further transform the equation and get
+
+$\Pi \approx p-p^2-1-p-\frac{p^2}{2} \rightarrow -1-\frac{3p^2}{2}$
+
+```{r}
+# range from 0 to 1
+p_q4p2 <- seq(0, 1, by = 0.01)
+
+# Exact profit function
+Pi_exact_q4p2 <- p_q4p2 - p_q4p2^2 - exp(p_q4p2)
+
+# Approximated profit function:
+Pi_approx_q4p2 <- -1 - (3/2) * p_q4p2^2
+
+# Plot both profit functions
+plot(p_q4p2, Pi_exact_q4p2, type = "l", col = "lightgreen", lwd = 2, 
+     xlab = "Price (p)", ylab = "Profit (Pi(p))", 
+     main = "Exact and Approximated Profit Functions Comparison")
+lines(p_q4p2, Pi_approx_q4p2, col = "purple", lwd = 2, lty = 2)
+
+# Add a legend
+legend("topright", legend = c("Exact Profit Function", "Approximated Profit Function"),
+       col = c("lightgreen", "purple"), lwd = 2, lty = c(1, 2))
+
+# Add grid
+grid()
+
+```
+
+### Answer
+
+The original profit has a the linear term p which the approximation cancelled out, suggesting that the approximation neglects linear affect, which for small values is negligible but for larger may be an issue. Also the quadratic term found in both is divided ($-\frac{3p^2}{2}$) in the approximation, which may overestimate the negative quatdratic impact as the values grow.
 
 ### 3.
 
 **Pricing Strategy:** Based on the Taylor Series approximation, suggest a pricing strategy that could maximize profit. Explain how the Taylor Series approximation helps in making this decision.
 
+
+### Answer
+
+The approximation is great for setting an initial low price, as the optimal pricing in this formula is p=0, and is not applicable the further away from 0. A more sophisticated model should be used after gathering more data on customer behavior.
+
 **Submission**
 
 Include your analysis in R-Markdown, with Taylor Series expansions, comparisons of the approximated and original functions, and a discussion of the implications for pricing strategy.
+
+
 
 ## Question 4
 
@@ -1134,15 +1235,58 @@ An economist is forecasting economic growth, which can be modeled by the logarit
 
 **Maclaurin Series Expansion:** Derive the Maclaurin Series expansion of $G(x)=ln(x+1)$ up to the second degree. Explain the significance of using this approximation for small values of $x_x$ in economic forecasting.
 
+- $G(x) =ln(x+1) \ and \ G(0)=ln(1)=0$
+- $G'(x) = \frac{1}{x+1} \ and \ G'(0)=1$
+- $G''(x)=\frac{1}{(x+1)^2} \ and \ G''(0)=-\frac{1}{1^2}=-1$
+- $G(x) \approx 0+1 \cdot + \frac{-1}{2} \cdot x^2 = x- \frac{x^2}{2}$
+
+### Answer
+
+$x- \frac{x^2}{2}$ This is a simplified and linear-ish equation that accounts for diminishing returns with $-\frac{x^2}{2}$. Its realistic, considering early investment might have greater early returns that diminish over time. Therefore, this is a very practical approximation.
+
 ### ii.
 
 **Approximation of Growth:** Use the Taylor Series to approximate the growth for small investments. Compare this approximation with the actual growth function. Discuss the accuracy of the approximation for different ranges of $x_x$.
+
+```{r}
+# range from 0 to 1
+x_q4p4 <- seq(0, 1, by = 0.01)
+
+# Exact economic growth function
+x_exact_q4p4 <- log(x_q4p4+1)
+
+# Approximated growth function:
+x_approx_q4p4 <- x_q4p4 - x_q4p4^2/2
+
+# Plot both profit functions
+plot(x_q4p4, x_exact_q4p4, type = "l", col = "orange", lwd = 2, 
+     xlab = "Price (p)", ylab = "Profit (Pi(p))", 
+     main = "Exact and Approximated Growth Functions Comparison")
+lines(x_q4p4, x_approx_q4p4, col = "darkblue", lwd = 2, lty = 2)
+
+# Add a legend
+legend("topright", legend = c("Exact economic growth function", "Approximated growth Function"),
+       col = c("orange", "darkblue"), lwd = 2, lty = c(1, 2))
+
+# Add grid
+grid()
+```
+
+### Answer
+
+- For values $x\leq0.2$ the approximation is very accurate.
+- For values $0.2 \geq x \leq 0.5$ the approximations are moderately accurate.
+- above 0.5 however its accuracy is very low and unreliable.
 
 ### iii.
 
 **Policy Recommendation:** Using the approximation, recommend a level of investment that could achieve a target growth rate. Discuss the limitations of using Taylor Series approximations for such policy recommendations.
 
-### Submission
+### Answer
+
+Use the approximation to estimate the investment needed to achieve a taget growth rate. However this approximation works best for small investments, so using values below 0.2 would be ideal as the model becomes inaccurate as it grows to and past 0.5
+
+**Submission**
 
 Provide your answers in R-Markdown, with the Taylor Series expansions, comparisons between the approximated and original functions, and your investment recommendations.
 
@@ -1169,9 +1313,64 @@ Where:
 Find all local maxima, local minima, and saddle points for the profit function $\Pi(x,y)$.
 Write your answer(s) in the form $(x,y,\Pi(x,y))$. Separate multiple points with a comma.
 
-### Discussion
+**Solution**
+
+since we are using partial derivatives we need to do the derivatives for $x, y, x$ then $y$ and $y$ then $x$
+
+- $\Pi(x,y)=30x-2x^2-3xy+24y-4y^2$
+- $\partial_x f(x,y)=\frac{\partial \Pi}{\partial x}(30x-2x^2-3xy+24y-4y^2)$ equals to $30-4x-3y$
+- $\partial_{xx} f(x,y)=\frac{\partial^2 \Pi}{\partial x^2}(30-4x-3y)$ equals to $-4$
+- $\partial_{xy} f(x,y)=\frac{\partial^2 \Pi}{\partial x \partial y}(30-4x-3y)$ equals to $-3$
+- $\partial_y f(x,y)=\frac{\partial \Pi}{\partial y}(30x-2x^2-3xy+24y-4y^2)$ equals to $24-3x-8y$
+- $\partial_{yy} f(x,y)=\frac{\partial^2 \Pi}{\partial y^2}(24-3x-8y)$ equals to $-8$
+- $\partial_{yx} f(x,y)=\frac{\partial^2 \Pi}{\partial y \partial x}(24-3x-8y)$ equals to $-3$
+- The discriminant $D$ is given by the determinant of Hessian Matrix H below or just calculate for $D=\frac{\partial^2 \Pi}{\partial x^2} \cdot \frac{\partial^2 \Pi}{\partial y^2} - (\frac{\partial^2 \Pi}{\partial x \partial y})^2$ to the local minimum/maximum.
+
+$$
+H = \begin{pmatrix}
+-4 & -3 \\
+-3 & -8 \\
+\end{pmatrix} \ \
+$$
+
+- Substitute $D=\frac{\partial^2 \Pi}{\partial x^2} \cdot \frac{\partial^2 \Pi}{\partial y^2} - (\frac{\partial^2 \Pi}{\partial x \partial y})^2$ to get $D=(-4)(-8)-(-3)^2=32-9=23$
+
+we need to find the critical points by setting $\partial_x f(x,y)$ and $\partial_y f(x,y)$ to 0
+
+$\partial_x f(x,y) \rightarrow 30-4x-3y=0 \rightarrow y= \frac{30-4x}{3}$
+
+$\partial_y f(x,y) \rightarrow 24-3x-8y=0 \rightarrow$ substituting for y with above equation we get $24-3x-8(\frac{30-4x}{3})=0 \rightarrow 24-3x-\frac{240-32x}{3}=0$ 
+
+We multiply through by $3$ to get $72-9x-240+32x=0 \rightarrow 23x=168$ making one of our critical points $x=\frac{168}{23}$
+
+To find the second critical point we need to substitute in the $\partial_x f(x,y)$ equation:
+
+$\frac{\partial \Pi}{\partial x}\rightarrow30-4x-3y=0 \rightarrow 30-4(\frac{168}{23})-3y=0 \rightarrow 30-\frac{670}{23}=3y\rightarrow 3y=\frac{18}{23}\rightarrow y=\frac{18}{23} \cdot \frac{1}{3}$ to get $y=\frac{6}{23}$
+
+We now substitute the values in the original function
+
+$\Pi(x,y)=\Pi(\frac{168}{2},\frac{6}{23})=30(\frac{168}{2})-2(\frac{168}{2})^2-3(\frac{168}{2})(\frac{6}{23})+24(\frac{6}{23})-4(\frac{6}{23})^2$
+
+$\rightarrow \frac{5040}{23}-\frac{56448}{529}-\frac{3024}{529}+\frac{144}{23}-\frac{144}{529}\rightarrow \frac{5184}{23}-\frac{59616}{529}=\frac{59616}{529}=\frac{2592}{23}$ to get $\Pi(\frac{168}{23},\frac{6}{23})=\frac{2592}{23}$
+
+
+**Discussion**
 
 Discuss the implications of the results for the company’s production strategy. Which production levels maximize profit, and what risks are associated with the saddle points?
+
+### Answer
+
+$\Pi(\frac{168}{23},\frac{6}{23})=\frac{2592}{23}$
+
+With our local maximum at $23$ indicating no saddle points.
+The Optimal Production Levels are:
+
+- **Product A:** $x=\frac{168}{23} \approx 7.30$
+- **Product B:** $y=\frac{6}{23} \approx 0.26$ 
+
+With a maximum profit of $\approx \$112.69$
+
+Considering the no saddle points were identified, there's no need to worry about regions with production decisions that have unpredictable results. Are market strategy should leverage the Optimal production levels to produce the correct number of units, but obviously monitor to avoid overproduction or change in performance.
 
 ## Question 2 
 
@@ -1195,7 +1394,11 @@ Where:
 1. **Revenue Function:** Find the revenue function R(x,y) for both brands combined.
 2. **Optimal Pricing:** Determine the prices $x$ and $y$ that maximize the store’s total revenue. Are there any saddle points to consider in the pricing strategy?
 
-### Discussion
+**Solution**
+
+
+
+**Discussion**
 
 Explain the significance of the optimal pricing strategy and how it can be applied in a competitive retail environment.
 
