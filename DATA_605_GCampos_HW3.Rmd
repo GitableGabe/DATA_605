@@ -3,11 +3,11 @@ title: 'DATA 605: Computational Mathematics Homework 3'
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  html_document:
-    df_print: paged
-  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
   pdf_document:
     latex_engine: xelatex
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  html_document:
+    df_print: paged
   html_notebook: default
 urlcolor: blue
 ---
@@ -1334,6 +1334,7 @@ H = \begin{pmatrix}
 $$
 
 - Substitute $D=\frac{\partial^2 \Pi}{\partial x^2} \cdot \frac{\partial^2 \Pi}{\partial y^2} - (\frac{\partial^2 \Pi}{\partial x \partial y})^2$ to get $D=(-4)(-8)-(-3)^2=32-9=23$
+- Since $\partial_{xx} f(x,y)$ is negative and determinant is positive we assume the critical point corresponds with a maximum.
 
 we need to find the critical points by setting $\partial_x f(x,y)$ and $\partial_y f(x,y)$ to 0
 
@@ -1396,11 +1397,79 @@ Where:
 
 **Solution**
 
+**Revenue X** equals **(Brand X in dollars)** times **(Demand for Brand X)**
+
+Therefore $R_x(x,y)=x \cdot D_x(x,y)$ 
+
+Which we substitute with $R_x(x,y)= x \cdot 120-15x+10y$ which equals $120x-15x^2+10xy$
+
+**Revenue Y** equals **(Brand Y in dollars)** times **(Demand for Brand Y)**
+
+Therefore $R_y(x,y)=y \cdot D_y(x,y)$ 
+
+Which we substitute with $R_y(x,y)= y \cdot 80+5x-20y$ which equals $80y+5xy-20y^2$
+
+**Total Revenue** equals **Revenue X** times **Revenue Y**
+
+Therefore $R(x,y)=R_x(x,y)+R_y(x,y)$
+
+Which we substitute with $R(x,y)=(120x-15x^2+10xy)+(80y+5xy-20y^2)$ which equals $-15x^2-20y^2+120x+80y+15xy$
+
+
+**Partial Derivatives** are needed to find the critical points and saddle if there exists one.
+
+$\frac{\partial R(x,y)}{\partial x}= -30x+120+15y$
+
+$\frac{\partial R(x,y)}{\partial y}= -40y +80+15x$
+
+$\frac{\partial^2 R(x,y)}{\partial x^2}= -30$
+
+$\frac{\partial^2 R(x,y)}{\partial y^2}= -40$
+
+$\frac{\partial^2 R(x,y)}{\partial x \partial y}= 15$
+
+$\frac{\partial^2 R(x,y)}{\partial y \partial x}= 15$
+
+The discriminant $D$ is given by the determinant of Hessian Matrix H below or just calculate for $D=\frac{\partial^2 \Pi}{\partial x^2} \cdot \frac{\partial^2 \Pi}{\partial y^2} - (\frac{\partial^2 \Pi}{\partial x \partial y})^2$ to the local minimum/maximum.
+
+$$
+H = \begin{pmatrix}
+-30 & 15 \\
+15 & -40 \\
+\end{pmatrix} \ \
+$$
+
+$det(H)=(-30)(-40)-(15)(15)=1200-225=975$ which because $det(H) \neq 0$ we can assume no local saddle
+
+since $\frac{\partial^2 R(x,y)}{\partial x^2}$ is negative and $det(h)$ is positive we assume the critical points corresponds to a maximum
+
+we can find the critical points by setting $\frac{\partial R(x,y)}{\partial x}$ and $\frac{\partial R(x,y)}{\partial y}$ to $0$ and solving for $x$ and $y$
+
+- $-30x+120+15y=0 \rightarrow 30x=120+15y$ which equals $x=4+\frac{y}{2}$
+- $-40y +80+15x=0 \rightarrow 40y=80+15x$ which equals $y=2+\frac{3x}{8}$
+- Then we substitute the new equation for $y$ into our other equation for $x$ to get $x=4+\frac{1}{2}(2+\frac{3x}{8})$
+- This simplifies to $x=5+\frac{3x}{16}$
+- Multiply through with $16$ to get $16x=80+3x$ which becomes $x=\frac{80}{13}=6.153846$
+- Substitute $x$ into $y=2+\frac{3x}{8}$ to get $4.307692$
 
 
 **Discussion**
 
 Explain the significance of the optimal pricing strategy and how it can be applied in a competitive retail environment.
+
+### Answer
+
+Revenue function R(x,y) for both brands combined is:
+
+$R(x,y)=-15x^2-20y^2+120x+80y+15xy$
+
+Optimal prices are 
+
+$x \approx 6.15, \ y \approx 4.31$
+
+**Note** No local saddle
+
+The equation is meant to find optimal pricing by accounting for the competitors prices. This strategy will ensure retailer is operating at peak. The goal is for this equation to provide highest possible revenue based on price and demand, using functions $D_x(x,y) \ and \ D_x(x,y)$ which are derived from consumer behavior. The retailer would likely benefit from avoiding pitfalls such as under pricing and overpricing, and allow for the implementation of discounts, sales, coupons, etc. based on market conditions, because the pricing can be adjusted dynamically.
 
 ## Question 3 
 
@@ -1421,9 +1490,46 @@ Where:
 1. Determine how many units should be produced in each plant to minimize the total weekly cost.
 2. What is the minimized total cost, and how does the distribution of production between the two plants affect overall efficiency?
 
-### Discussion
+**Solution**
+
+Goal is to minimize $C(x,y)=\frac{1}{8}x^2+\frac{1}{10}y^2+12x+18y+1500$ under the constraint $x+y=200$
+
+Rewrite $x+y=200 \rightarrow y=200-x$
+
+Substitute in the cost function to get $C(x,y)=\frac{1}{8}x^2+\frac{1}{10}(200-x)^2+12x+18(200-x)+1500$
+
+Expand to $C(x,y)=\frac{1}{8}x^2+\frac{1}{10}(40000-400x+x^2)+12x+3600-18x+1500$
+
+Simplify to $C(x,y)=\frac{1}{8}x^2+4000-40x+\frac{1}{10}x^2+12x+3600-18x+1500$
+
+Add like terms to get $C(x)=\frac{9}{40}x^2-46x+9100$
+
+What end up with is a quadratic equation that we would like the minimum to. Therefore we can calculate the vertex of a parabola get the minimum for $x$ then substitue $y$ in our constraint.
+
+vertex equals $x=-\frac{b}{2a}$ where $a=\frac{9}{40}$ and $b=-46$
+
+substitute to get $x=\frac{-46}{2 \cdot \frac{9}{40}}=\frac{46 \cdot 40}{18}=\frac{1840}{18}\approx 102.22$
+
+substitute from the constraint $y=200-102.22 \approx 97.78$
+
+And then substitute in the original cost function
+
+$C(102.22,97.78)=\frac{1}{8}(102.22)^2+\frac{1}{10}(97.78)^2+12(102.22)+18(97.78)+1500$
+
+```{r}
+(1/8)*(102.22)^2+(1/10)*(97.78)^2+12*(102.22)+18*(97.78)+1500
+```
+
+**Discussion**
 
 Discuss the benefits of this cost-minimization strategy and any practical considerations that might influence the allocation of production between the two plants.
+
+This formula is really about cost efficiency, by allocation production optimally, a strategy that balances production can be made. This would in turn affect profit margins and avoids excessive costs that can occur from overloading one of the two plants.
+
+### Answer
+
+Production Distribution for NY  is $x \approx 102.22$ and for Chicagor is $y \approx 97.78$
+with a minimized cost of $C(x,y) \approx \$6,748.89$
 
 ## Question 4
 
@@ -1444,8 +1550,63 @@ Where:
 1. Find the spending levels for online and television ads that maximize customer reach.
 2. Identify any saddle points and discuss how they could affect the marketing strategy.
 
-### Discussion
+**Solution**
+
+We want to maximize $E(x,y)=500x+700y-5x^2-10xy-8y^2$
+
+We will require the partial derivatives
+
+- $\frac{\partial E}{\partial x}=500-10x-10y$
+- $\frac{\partial E}{\partial y}=700-10x-16y$
+- $\frac{\partial^2 E}{\partial x^2}=-10$
+- $\frac{\partial^2 E}{\partial y^2}=-16$
+- $\frac{\partial^2 E}{\partial x \partial y}=-10$
+- $\frac{\partial^2 E}{\partial y \partial x}=-10$
+- The discriminant $D$ is given by the determinant of Hessian Matrix H below or just calculate for $D=\frac{\partial^2 \Pi}{\partial x^2} \cdot \frac{\partial^2 \Pi}{\partial y^2} - (\frac{\partial^2 \Pi}{\partial x \partial y})^2$ to the local minimum/maximum.
+
+$$
+H = \begin{pmatrix}
+-10 & -10 \\
+-10 & -16 \\
+\end{pmatrix} \ \
+$$
+
+- H=(-10)(-16)-(-10)^2=160-100=60
+
+Critical point classifications:
+
+- $H>0$ and $E_{xx}<0$, local maximum
+- $H>0$ and $E_{xx}>0$, local minimum
+- $H<0$, saddle point
+- $H=60>0$ and $E_{xx}=-10.0$ therefore our critical point is a local maximum.
+
+To get critical points we set $\frac{\partial E}{\partial x}$ and $\frac{\partial E}{\partial y}$ to zero
+
+- $500-10x-10y=0 \rightarrow 10x+10y=500$ which gives us $x+y=50$
+- $700-10x-16y=0 \rightarrow 10x+16y=700$ which gives us $x+1.6y=70$
+- We can eliminate $x$ and solve for $y$ by subtracting these terms $(x+1.6y=50)-(x+y=50)$
+- Which gives us $0.6y=20$ and results in $\approx 33.33$
+- We can then substitute $y$ in $x+y=50$ to get $x+33.33=50 \rightarrow x=50-33.33$ which gives us $\approx 16.67$
+
+
+
+**Discussion**
 
 Explain how the results can be used to allocate the marketing budget effectively and what the company should consider if it encounters saddle points in the optimization.
+
+### Answer
+
+Optimized spending
+
+Online Ads = $16.67 \times 1000(\$) = \$16,670$
+
+Television Ads = $33.33 \times 1000(\$)=\$33,330$
+
+Maximum customers reached is $E(16.67,33.33)=500(16.67)+700(33.33)-5(16.67)^2-10(16.67)(33.33)-8(33.33)^2$
+
+```{r}
+500*(16.67)+700*(33.33)-5*(16.67)^2-10*(16.67)*(33.33)-8*(33.33)^2
+```
+
 
 **As always, include a professional pdf only with all code, text, graphics, explanations, etc.**

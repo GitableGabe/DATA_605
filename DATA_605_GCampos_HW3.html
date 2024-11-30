@@ -3228,6 +3228,7 @@ dollars.</li>
 function <span class="math inline">\(\Pi(x,y)\)</span>. Write your
 answer(s) in the form <span class="math inline">\((x,y,\Pi(x,y))\)</span>. Separate multiple points
 with a comma.</p>
+<p><strong>Solution</strong></p>
 <p>since we are using partial derivatives we need to do the derivatives
 for <span class="math inline">\(x, y, x\)</span> then <span class="math inline">\(y\)</span> and <span class="math inline">\(y\)</span> then <span class="math inline">\(x\)</span></p>
 <ul>
@@ -3259,6 +3260,9 @@ H = \begin{pmatrix}
 <li>Substitute <span class="math inline">\(D=\frac{\partial^2
 \Pi}{\partial x^2} \cdot \frac{\partial^2 \Pi}{\partial y^2} -
 (\frac{\partial^2 \Pi}{\partial x \partial y})^2\)</span> to get <span class="math inline">\(D=(-4)(-8)-(-3)^2=32-9=23\)</span></li>
+<li>Since <span class="math inline">\(\partial_{xx} f(x,y)\)</span> is
+negative and determinant is positive we assume the critical point
+corresponds with a maximum.</li>
 </ul>
 <p>we need to find the critical points by setting <span class="math inline">\(\partial_x f(x,y)\)</span> and <span class="math inline">\(\partial_y f(x,y)\)</span> to 0</p>
 <p><span class="math inline">\(\partial_x f(x,y) \rightarrow 30-4x-3y=0
@@ -3330,9 +3334,88 @@ for both brands combined.</li>
 revenue. Are there any saddle points to consider in the pricing
 strategy?</li>
 </ol>
+<p><strong>Solution</strong></p>
+<p><strong>Revenue X</strong> equals <strong>(Brand X in
+dollars)</strong> times <strong>(Demand for Brand X)</strong></p>
+<p>Therefore <span class="math inline">\(R_x(x,y)=x \cdot
+D_x(x,y)\)</span></p>
+<p>Which we substitute with <span class="math inline">\(R_x(x,y)= x
+\cdot 120-15x+10y\)</span> which equals <span class="math inline">\(120x-15x^2+10xy\)</span></p>
+<p><strong>Revenue Y</strong> equals <strong>(Brand Y in
+dollars)</strong> times <strong>(Demand for Brand Y)</strong></p>
+<p>Therefore <span class="math inline">\(R_y(x,y)=y \cdot
+D_y(x,y)\)</span></p>
+<p>Which we substitute with <span class="math inline">\(R_y(x,y)= y
+\cdot 80+5x-20y\)</span> which equals <span class="math inline">\(80y+5xy-20y^2\)</span></p>
+<p><strong>Total Revenue</strong> equals <strong>Revenue X</strong>
+times <strong>Revenue Y</strong></p>
+<p>Therefore <span class="math inline">\(R(x,y)=R_x(x,y)+R_y(x,y)\)</span></p>
+<p>Which we substitute with <span class="math inline">\(R(x,y)=(120x-15x^2+10xy)+(80y+5xy-20y^2)\)</span>
+which equals <span class="math inline">\(-15x^2-20y^2+120x+80y+15xy\)</span></p>
+<p><strong>Partial Derivatives</strong> are needed to find the critical
+points and saddle if there exists one.</p>
+<p><span class="math inline">\(\frac{\partial R(x,y)}{\partial x}=
+-30x+120+15y\)</span></p>
+<p><span class="math inline">\(\frac{\partial R(x,y)}{\partial y}= -40y
++80+15x\)</span></p>
+<p><span class="math inline">\(\frac{\partial^2 R(x,y)}{\partial x^2}=
+-30\)</span></p>
+<p><span class="math inline">\(\frac{\partial^2 R(x,y)}{\partial y^2}=
+-40\)</span></p>
+<p><span class="math inline">\(\frac{\partial^2 R(x,y)}{\partial x
+\partial y}= 15\)</span></p>
+<p><span class="math inline">\(\frac{\partial^2 R(x,y)}{\partial y
+\partial x}= 15\)</span></p>
+<p>The discriminant <span class="math inline">\(D\)</span> is given by
+the determinant of Hessian Matrix H below or just calculate for <span class="math inline">\(D=\frac{\partial^2 \Pi}{\partial x^2} \cdot
+\frac{\partial^2 \Pi}{\partial y^2} - (\frac{\partial^2 \Pi}{\partial x
+\partial y})^2\)</span> to the local minimum/maximum.</p>
+<p><span class="math display">\[
+H = \begin{pmatrix}
+-30 &amp; 15 \\
+15 &amp; -40 \\
+\end{pmatrix} \ \
+\]</span></p>
+<p><span class="math inline">\(det(H)=(-30)(-40)-(15)(15)=1200-225=975\)</span>
+which because <span class="math inline">\(det(H) \neq 0\)</span> we can
+assume no local saddle</p>
+<p>since <span class="math inline">\(\frac{\partial^2 R(x,y)}{\partial
+x^2}\)</span> is negative and <span class="math inline">\(det(h)\)</span> is positive we assume the critical
+points corresponds to a maximum</p>
+<p>we can find the critical points by setting <span class="math inline">\(\frac{\partial R(x,y)}{\partial x}\)</span> and
+<span class="math inline">\(\frac{\partial R(x,y)}{\partial y}\)</span>
+to <span class="math inline">\(0\)</span> and solving for <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span></p>
+<ul>
+<li><span class="math inline">\(-30x+120+15y=0 \rightarrow
+30x=120+15y\)</span> which equals <span class="math inline">\(x=4+\frac{y}{2}\)</span></li>
+<li><span class="math inline">\(-40y +80+15x=0 \rightarrow
+40y=80+15x\)</span> which equals <span class="math inline">\(y=2+\frac{3x}{8}\)</span></li>
+<li>Then we substitute the new equation for <span class="math inline">\(y\)</span> into our other equation for <span class="math inline">\(x\)</span> to get <span class="math inline">\(x=4+\frac{1}{2}(2+\frac{3x}{8})\)</span></li>
+<li>This simplifies to <span class="math inline">\(x=5+\frac{3x}{16}\)</span></li>
+<li>Multiply through with <span class="math inline">\(16\)</span> to get
+<span class="math inline">\(16x=80+3x\)</span> which becomes <span class="math inline">\(x=\frac{80}{13}=6.153846\)</span></li>
+<li>Substitute <span class="math inline">\(x\)</span> into <span class="math inline">\(y=2+\frac{3x}{8}\)</span> to get <span class="math inline">\(4.307692\)</span></li>
+</ul>
 <p><strong>Discussion</strong></p>
 <p>Explain the significance of the optimal pricing strategy and how it
 can be applied in a competitive retail environment.</p>
+<div id="answer-19" class="section level3">
+<h3>Answer</h3>
+<p>Revenue function R(x,y) for both brands combined is:</p>
+<p><span class="math inline">\(R(x,y)=-15x^2-20y^2+120x+80y+15xy\)</span></p>
+<p>Optimal prices are</p>
+<p><span class="math inline">\(x \approx 6.15, \ y \approx
+4.31\)</span></p>
+<p><strong>Note</strong> No local saddle</p>
+<p>The equation is meant to find optimal pricing by accounting for the
+competitors prices. This strategy will ensure retailer is operating at
+peak. The goal is for this equation to provide highest possible revenue
+based on price and demand, using functions <span class="math inline">\(D_x(x,y) \ and \ D_x(x,y)\)</span> which are
+derived from consumer behavior. The retailer would likely benefit from
+avoiding pitfalls such as under pricing and overpricing, and allow for
+the implementation of discounts, sales, coupons, etc. based on market
+conditions, because the pricing can be adjusted dynamically.</p>
+</div>
 </div>
 <div id="question-3-3" class="section level2">
 <h2>Question 3</h2>
@@ -3357,11 +3440,41 @@ minimize the total weekly cost.</li>
 <li>What is the minimized total cost, and how does the distribution of
 production between the two plants affect overall efficiency?</li>
 </ol>
-<div id="discussion" class="section level3">
-<h3>Discussion</h3>
+<p><strong>Solution</strong></p>
+<p>Goal is to minimize <span class="math inline">\(C(x,y)=\frac{1}{8}x^2+\frac{1}{10}y^2+12x+18y+1500\)</span>
+under the constraint <span class="math inline">\(x+y=200\)</span></p>
+<p>Rewrite <span class="math inline">\(x+y=200 \rightarrow
+y=200-x\)</span></p>
+<p>Substitute in the cost function to get <span class="math inline">\(C(x,y)=\frac{1}{8}x^2+\frac{1}{10}(200-x)^2+12x+18(200-x)+1500\)</span></p>
+<p>Expand to <span class="math inline">\(C(x,y)=\frac{1}{8}x^2+\frac{1}{10}(40000-400x+x^2)+12x+3600-18x+1500\)</span></p>
+<p>Simplify to <span class="math inline">\(C(x,y)=\frac{1}{8}x^2+4000-40x+\frac{1}{10}x^2+12x+3600-18x+1500\)</span></p>
+<p>Add like terms to get <span class="math inline">\(C(x)=\frac{9}{40}x^2-46x+9100\)</span></p>
+<p>What end up with is a quadratic equation that we would like the
+minimum to. Therefore we can calculate the vertex of a parabola get the
+minimum for <span class="math inline">\(x\)</span> then substitue <span class="math inline">\(y\)</span> in our constraint.</p>
+<p>vertex equals <span class="math inline">\(x=-\frac{b}{2a}\)</span>
+where <span class="math inline">\(a=\frac{9}{40}\)</span> and <span class="math inline">\(b=-46\)</span></p>
+<p>substitute to get <span class="math inline">\(x=\frac{-46}{2 \cdot
+\frac{9}{40}}=\frac{46 \cdot 40}{18}=\frac{1840}{18}\approx
+102.22\)</span></p>
+<p>substitute from the constraint <span class="math inline">\(y=200-102.22 \approx 97.78\)</span></p>
+<p>And then substitute in the original cost function</p>
+<p><span class="math inline">\(C(102.22,97.78)=\frac{1}{8}(102.22)^2+\frac{1}{10}(97.78)^2+12(102.22)+18(97.78)+1500\)</span></p>
+<pre class="r"><code>(1/8)*(102.22)^2+(1/10)*(97.78)^2+12*(102.22)+18*(97.78)+1500</code></pre>
+<pre><code>## [1] 6748.889</code></pre>
+<p><strong>Discussion</strong></p>
 <p>Discuss the benefits of this cost-minimization strategy and any
 practical considerations that might influence the allocation of
 production between the two plants.</p>
+<p>This formula is really about cost efficiency, by allocation
+production optimally, a strategy that balances production can be made.
+This would in turn affect profit margins and avoids excessive costs that
+can occur from overloading one of the two plants.</p>
+<div id="answer-20" class="section level3">
+<h3>Answer</h3>
+<p>Production Distribution for NY is <span class="math inline">\(x
+\approx 102.22\)</span> and for Chicagor is <span class="math inline">\(y \approx 97.78\)</span> with a minimized cost of
+<span class="math inline">\(C(x,y) \approx \$6,748.89\)</span></p>
 </div>
 </div>
 <div id="question-4-3" class="section level2">
@@ -3388,11 +3501,73 @@ customer reach.</li>
 <li>Identify any saddle points and discuss how they could affect the
 marketing strategy.</li>
 </ol>
-<div id="discussion-1" class="section level3">
-<h3>Discussion</h3>
+<p><strong>Solution</strong></p>
+<p>We want to maximize <span class="math inline">\(E(x,y)=500x+700y-5x^2-10xy-8y^2\)</span></p>
+<p>We will require the partial derivatives</p>
+<ul>
+<li><span class="math inline">\(\frac{\partial E}{\partial
+x}=500-10x-10y\)</span></li>
+<li><span class="math inline">\(\frac{\partial E}{\partial
+y}=700-10x-16y\)</span></li>
+<li><span class="math inline">\(\frac{\partial^2 E}{\partial
+x^2}=-10\)</span></li>
+<li><span class="math inline">\(\frac{\partial^2 E}{\partial
+y^2}=-16\)</span></li>
+<li><span class="math inline">\(\frac{\partial^2 E}{\partial x \partial
+y}=-10\)</span></li>
+<li><span class="math inline">\(\frac{\partial^2 E}{\partial y \partial
+x}=-10\)</span></li>
+<li>The discriminant <span class="math inline">\(D\)</span> is given by
+the determinant of Hessian Matrix H below or just calculate for <span class="math inline">\(D=\frac{\partial^2 \Pi}{\partial x^2} \cdot
+\frac{\partial^2 \Pi}{\partial y^2} - (\frac{\partial^2 \Pi}{\partial x
+\partial y})^2\)</span> to the local minimum/maximum.</li>
+</ul>
+<p><span class="math display">\[
+H = \begin{pmatrix}
+-10 &amp; -10 \\
+-10 &amp; -16 \\
+\end{pmatrix} \ \
+\]</span></p>
+<ul>
+<li>H=(-10)(-16)-(-10)^2=160-100=60</li>
+</ul>
+<p>Critical point classifications:</p>
+<ul>
+<li><span class="math inline">\(H&gt;0\)</span> and <span class="math inline">\(E_{xx}&lt;0\)</span>, local maximum</li>
+<li><span class="math inline">\(H&gt;0\)</span> and <span class="math inline">\(E_{xx}&gt;0\)</span>, local minimum</li>
+<li><span class="math inline">\(H&lt;0\)</span>, saddle point</li>
+<li><span class="math inline">\(H=60&gt;0\)</span> and <span class="math inline">\(E_{xx}=-10.0\)</span> therefore our critical point
+is a local maximum.</li>
+</ul>
+<p>To get critical points we set <span class="math inline">\(\frac{\partial E}{\partial x}\)</span> and <span class="math inline">\(\frac{\partial E}{\partial y}\)</span> to zero</p>
+<ul>
+<li><span class="math inline">\(500-10x-10y=0 \rightarrow
+10x+10y=500\)</span> which gives us <span class="math inline">\(x+y=50\)</span></li>
+<li><span class="math inline">\(700-10x-16y=0 \rightarrow
+10x+16y=700\)</span> which gives us <span class="math inline">\(x+1.6y=70\)</span></li>
+<li>We can eliminate <span class="math inline">\(x\)</span> and solve
+for <span class="math inline">\(y\)</span> by subtracting these terms
+<span class="math inline">\((x+1.6y=50)-(x+y=50)\)</span></li>
+<li>Which gives us <span class="math inline">\(0.6y=20\)</span> and
+results in <span class="math inline">\(\approx 33.33\)</span></li>
+<li>We can then substitute <span class="math inline">\(y\)</span> in
+<span class="math inline">\(x+y=50\)</span> to get <span class="math inline">\(x+33.33=50 \rightarrow x=50-33.33\)</span> which
+gives us <span class="math inline">\(\approx 16.67\)</span></li>
+</ul>
+<p><strong>Discussion</strong></p>
 <p>Explain how the results can be used to allocate the marketing budget
 effectively and what the company should consider if it encounters saddle
 points in the optimization.</p>
+<div id="answer-21" class="section level3">
+<h3>Answer</h3>
+<p>Optimized spending</p>
+<p>Online Ads = <span class="math inline">\(16.67 \times 1000(\$) =
+\$16,670\)</span></p>
+<p>Television Ads = <span class="math inline">\(33.33 \times
+1000(\$)=\$33,330\)</span></p>
+<p>Maximum customers reached is <span class="math inline">\(E(16.67,33.33)=500(16.67)+700(33.33)-5(16.67)^2-10(16.67)(33.33)-8(33.33)^2\)</span></p>
+<pre class="r"><code>500*(16.67)+700*(33.33)-5*(16.67)^2-10*(16.67)*(33.33)-8*(33.33)^2</code></pre>
+<pre><code>## [1] 15833.33</code></pre>
 <p><strong>As always, include a professional pdf only with all code,
 text, graphics, explanations, etc.</strong></p>
 </div>
