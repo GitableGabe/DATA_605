@@ -12,7 +12,7 @@
 <meta name="author" content="Gabriel Campos" />
 
 
-<title>DATA 605: Computational Mathematics Homework 3</title>
+<title>DATA 605: Computational Mathematics Discussion Board 15</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1748,1220 +1748,128 @@ display: none;
 
 
 <h1 class="title toc-ignore">DATA 605: Computational Mathematics
-Homework 3</h1>
+Discussion Board 15</h1>
 <h4 class="author">Gabriel Campos</h4>
-<h4 class="date">Last edited November 22, 2024</h4>
+<h4 class="date">Last edited December 01, 2024</h4>
 
 </div>
 
 
 <!-- rnb-text-begin -->
-<div id="library" class="section level2">
-<h2>Library</h2>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBEYXRhIGxvYWRcbmRhdGEoY2FycylcbiMgbGlicmFyaWVzXG5saWJyYXJ5KGRwbHlyKVxubGlicmFyeShnZ3Bsb3QyKVxubGlicmFyeShnZ3RoZW1lcylcbmxpYnJhcnkobG10ZXN0KVxuYGBgIn0= -->
-<pre class="r"><code># Data load
-data(cars)
-# libraries
-library(dplyr)
-library(ggplot2)
-library(ggthemes)
-library(lmtest)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="problem-1" class="section level1">
-<h1>Problem 1</h1>
-<p><strong>Transportation Safety</strong></p>
-<p><strong>Task</strong></p>
-<p>Using the cars dataset in R, perform the following steps:</p>
-<div id="section" class="section level2">
-<h2>1</h2>
-<p><strong>Data Visualization</strong></p>
-<div id="i" class="section level3">
-<h3>i</h3>
-<p>Create a scatter plot of stopping distance (dist) as a function of
-speed (speed).</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KGNhcnMsIGFlcyh4ID0gc3BlZWQsIHkgPSBkaXN0KSkgK1xuICBnZW9tX3BvaW50KCkgK1xuICBsYWJzKFxuICAgIHRpdGxlID0gXCJTdG9wcGluZyBEaXN0YW5jZSBhcyBhIEZ1bmN0aW9uIG9mIFNwZWVkXCIsXG4gICAgeCA9IFwiU3BlZWQgKG1waClcIixcbiAgICB5ID0gXCJTdG9wcGluZyBEaXN0YW5jZSAoZnQpXCJcbiAgKSArXG4gIHRoZW1lX21pbmltYWwoKVxuYGBgIn0= -->
-<pre class="r"><code>ggplot(cars, aes(x = speed, y = dist)) +
-  geom_point() +
-  labs(
-    title = &quot;Stopping Distance as a Function of Speed&quot;,
-    x = &quot;Speed (mph)&quot;,
-    y = &quot;Stopping Distance (ft)&quot;
-  ) +
-  theme_minimal()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="ii" class="section level3">
-<h3>ii</h3>
-<p>Add a regression line to the plot to visually assess the
-relationship.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KGNhcnMsIGFlcyh4ID0gc3BlZWQsIHkgPSBkaXN0KSkgK1xuICBnZW9tX3BvaW50KGNvbG9yID0gXCJkYXJrb3JhbmdlXCIsIHNpemUgPSAzKSArIFxuICBnZW9tX3Ntb290aChtZXRob2QgPSBcImxtXCIsIGNvbG9yID0gXCJzdGVlbGJsdWVcIiwgc2UgPSBGQUxTRSkgK1xuICBsYWJzKFxuICAgIHRpdGxlID0gXCJTdG9wcGluZyBEaXN0YW5jZSBhcyBhIEZ1bmN0aW9uIG9mIFNwZWVkXCIsXG4gICAgeCA9IFwiU3BlZWQgKG1waClcIixcbiAgICB5ID0gXCJTdG9wcGluZyBEaXN0YW5jZSAoZnQpXCJcbiAgKSArXG4gIHRoZW1lX21pbmltYWwoKVxuYGBgIn0= -->
-<pre class="r"><code>ggplot(cars, aes(x = speed, y = dist)) +
-  geom_point(color = &quot;darkorange&quot;, size = 3) + 
-  geom_smooth(method = &quot;lm&quot;, color = &quot;steelblue&quot;, se = FALSE) +
-  labs(
-    title = &quot;Stopping Distance as a Function of Speed&quot;,
-    x = &quot;Speed (mph)&quot;,
-    y = &quot;Stopping Distance (ft)&quot;
-  ) +
-  theme_minimal()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-</div>
-<div id="section-1" class="section level2">
-<h2>2</h2>
-<p><strong>Build a Linear Model</strong></p>
-<div id="i-1" class="section level3">
-<h3>i</h3>
-<p>Construct a simple linear regression model where stopping distance
-(dist) is the dependent variable and speed (speed) is the independent
-variable.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2Fyc19tb2RlbCA8LSBsbShkaXN0fnNwZWVkLCBkYXRhID0gY2FycylcbmBgYCJ9 -->
-<pre class="r"><code>cars_model &lt;- lm(dist~speed, data = cars)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="ii-1" class="section level3">
-<h3>ii</h3>
-<p>Summarize the model to evaluate its coefficients, R-squared value,
-and p-value.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShjYXJzX21vZGVsKVxuYGBgIn0= -->
-<pre class="r"><code>summary(cars_model)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<ul>
-<li><strong>Intercept &amp; Speed</strong> of -17.5791 just indicates
-the stopping distance at 0 mph. The value is not important only because
-logically a vehicle not in motion (0mph) does not require stopping
-distance. The value of <span class="math inline">\(3.9324\)</span>
-indicates for every 1 mph <span class="math inline">\(3.9324 \
-ft\)</span> is needed to stop. Therefore a minimum speed of <span class="math inline">\(\approx 4.48 \ mph\)</span> is needed before any
-distance is actually needed to stop.</li>
-<li><strong>R-Squared</strong> value of <span class="math inline">\(0.6511\)</span> indicates <span class="math inline">\(\approx 65\%\)</span> of variance is captured by
-this relationship, so its a moderate indicator, and there may be several
-more and potentially stronger factor that can be used to predict the
-distance needed to stop.</li>
-<li><strong>P-Value</strong> of <span class="math inline">\(1.49e^{12}\)</span> indicates that the
-relationship is statistically significant.</li>
-</ul>
-</div>
-<div id="section-2" class="section level3">
-<h3>3</h3>
-<p><strong>Model Quality Evaluation</strong></p>
-</div>
-<div id="i-2" class="section level3">
-<h3>i</h3>
-<p>Calculate and interpret the R-squared value to assess the proportion
-of variance in stopping distance explained by speed.</p>
-<ul>
-<li><strong>R-Squared</strong> as indicated above this means <span class="math inline">\(\approx 65\%\)</span> of the variance is captured,
-making this a moderate factor to stopping distance.</li>
-<li><strong>R-Squared Adjusted</strong> Frankly, there is only 2
-attributes to this table, so adjusting according to the number of
-predictors of the model makes little difference, therefore the variance
-of <span class="math inline">\(0.6438\)</span> or <span class="math inline">\(\approx 64\%\)</span> is relatively the same to
-the original, and the remaining factors would include attributes not
-collected in our dataset.</li>
-</ul>
-</div>
-<div id="ii-2" class="section level3">
-<h3>ii</h3>
-<p>Perform a residual analysis to check the assumptions of the linear
-regression model, including linearity, homoscedasticity, independence,
-and normality of residuals.</p>
-<p><strong>In order to do this without repeating the steps for Section 4
-we leverage the various functions in R through the package <a href="https://cran.r-project.org/web/packages/lmtest/index.html">lmtest</a></strong></p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2Fyc19yZXNpZF92YWx1ZXMgPC0gcmVzaWQoY2Fyc19tb2RlbClcbmNhcnNfZml0dGVkX3ZhbHVlcyA8LSBmaXR0ZWQoY2Fyc19tb2RlbClcbmBgYCJ9 -->
-<pre class="r"><code>cars_resid_values &lt;- resid(cars_model)
-cars_fitted_values &lt;- fitted(cars_model)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShjYXJzX3Jlc2lkX3ZhbHVlcylcbmBgYCJ9 -->
-<pre class="r"><code>summary(cars_resid_values)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG10ZXN0OjpicHRlc3QoY2Fyc19tb2RlbClcbmBgYCJ9 -->
-<pre class="r"><code>lmtest::bptest(cars_model)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29yKGNhcnNfZml0dGVkX3ZhbHVlcywgY2FycyRkaXN0KVxuYGBgIn0= -->
-<pre class="r"><code>cor(cars_fitted_values, cars$dist)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHd0ZXN0KGNhcnNfbW9kZWwpXG5gYGAifQ== -->
-<pre class="r"><code>dwtest(cars_model)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxua3MudGVzdChjYXJzX3Jlc2lkX3ZhbHVlcywgXCJwbm9ybVwiLCBtZWFuPW1lYW4oY2Fyc19yZXNpZF92YWx1ZXMsIHNkID0gc2QoY2Fyc19yZXNpZF92YWx1ZXMpKSlcbmBgYCJ9 -->
-<pre class="r"><code>ks.test(cars_resid_values, &quot;pnorm&quot;, mean=mean(cars_resid_values, sd = sd(cars_resid_values)))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<ul>
-<li>We have an mean of 0 which is ideal</li>
-<li>A correlation of <span class="math inline">\(0.8068949\)</span>
-suggests strong linearity since it is close to 1.</li>
-<li>the <span class="math inline">\(p-value&gt;0.05\)</span> through the
-<em>Breusch-Pagan test</em> ( <strong>bptest()</strong> ) which it is at
-<span class="math inline">\(0.7297\)</span> indicates
-homoscedasticity.</li>
-<li>the <span class="math inline">\(p-value\)</span> through the
-<em>Durbin-Watson test</em> ( <strong>dwtest()</strong> ) of <span class="math inline">\(0.09522\)</span> indicated residuals are
-independent or has no significant autocorrelation in residuals.</li>
-<li>the <span class="math inline">\(p-value\)</span> through the
-<em>Kolmogorav-Smirnov test</em> ( <strong>ks.test()</strong> ) of <span class="math inline">\(3.283 \times 10^-11\)</span>/ indicates its not
-normally distributed.</li>
-</ul>
-</div>
-</div>
-<div id="section-3" class="section level2">
-<h2>4</h2>
-<p><strong>Residual Analysis</strong></p>
-<div id="i-3" class="section level3">
-<h3>i</h3>
-<p>Plot the residuals versus fitted values to check for any
-patterns.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdChjYXJzX2ZpdHRlZF92YWx1ZXMsIGNhcnNfcmVzaWRfdmFsdWVzLCBcbiAgICAgeGxhYiA9IFwiRml0dGVkIFZhbHVlc1wiLCBcbiAgICAgeWxhYiA9IFwiUmVzaWR1YWxzXCIsIFxuICAgICBtYWluID0gXCJDYXJzOiBSZXNpZHVhbHMgdnMgRml0dGVkIFZhbHVlc1wiLFxuICAgICBwY2ggPSAyMCwgXG4gICAgIGNvbCA9IFwibmF2eWJsdWVcIilcbmFibGluZShoID0gMCwgY29sID0gXCJkYXJrcmVkXCIsIGx0eSA9IDIpXG5gYGAifQ== -->
-<pre class="r"><code>plot(cars_fitted_values, cars_resid_values, 
-     xlab = &quot;Fitted Values&quot;, 
-     ylab = &quot;Residuals&quot;, 
-     main = &quot;Cars: Residuals vs Fitted Values&quot;,
-     pch = 20, 
-     col = &quot;navyblue&quot;)
-abline(h = 0, col = &quot;darkred&quot;, lty = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="ii-3" class="section level3">
-<h3>ii</h3>
-<p>Create a Q-Q plot of the residuals to assess normality.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucXFub3JtKGNhcnNfcmVzaWRfdmFsdWVzLCBcbiAgICAgICBtYWluID0gXCJRLVEgUGxvdCBvZiBSZXNpZHVhbHNcIiwgXG4gICAgICAgcGNoID0gMjAsIFxuICAgICAgIGNvbCA9IFwiZGFya2JsdWVcIilcbnFxbGluZShjYXJzX3Jlc2lkX3ZhbHVlcywgY29sID0gXCJkYXJrb3JhbmdlXCIsIGx0eSA9IDIpXG5gYGAifQ== -->
-<pre class="r"><code>qqnorm(cars_resid_values, 
-       main = &quot;Q-Q Plot of Residuals&quot;, 
-       pch = 20, 
-       col = &quot;darkblue&quot;)
-qqline(cars_resid_values, col = &quot;darkorange&quot;, lty = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="iii" class="section level3">
-<h3>iii</h3>
-<p>Perform a Shapiro-Wilk test for normality of residuals.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2Fyc19zaGFwaXJvX3Rlc3QgPC0gc2hhcGlyby50ZXN0KGNhcnNfcmVzaWRfdmFsdWVzKVxuY2Fyc19zaGFwaXJvX3Rlc3RcbmBgYCJ9 -->
-<pre class="r"><code>cars_shapiro_test &lt;- shapiro.test(cars_resid_values)
-cars_shapiro_test</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="iv" class="section level3">
-<h3>iv</h3>
-<p>Plot a histogram of residuals to further check for normality.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGlzdChjYXJzX3Jlc2lkX3ZhbHVlcywgXG4gICAgIGJyZWFrcyA9IDEwLCAjIEFkanVzdCB0aGUgbnVtYmVyIG9mIGJpbnMgYXMgbmVlZGVkXG4gICAgIGNvbCA9IFwibGlnaHRncmV5XCIsIFxuICAgICBtYWluID0gXCJIaXN0b2dyYW0gb2YgUmVzaWR1YWxzXCIsIFxuICAgICB4bGFiID0gXCJSZXNpZHVhbHNcIixcbiAgICAgeWxhYiA9IFwiRnJlcXVlbmN5XCIsXG4gICAgIGJvcmRlciA9IFwiYmxhY2tcIilcbmBgYCJ9 -->
-<pre class="r"><code>hist(cars_resid_values, 
-     breaks = 10, # Adjust the number of bins as needed
-     col = &quot;lightgrey&quot;, 
-     main = &quot;Histogram of Residuals&quot;, 
-     xlab = &quot;Residuals&quot;,
-     ylab = &quot;Frequency&quot;,
-     border = &quot;black&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="conclusion" class="section level3">
-<h3>Conclusion</h3>
-<p>Based on the model summary and residual analysis, determine whether
-the linear model is appropriate for this data. Discuss any potential
-violations of model assumptions and suggest improvements if
-necessary.</p>
-<p>The model for this data set is reasonably appropriate, as it
-demonstrates moderate explanatory power <span class="math inline">\((R^2
-\approx 0.65)\)</span>. While the Q-Q plot and histogram suggest
-residuals indicate near-normal residuals, the Shapiro-Wilk test <span class="math inline">\((p=0.02152)\)</span> suggests mild non-normality.
-Additionally, the residuals vs fitted plot reveals 3 outliers that may
-impact the models validity. To improve the model, we can consider
-removing or adjusting for these outliers or testing a non-linear
-regression model to capture potential curvature in the data.</p>
-</div>
-</div>
-</div>
-<div id="problem-2" class="section level1">
-<h1>Problem 2</h1>
-<p><strong>Health Policy Analyst</strong></p>
-<p>As a health policy analyst for an international organization, you are
-tasked with analyzing data from the World Health Organization (WHO) to
-inform global health policies. The dataset provided (who.csv) contains
-crucial health indicators for various countries from the year 2008. The
-variables include:</p>
-<ul>
-<li>Country: Name of the country</li>
-<li>LifeExp: Average life expectancy for the country in years</li>
-<li>InfantSurvival: Proportion of those surviving to one year or
-more</li>
-<li>Under5Survival: Proportion of those surviving to five years or
-more</li>
-<li>TBFree: Proportion of the population without TB</li>
-<li>PropMD: Proportion of the population who are MDs</li>
-<li>PropRN: Proportion of the population who are RNs</li>
-<li>PersExp: Mean personal expenditures on healthcare in US dollars at
-average exchange rate</li>
-<li>GovtExp: Mean government expenditures per capita on healthcare, US
-dollars at average exchange rate</li>
-<li>TotExp: Sum of personal and government expenditures</li>
-</ul>
-<p>Your analysis will directly influence recommendations for improving
-global life expectancy and the allocation of healthcare resources.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX2RmIDwtIHJlYWQuY3N2KFwid2hvLmNzdlwiLCBmaWxlRW5jb2RpbmcgPSBcIlVURi04XCIpJT4lXG4gICAgICAgICAgICAgIHNlbGVjdCgtTGlmZUV4cC4xLC1YKVxuYGBgIn0= -->
-<pre class="r"><code>who_df &lt;- read.csv(&quot;who.csv&quot;, fileEncoding = &quot;UTF-8&quot;)%&gt;%
-              select(-LifeExp.1,-X)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="question-1" class="section level2">
-<h2>Question 1</h2>
-<p><strong>Initial Assessment of Healthcare Expenditures and Life
-Expectancy</strong></p>
-<p><strong>Task</strong></p>
-<p>Create a scatterplot of LifeExp vs. TotExp to visualize the
-relationship between healthcare expenditures and life expectancy across
-countries. Then, run a simple linear regression with LifeExp as the
-dependent variable and TotExp as the independent variable (without
-transforming the variables).</p>
-<ul>
-<li>Provide and interpret the F-statistic, R-squared value, standard
-error, and p-values.</li>
-<li>Discuss whether the assumptions of simple linear regression
-(linearity, independence, homoscedasticity, and normality of residuals)
-are met in this analysis.</li>
-</ul>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKHdob19kZilcbmBgYCJ9 -->
-<pre class="r"><code>str(who_df)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSh3aG9fZGYpXG5gYGAifQ== -->
-<pre class="r"><code>summary(who_df)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p><strong>Create a scatterplot of LifeExp vs. TotExp</strong></p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KHdob19kZiwgYWVzKHggPSBUb3RFeHAsIHkgPSBMaWZlRXhwKSkgK1xuICBnZW9tX3BvaW50KGFscGhhID0gMC43KSArXG4gIGxhYnMoXG4gICAgdGl0bGUgPSBcIlNjYXR0ZXJwbG90IG9mIExpZmUgRXhwZWN0YW5jeSB2cyBUb3RhbCBFeHBlbmRpdHVyZXNcIixcbiAgICB4ID0gXCJUb3RhbCBIZWFsdGhjYXJlIEV4cGVuZGl0dXJlcyAoVVMgRG9sbGFycylcIixcbiAgICB5ID0gXCJMaWZlIEV4cGVjdGFuY3kgKFllYXJzKVwiXG4gICkgK1xuICB0aGVtZV9taW5pbWFsKClcbmBgYCJ9 -->
-<pre class="r"><code>ggplot(who_df, aes(x = TotExp, y = LifeExp)) +
-  geom_point(alpha = 0.7) +
-  labs(
-    title = &quot;Scatterplot of Life Expectancy vs Total Expenditures&quot;,
-    x = &quot;Total Healthcare Expenditures (US Dollars)&quot;,
-    y = &quot;Life Expectancy (Years)&quot;
-  ) +
-  theme_minimal()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX21vZGVsIDwtIGxtKExpZmVFeHAgfiBUb3RFeHAsIGRhdGEgPSB3aG9fZGYpXG5gYGAifQ== -->
-<pre class="r"><code>who_model &lt;- lm(LifeExp ~ TotExp, data = who_df)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeSh3aG9fbW9kZWwpXG5gYGAifQ== -->
-<pre class="r"><code>summary(who_model)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Jlc2lkdWFscyB2cyBGaXR0ZWRcbnBsb3Qod2hvX21vZGVsLCB3aGljaCA9IDEpXG5gYGAifQ== -->
-<pre class="r"><code>#Residuals vs Fitted
-plot(who_model, which = 1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBRLVEgcGxvdFxucGxvdCh3aG9fbW9kZWwsIHdoaWNoID0gMilcbmBgYCJ9 -->
-<pre class="r"><code># Q-Q plot
-plot(who_model, which = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzXG5oaXN0KHJlc2lkdWFscyh3aG9fbW9kZWwpLCBicmVha3MgPSAyMCwgbWFpbiA9IFwiSGlzdG9ncmFtIG9mIFJlc2lkdWFsc1wiLCB4bGFiID0gXCJSZXNpZHVhbHNcIilcbmBgYCJ9 -->
-<pre class="r"><code># Histogram of residuals
-hist(residuals(who_model), breaks = 20, main = &quot;Histogram of Residuals&quot;, xlab = &quot;Residuals&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p><strong>Discussion</strong></p>
-<div id="i." class="section level3">
-<h3>i.</h3>
-<p>Consider the implications of your findings for health policy. Are
-higher healthcare expenditures generally associated with longer life
-expectancy?</p>
-<p>The data shows a moderate positive relationship between healthcare
-expenditures and life expectancy.</p>
-<ul>
-<li><span class="math inline">\(F-statistic\)</span> of <span class="math inline">\(14.96\)</span> and <span class="math inline">\(p-value \approx 0.0004\)</span> indicates
-statistical significance, suggesting the variables have a meaningful
-relationship with life expectancy. However, the models explains limited
-variability in life expectancy.</li>
-<li>Standard Error <span class="math inline">\((SE)\)</span> of <span class="math inline">\(10.15\)</span> suggests a relatively good
-fit,providing reasonable precision of the estimating regression
-coefficient such as slope or intercept.</li>
-<li>A positive coefficient <span class="math inline">\(9.641 \times
-10^{-5}\)</span> implies as healthcare expenditure increases, life
-expectancy improves. However, the magnitude suggests a small incremental
-effect.</li>
-<li>The residuals deviates significantly from normality, as shown by the
-Q-Q plot and supported by the Histogram of Residuals.</li>
-<li>There are no evident signs of homoscedasticity. The points do not
-show randomness or form a funnel or fan like shape.</li>
-<li>There is a clear pattern with the residuals, which do not appear
-random, with a visible curvature. This indicates a non-linear
-relationship between the variables, and makes it innappropriate to
-assume independence of residuals.</li>
-</ul>
-</div>
-<div id="ii." class="section level3">
-<h3>ii.</h3>
-<p>What do the assumptions of the regression model suggest about the
-reliability of this relationship? <span class="math inline">\(R^2 =
-0.2772\)</span> suggests the relationship is no particularly strong,
-implying that while healthcare expenditures explain some variation in
-life expectancy, the model does not capture all the influencing
-factors.</p>
-</div>
-</div>
-<div id="question-2" class="section level2">
-<h2>Question 2</h2>
-<p><strong>Transforming Variables for a Better Fit</strong></p>
-<p><strong>Task</strong></p>
-<p>Recognizing potential non-linear relationships, transform the
-variables as follows</p>
-<ul>
-<li>Raise life expectancy to the 4.6 power (LifeExp^4.6).</li>
-<li>Raise total expenditures to the 0.06 power (TotExp^0.06), which is
-nearly a logarithmic transformation.</li>
-</ul>
-<p>Create a new scatterplot with the transformed variables and re-run
-the simple linear regression model.</p>
-<ul>
-<li>Provide and interpret the F-statistic, R-squared value, standard
-error, and p-values for the transformed model.</li>
-<li>Compare this model to the original model (from Question 1). Which
-model provides a better fit, and why?</li>
-</ul>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX2RmJExpZmVFeHBfdCA8LSB3aG9fZGYkTGlmZUV4cF40LjZcbndob19kZiRUb3RFeHBfdCA8LSB3aG9fZGYkVG90RXhwXjAuNlxuYGBgIn0= -->
-<pre class="r"><code>who_df$LifeExp_t &lt;- who_df$LifeExp^4.6
-who_df$TotExp_t &lt;- who_df$TotExp^0.6</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KHdob19kZiwgYWVzKHggPSBUb3RFeHBfdCwgeSA9IExpZmVFeHBfdCkpICtcbiAgZ2VvbV9wb2ludChhbHBoYSA9IDAuNykgK1xuICBsYWJzKFxuICAgIHRpdGxlID0gXCJTY2F0dGVycGxvdCBvZiBMaWZlIEV4cGVjdGFuY3leNC42IHZzIFRvdGFsIEV4cGVuZGl0dXJlc14wLjZcIixcbiAgICB4ID0gXCJUb3RhbCBIZWFsdGhjYXJlIEV4cGVuZGl0dXJlcyAoVVMgRG9sbGFycylcIixcbiAgICB5ID0gXCJMaWZlIEV4cGVjdGFuY3kgKFllYXJzKVwiXG4gICkgK1xuICB0aGVtZV9jbGVhbigpXG5gYGAifQ== -->
-<pre class="r"><code>ggplot(who_df, aes(x = TotExp_t, y = LifeExp_t)) +
-  geom_point(alpha = 0.7) +
-  labs(
-    title = &quot;Scatterplot of Life Expectancy^4.6 vs Total Expenditures^0.6&quot;,
-    x = &quot;Total Healthcare Expenditures (US Dollars)&quot;,
-    y = &quot;Life Expectancy (Years)&quot;
-  ) +
-  theme_clean()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX21vZGVsX3QgPC0gbG0oTGlmZUV4cF90IH4gVG90RXhwX3QsIGRhdGEgPSB3aG9fZGYpXG5zdW1tYXJ5KHdob19tb2RlbF90KVxuYGBgIn0= -->
-<pre class="r"><code>who_model_t &lt;- lm(LifeExp_t ~ TotExp_t, data = who_df)
-summary(who_model_t)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Jlc2lkdWFscyB2cyBGaXR0ZWRcbnBsb3Qod2hvX21vZGVsX3QsIHdoaWNoID0gMSlcbmBgYCJ9 -->
-<pre class="r"><code>#Residuals vs Fitted
-plot(who_model_t, which = 1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBRLVEgcGxvdFxucGxvdCh3aG9fbW9kZWxfdCwgd2hpY2ggPSAyKVxuYGBgIn0= -->
-<pre class="r"><code># Q-Q plot
-plot(who_model_t, which = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzXG5oaXN0KHJlc2lkdWFscyh3aG9fbW9kZWxfdCksIGJyZWFrcyA9IDIwLCBtYWluID0gXCJIaXN0b2dyYW0gb2YgUmVzaWR1YWxzXCIsIHhsYWIgPSBcIlJlc2lkdWFsc1wiKVxuYGBgIn0= -->
-<pre class="r"><code># Histogram of residuals
-hist(residuals(who_model_t), breaks = 20, main = &quot;Histogram of Residuals&quot;, xlab = &quot;Residuals&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<ul>
-<li><span class="math inline">\(F-statistic\)</span> of <span class="math inline">\(56.09\)</span> and <span class="math inline">\(p-value = 4.61 \times 10^{9}\)</span> indicates
-the transformed model is statistical significance and captures greater
-proportion of variability.</li>
-<li>Standard Error <span class="math inline">\((SE)\)</span> of <span class="math inline">\(116,900,000\)</span> suggests a worse fit with the
-precision of the estimated regression coefficient. However, this is more
-likely a result of the greater magnitude of the transformed variables
-rather than an actual decline in performance.</li>
-<li>Positive coefficient <span class="math inline">\(295,518\)</span>
-implies as healthcare expenditure increases so does life expectancy
-still, reflecting a stronger relationship compared to the original
-model.</li>
-<li>The residuals appear more normalized, as shown with the Histogram of
-Residuals and Q-Q plot. Deviations are still present, however they are
-less severe than the original model.</li>
-<li>No homoscedasticity appears with the transformation.</li>
-<li>Residual patterns still do not support independence between the
-variables.</li>
-</ul>
-<p><strong>Discussion</strong></p>
-<div id="i-4" class="section level3">
-<h3>i</h3>
-<p>How do the transformations impact the interpretation of the
-relationship between healthcare spending and life expectancy?</p>
-<p><span class="math inline">\(R^2 = 0.5898\)</span> suggests the
-relationship is strong, particularly when compare to the
-predecessor.</p>
-</div>
-<div id="ii-4" class="section level3">
-<h3>ii</h3>
-<p>Why might the transformed model be more appropriate for policy
-recommendations?</p>
-<p>The stronger relationship is highlighted after the transformation,
-which better accounts for the complex, non-linear relationship between
-healthcare expenditures and life expectancy. This approach reduces risk
-in model specification and captures the diminishing return on healthcare
-spending, that has less of an impact after a certain threshold.</p>
-</div>
-</div>
-<div id="question-3" class="section level2">
-<h2>Question 3</h2>
-<p><strong>Forecasting Life Expectancy Based on Transformed
-Expenditures</strong></p>
-<p><strong>Task</strong></p>
-<p>Using the results from the transformed model in Question 2, forecast
-the life expectancy for countries with the following transformed total
-expenditures <span class="math inline">\((TotalExp^{0.06})\)</span>:</p>
-<ul>
-<li>When <span class="math inline">\(TotExp^{0.06}=1.5\)</span></li>
-<li>When <span class="math inline">\(TotExp^{0.06}=2.5\)</span></li>
-</ul>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX2RmJFRvdEV4cF90MTUgPC0gd2hvX2RmJFRvdEV4cF4xLjVcbndob19kZiRUb3RFeHBfdDI1IDwtIHdob19kZiRUb3RFeHBeMi41XG5gYGAifQ== -->
-<pre class="r"><code>who_df$TotExp_t15 &lt;- who_df$TotExp^1.5
-who_df$TotExp_t25 &lt;- who_df$TotExp^2.5</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KHdob19kZiwgYWVzKHggPSBUb3RFeHBfdDE1LCB5ID0gTGlmZUV4cF90KSkgK1xuICBnZW9tX3BvaW50KGFscGhhID0gMC43KSArXG4gIGxhYnMoXG4gICAgdGl0bGUgPSBcIlNjYXR0ZXJwbG90IG9mIExpZmUgRXhwZWN0YW5jeV4xLjUgdnMgVG90YWwgRXhwZW5kaXR1cmVzXjAuNlwiLFxuICAgIHggPSBcIlRvdGFsIEhlYWx0aGNhcmUgRXhwZW5kaXR1cmVzIChVUyBEb2xsYXJzKVwiLFxuICAgIHkgPSBcIkxpZmUgRXhwZWN0YW5jeSAoWWVhcnMpXCJcbiAgKVxuYGBgIn0= -->
-<pre class="r"><code>ggplot(who_df, aes(x = TotExp_t15, y = LifeExp_t)) +
-  geom_point(alpha = 0.7) +
-  labs(
-    title = &quot;Scatterplot of Life Expectancy^1.5 vs Total Expenditures^0.6&quot;,
-    x = &quot;Total Healthcare Expenditures (US Dollars)&quot;,
-    y = &quot;Life Expectancy (Years)&quot;
-  )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX21vZGVsX3QxNSA8LSBsbShMaWZlRXhwX3QgfiBUb3RFeHBfdDE1LCBkYXRhID0gd2hvX2RmKVxuc3VtbWFyeSh3aG9fbW9kZWxfdDE1KVxuYGBgIn0= -->
-<pre class="r"><code>who_model_t15 &lt;- lm(LifeExp_t ~ TotExp_t15, data = who_df)
-summary(who_model_t15)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Jlc2lkdWFscyB2cyBGaXR0ZWRcbnBsb3Qod2hvX21vZGVsX3QxNSwgd2hpY2ggPSAxKVxuYGBgIn0= -->
-<pre class="r"><code>#Residuals vs Fitted
-plot(who_model_t15, which = 1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBRLVEgcGxvdFxucGxvdCh3aG9fbW9kZWxfdDE1LCB3aGljaCA9IDIpXG5gYGAifQ== -->
-<pre class="r"><code># Q-Q plot
-plot(who_model_t15, which = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzXG5oaXN0KHJlc2lkdWFscyh3aG9fbW9kZWxfdDE1KSwgYnJlYWtzID0gMjAsIG1haW4gPSBcIkhpc3RvZ3JhbSBvZiBSZXNpZHVhbHNcIiwgeGxhYiA9IFwiUmVzaWR1YWxzXCIpXG5gYGAifQ== -->
-<pre class="r"><code># Histogram of residuals
-hist(residuals(who_model_t15), breaks = 20, main = &quot;Histogram of Residuals&quot;, xlab = &quot;Residuals&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KHdob19kZiwgYWVzKHggPSBUb3RFeHBfdDI1LCB5ID0gTGlmZUV4cF90KSkgK1xuICBnZW9tX3BvaW50KGFscGhhID0gMC43KSArXG4gIGxhYnMoXG4gICAgdGl0bGUgPSBcIlNjYXR0ZXJwbG90IG9mIExpZmUgRXhwZWN0YW5jeV4yLjUgdnMgVG90YWwgRXhwZW5kaXR1cmVzXjAuNlwiLFxuICAgIHggPSBcIlRvdGFsIEhlYWx0aGNhcmUgRXhwZW5kaXR1cmVzIChVUyBEb2xsYXJzKVwiLFxuICAgIHkgPSBcIkxpZmUgRXhwZWN0YW5jeSAoWWVhcnMpXCJcbiAgKSArXG4gIHRoZW1lX2NhbGMoKVxuYGBgIn0= -->
-<pre class="r"><code>ggplot(who_df, aes(x = TotExp_t25, y = LifeExp_t)) +
-  geom_point(alpha = 0.7) +
-  labs(
-    title = &quot;Scatterplot of Life Expectancy^2.5 vs Total Expenditures^0.6&quot;,
-    x = &quot;Total Healthcare Expenditures (US Dollars)&quot;,
-    y = &quot;Life Expectancy (Years)&quot;
-  ) +
-  theme_calc()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX21vZGVsX3QyNSA8LSBsbShMaWZlRXhwX3QgfiBUb3RFeHBfdDI1LCBkYXRhID0gd2hvX2RmKVxuc3VtbWFyeSh3aG9fbW9kZWxfdDI1KVxuYGBgIn0= -->
-<pre class="r"><code>who_model_t25 &lt;- lm(LifeExp_t ~ TotExp_t25, data = who_df)
-summary(who_model_t25)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Jlc2lkdWFscyB2cyBGaXR0ZWRcbnBsb3Qod2hvX21vZGVsX3QyNSwgd2hpY2ggPSAxKVxuYGBgIn0= -->
-<pre class="r"><code>#Residuals vs Fitted
-plot(who_model_t25, which = 1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBRLVEgcGxvdFxucGxvdCh3aG9fbW9kZWxfdDI1LCB3aGljaCA9IDIpXG5gYGAifQ== -->
-<pre class="r"><code># Q-Q plot
-plot(who_model_t25, which = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzXG5oaXN0KHJlc2lkdWFscyh3aG9fbW9kZWxfdDI1KSwgYnJlYWtzID0gMjAsIG1haW4gPSBcIkhpc3RvZ3JhbSBvZiBSZXNpZHVhbHNcIiwgeGxhYiA9IFwiUmVzaWR1YWxzXCIpXG5gYGAifQ== -->
-<pre class="r"><code># Histogram of residuals
-hist(residuals(who_model_t25), breaks = 20, main = &quot;Histogram of Residuals&quot;, xlab = &quot;Residuals&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p><strong>Discussion:</strong></p>
-<p>Discuss the implications of these forecasts for countries with
-different levels of healthcare spending. What do these predictions
-suggest about the potential impact of increasing healthcare expenditures
-on life expectancy?</p>
-<p>The results reveal that transformed healthcare expenditures
-positively correlate with life expectancy, emphasizing the role of
-healthcare spending in improving population health, but its not as
-simple as “spend more, live forever”. In countries with lower levels of
-spending, increased investment in healthcare could yield substantial
-gains in life expectancy,but returns will diminish as expenditures grow
-larger. The residual standard error and adjusted <span class="math inline">\(R^2\)</span> values, indicate substantial
-unexplained variability and suggesting life expectancy is influenced by
-factors beyond spending. A multifaceted approach that targets spending
-and addresses other determinents would yield greater benefits to the
-analysis.</p>
-</div>
-<div id="question-4" class="section level2">
-<h2>Question 4</h2>
-<p><strong>Interaction Effects in Multiple Regression</strong></p>
-<p><strong>Task</strong></p>
-<p>Build a multiple regression model to investigate the combined effect
-of the proportion of MDs and total healthcare expenditures on life
-expectancy. Specifically, use the model:</p>
-<p><span class="math inline">\(LifeExp=b_0+b_1 \times PropMD + b_2
-\times TotExp + b_3 \times (PropMD \times TotExp)\)</span></p>
-<ul>
-<li>interpret the F-statistic, R-squared value, standard error, and
-p-values.</li>
-<li>Evaluate the interaction term (PropMD * TotExp).</li>
-</ul>
-<p>What does this interaction tell us about the relationship between the
-number of MDs, healthcare spending, and life expectancy?</p>
-<p><strong>First I’ll create an interaction model and test for
-significance</strong></p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX21vZGVsX3RNRF9pbnQgPC0gbG0oTGlmZUV4cCB+IFByb3BNRCAqIFRvdEV4cCwgZGF0YSA9IHdob19kZilcbnN1bW1hcnkod2hvX21vZGVsX3RNRF9pbnQpXG5gYGAifQ== -->
-<pre class="r"><code>who_model_tMD_int &lt;- lm(LifeExp ~ PropMD * TotExp, data = who_df)
-summary(who_model_tMD_int)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Jlc2lkdWFscyB2cyBGaXR0ZWRcbnBsb3Qod2hvX21vZGVsX3RNRF9pbnQsIHdoaWNoID0gMSlcbmBgYCJ9 -->
-<pre class="r"><code>#Residuals vs Fitted
-plot(who_model_tMD_int, which = 1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBRLVEgcGxvdFxucGxvdCh3aG9fbW9kZWxfdE1EX2ludCwgd2hpY2ggPSAyKVxuYGBgIn0= -->
-<pre class="r"><code># Q-Q plot
-plot(who_model_tMD_int, which = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzXG5oaXN0KHJlc2lkdWFscyh3aG9fbW9kZWxfdE1EX2ludCksIGJyZWFrcyA9IDIwLCBtYWluID0gXCJIaXN0b2dyYW0gb2YgUmVzaWR1YWxzXCIsIHhsYWIgPSBcIlJlc2lkdWFsc1wiKVxuYGBgIn0= -->
-<pre class="r"><code># Histogram of residuals
-hist(residuals(who_model_tMD_int), breaks = 20, main = &quot;Histogram of Residuals&quot;, xlab = &quot;Residuals&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p><strong>Considering the results I will create an additive model to
-interpret how they jointly affect LifeExp</strong></p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2hvX21vZGVsX3RNRF9hZGQgPC0gbG0oTGlmZUV4cCB+IFByb3BNRCArIFRvdEV4cCwgZGF0YSA9IHdob19kZilcbnN1bW1hcnkod2hvX21vZGVsX3RNRF9hZGQpXG5gYGAifQ== -->
-<pre class="r"><code>who_model_tMD_add &lt;- lm(LifeExp ~ PropMD + TotExp, data = who_df)
-summary(who_model_tMD_add)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Jlc2lkdWFscyB2cyBGaXR0ZWRcbnBsb3Qod2hvX21vZGVsX3RNRF9hZGQsIHdoaWNoID0gMSlcbmBgYCJ9 -->
-<pre class="r"><code>#Residuals vs Fitted
-plot(who_model_tMD_add, which = 1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBRLVEgcGxvdFxucGxvdCh3aG9fbW9kZWxfdE1EX2FkZCwgd2hpY2ggPSAyKVxuYGBgIn0= -->
-<pre class="r"><code># Q-Q plot
-plot(who_model_tMD_add, which = 2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzXG5oaXN0KHJlc2lkdWFscyh3aG9fbW9kZWxfdE1EX2FkZCksIGJyZWFrcyA9IDIwLCBtYWluID0gXCJIaXN0b2dyYW0gb2YgUmVzaWR1YWxzXCIsIHhsYWIgPSBcIlJlc2lkdWFsc1wiKVxuYGBgIn0= -->
-<pre class="r"><code># Histogram of residuals
-hist(residuals(who_model_tMD_add), breaks = 20, main = &quot;Histogram of Residuals&quot;, xlab = &quot;Residuals&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p><strong>Discussion</strong></p>
-<div id="i-5" class="section level3">
-<h3>i</h3>
-<p>How does the presence of more MDs amplify or diminish the effect of
-healthcare expenditures on life expectancy?</p>
-<ul>
-<li>Positive coefficient <span class="math inline">\(4.396 \times
-10^3\)</span> from the interaction model suggests that on average, an
-increase of proportion of MDS leads to higher life expectancy.</li>
-<li>Positive coefficient <span class="math inline">\(2.050 \times
-10^{-4}\)</span> implies increased healthcare expenditures is associated
-with higher life expectancy, assuming PropMD stays constant.</li>
-<li>Negative coefficient <span class="math inline">\(-4.935 \times
-10^{-2}\)</span> suggests PropMD and LifeExp depends on TotExp, and
-vice-versa, with the positive effect of PropMD and LifeExp diminishing
-as TotExp increase, vice-versa.</li>
-<li>This generally implies diminishing return on increase of
-Expenditures and MDs.</li>
-<li>The p-value for <span class="math inline">\(PropMD\)</span> and
-<span class="math inline">\(TotExp\)</span> which is <span class="math inline">\(0.02969\)</span> suggests a meaningful
-relationship.</li>
-<li>For the additive model the coefficients PropMD(<span class="math inline">\(3.533 \times 10^{3}\)</span>) and - TotExp(<span class="math inline">\(5.579 \times 10^{-5}\)</span>) are still positive
-but smaller than the interaction model.</li>
-<li>The <span class="math inline">\(R^2 = 0.452\)</span> from the
-interaction model reducing to <span class="math inline">\(R^2 =
-0.3519\)</span> in the additive, suggests less visibility with the
-additive.</li>
-</ul>
-</div>
-<div id="ii-5" class="section level3">
-<h3>ii</h3>
-<p>What policy recommendations can be drawn from this analysis?</p>
-<p>Since the results basically describe diminishing returns on excessive
-increase of MDs or Expenditures, a balance between the two is ideal. For
-low-spending countries, increasing MDs can offset decreased life
-expectancy, while in high spending conutries, increasing MDs may not
-produce substantial improvement in life expectancy.</p>
-</div>
-</div>
-<div id="question-5" class="section level2">
-<h2>Question 5</h2>
-<p><strong>Forecasting Life Expectancy with Interaction
-Terms</strong></p>
-<p><strong>Task</strong></p>
-<p>Using the multiple regression model from Question 4, forecast the
-life expectancy for a country where:</p>
-<p>The proportion of MDs is 0.03 (PropMD = 0.03). The total healthcare
-expenditure is 14 (TotExp = 14).</p>
-<p><strong>Discussion</strong></p>
-<div id="i-6" class="section level3">
-<h3>i</h3>
-<p>Does this forecast seem realistic?</p>
-</div>
-<div id="ii-6" class="section level3">
-<h3>ii</h3>
-<p>Why or why not?</p>
-</div>
-<div id="iii-1" class="section level3">
-<h3>iii</h3>
-<p>Consider both the potential strengths and limitations of using this
-model for forecasting in real-world policy settings.</p>
-</div>
-</div>
-</div>
-<div id="problem-3" class="section level1">
-<h1>Problem 3</h1>
-<div id="question-1-1" class="section level2">
-<h2>Question 1</h2>
-<p><strong>Inventory Cost</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A retail company is planning its inventory strategy for the upcoming
-year. They expect to sell 110 units of a high-demand product. The
-storage cost is $3.75 per unit per year, and there is a fixed ordering
-cost of $8.25 per order. The company wants to minimize its total
-inventory cost.</p>
-<p><strong>Task</strong></p>
-<p>Using calculus, determine the optimal lot size (the number of units
-to order each time) and the number of orders the company should place
-per year to minimize total inventory costs. Assume that the total cost
-function is given by:</p>
-<p><span class="math inline">\(C(Q)=\frac{D}{Q} \times S + \frac{Q}{2}
-\times H\)</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(D\)</span> is total demand (110
-units).</li>
-<li><span class="math inline">\(Q\)</span> is the order quantity.</li>
-<li><span class="math inline">\(S\)</span> is the fixed ordering cost
-per order ($8.25).</li>
-<li><span class="math inline">\(H\)</span> is the holding cost per unit
-per year ($3.75).</li>
-</ul>
-</div>
-<div id="question-2-1" class="section level2">
-<h2>Question 2</h2>
-<p><strong>Revenue Maximization</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A company is running an online advertising campaign. The
-effectiveness of the campaign, in terms of revenue generated per day, is
-modeled by the function: <span class="math inline">\(R(t)=-3150t^{-4}-220t+6530\)</span> Where:</p>
-<ul>
-<li><span class="math inline">\(R(t)\)</span> represents the revenue in
-dollars after <span class="math inline">\(t\)</span> days of the
-campaign.</li>
-</ul>
-<p><strong>Task</strong></p>
-<p>Determine the time <span class="math inline">\(t\)</span> at which
-the revenue is maximized by finding the critical points of the revenue
-function and determining which point provides the maximum value. What is
-the maximum revenue the company can expect from this campaign?</p>
-</div>
-<div id="question-3-1" class="section level2">
-<h2>Question 3</h2>
-<p><strong>Demand Area Under Curve</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A company sells a product at a price that decreases over time
-according to the linear demand function: Where: <span class="math inline">\(P(x)=2x-9.3\)</span></p>
-<p><span class="math inline">\(P(x)\)</span> is the price in dollars,
-and <span class="math inline">\(x\)</span> is the quantity sold.</p>
-<p><strong>Task</strong></p>
-<p>The company is interested in calculating the total revenue generated
-by this product between two quantity levels, <span class="math inline">\(x_1 = 2\)</span> and <span class="math inline">\(x_2 = 5\)</span>, where the price still generates
-sales. Compute the area under the demand curve between these two points,
-representing the total revenue generated over this range.</p>
-</div>
-<div id="question-4-1" class="section level2">
-<h2>Question 4</h2>
-<p><strong>Profit Optimization</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A beauty supply store sells flat irons, and the profit function
-associated with selling x flat irons is given by:</p>
-<p><span class="math inline">\(\Pi(x) =
-xln(9x)-\frac{x^6}{6}\)</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(\Pi(x)\)</span> is the profit in
-dollars.</li>
-</ul>
-<p><strong>Task</strong></p>
-<p>Use calculus to find the value of <span class="math inline">\(x\)</span> that maximizes profit. Calculate the
-maximum profit that can be achieved and determine if this optimal sales
-level is feasible given market conditions.</p>
-</div>
-<div id="question-5-1" class="section level2">
-<h2>Question 5</h2>
-<p><strong>Spending Behavior</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A market research firm is analyzing the spending behavior of
-customers in a retail store. The spending behavior is modeled by the
-probability density function: <span class="math inline">\(f(x)=\frac{1}{6x}\)</span></p>
-<p>Where <span class="math inline">\(x\)</span> represents spending in
-dollars.</p>
-<p><strong>Task</strong></p>
-<p>Determine whether this function is a valid probability density
-function over the interval <span class="math inline">\([1,e^6]\)</span>.
-If it is, calculate the probability that a customer spends between $1
-and $<span class="math inline">\(e^6\)</span>.</p>
-</div>
-<div id="question-6" class="section level2">
-<h2>Question 6</h2>
-<p><strong>Market Share Estimation</strong></p>
-<p><strong>Scenario</strong></p>
-<p>An electronics company is analyzing its market share over a certain
-period. The rate of market penetration is given by: <span class="math inline">\(\frac{dN}{dt}=\frac{500}{t^4+10}\)</span></p>
-<p>Where <span class="math inline">\(N(t)\)</span> is the cumulative
-market share at time <span class="math inline">\(t\)</span>.</p>
-<p><strong>Task</strong></p>
-<p>Integrate this function to find the cumulative market share <span class="math inline">\(N(t)\)</span> after <span class="math inline">\(t\)</span> days, given that the initial market
-share <span class="math inline">\(N(1)=6530\)</span>. What will the
-market share be after 10 days?</p>
-</div>
-</div>
-<div id="problem-4" class="section level1">
-<h1>Problem 4</h1>
-<p><strong>Business Optimization</strong></p>
-<p>As a data scientist at a consultancy firm, you are tasked with
-optimizing various business functions to improve efficiency and
-profitability. Taylor Series expansions are a powerful tool to
-approximate complex functions, allowing for simpler calculations and
-more straightforward decision-making. This week, you will work on Taylor
-Series expansions of popular functions commonly encountered in business
-scenarios.</p>
-<div id="question-1-2" class="section level2">
-<h2>Question 1</h2>
-<p><strong>Revenue and Cost</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A company’s revenue from a product can be approximated by the
-function <span class="math inline">\(R(x)=e^x\)</span>, where <span class="math inline">\(x\)</span> is the number of units sold. The cost
-of production is given by <span class="math inline">\(C(x)=ln(1+x)\)</span>. The company wants to
-maximize its profit, defined as <span class="math inline">\(\Pi(x)=R(x)-C(x)\)</span>.</p>
-<p><strong>Task</strong></p>
-<ol style="list-style-type: decimal">
-<li><p><strong>Approximate the Revenue Function:</strong> Use the Taylor
-Series expansion around <span class="math inline">\(x=0\)</span>
-(Maclaurin series) to approximate the revenue function <span class="math inline">\(R(x)=e^x\)</span> up to the second degree. Explain
-why this approximation might be useful in a business context.</p></li>
-<li><p><strong>Approximate the Cost Function:</strong> Similarly,
-approximate the cost function <span class="math inline">\(C(x)=ln(1+x)\)</span> using its Maclaurin series
-expansion up to the second degree. Discuss the implications of this
-approximation for decision-making in production.</p></li>
-<li><p><strong>Linear vs. Nonlinear Optimization:</strong> Using the
-Taylor Series expansions, approximate the profit function <span class="math inline">\(\Pi(x)\)</span>. Compare the optimization results
-when using the linear approximations versus the original nonlinear
-functions. What are the differences, and when might it be more
-appropriate to use the approximation?</p></li>
+<div id="week-15-discussion" class="section level1">
+<h1>Week 15 Discussion:</h1>
+<p>Pick any exercise in Chapter 12 of the calculus textbook. Post the
+solution or your attempt. Discuss any issues you might have had.</p>
+<p>What were the most valuable elements you took away from this
+course?</p>
+<p><strong>In this course, do not attach files to any of the discussion
+posts. Provide your code and commentary plus figures directly in the
+text box. Many students don’t download files or open other
+links.</strong></p>
+<p>Page 698</p>
+<p>Exercise 12.2</p>
+<p>Question</p>
+<p><strong>In Exercises 7 – 10, a set S is given.</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><strong>Give one boundary point and one interior point, when
+possible, of S.</strong></li>
+<li><strong>State whether S is open, closed, or neither.</strong></li>
+<li><strong>State whether S is bounded or unbounded.</strong></li>
 </ol>
-<div id="submission" class="section level3">
-<h3>Submission</h3>
-<p>Provide your solutions using R-Markdown. Include the Taylor Series
-expansions, the approximated functions, and a discussion of the
-implications of using these approximations for business
-decision-making.</p>
-</div>
-</div>
-<div id="question-2-2" class="section level2">
-<h2>Question 2</h2>
-<p><strong>Financial Modeling</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A financial analyst is modeling the risk associated with a new
-investment. The risk is proportional to the square root of the invested
-amount, modeled as <span class="math inline">\(f(x)=\sqrt{x}\)</span>,
-where <span class="math inline">\(x\)</span> is the amount invested.
-However, to simplify calculations, the analyst wants to use a Taylor
-Series expansion to approximate this function for small investments.</p>
-<p><strong>Task</strong></p>
-<ol style="list-style-type: decimal">
-<li><p><strong>Maclaurin Series Expansion:</strong> Derive the Taylor
-Series expansion of <span class="math inline">\(f(x)=\sqrt{x}\)</span>
-around <span class="math inline">\(x=0\)</span> up to the second
-degree.</p></li>
-<li><p><strong>Practical Application:</strong> Use the derived series to
-approximate the risk for small investment amounts (e.g., when <span class="math inline">\(x\)</span> is small). Compare the approximated
-risk with the actual function values for small and moderate investments.
-Discuss when this approximation might be useful in financial
-modeling.</p></li>
-<li><p><strong>Optimization Scenario:</strong> Suppose the goal is to
-minimize risk while maintaining a certain level of investment return.
-Using the Taylor Series approximation, suggest an optimal investment
-amount <span class="math inline">\(x\)</span> that balances risk and
-return.</p></li>
+<p><span class="math inline">\(S = \left\{ (x,y) \mid \frac{(x-1)^2}{4}
++ \frac{(y-3)^2}{9} \leq 1 \right\}\)</span></p>
+<p>page 689 from our calculus book states</p>
+<p><strong>Definition 12.2.1</strong></p>
+<p><strong>Open Disk, Boundary and Interior Points, Open and Closed
+Sets, Bounded Sets</strong></p>
+<ol style="list-style-type: lower-roman">
+<li><p>An <strong>open disk</strong> <span class="math inline">\(B\)</span> in <span class="math inline">\(\mathbb{R}^2\)</span> centered at <span class="math inline">\((x_0, y_0\)</span>) with radius r is the set of
+all points <span class="math inline">\((x, y)\)</span> such that <span class="math inline">\(\sqrt{(x − x_0)^2 + (y − y_0)^2} &lt;
+r\)</span>.</p></li>
+<li><p>Let <span class="math inline">\(S\)</span> be a set of points in
+<span class="math inline">\(\mathbb{R}^2\)</span>. A point P in <span class="math inline">\(\mathbb{R}^2\)</span> is a <strong>boundary
+point</strong> of <span class="math inline">\(S\)</span> if all open
+disks centered at <span class="math inline">\(P\)</span> contain both
+points in <span class="math inline">\(S\)</span> and points not in <span class="math inline">\(S\)</span>.</p></li>
+<li><p>A point <span class="math inline">\(P\)</span> in <span class="math inline">\(S\)</span> is an <strong>interior point</strong>
+of <span class="math inline">\(S\)</span> if there is an open disk
+centered at <span class="math inline">\(P\)</span> that contains only
+points in <span class="math inline">\(S\)</span>.</p></li>
+<li><p>A set <span class="math inline">\(S\)</span> is
+<strong>open</strong> if every point in <span class="math inline">\(S\)</span> is an interior point.</p></li>
+<li><p>A set <span class="math inline">\(S\)</span> is
+<strong>closed</strong> if it contains all of its boundary
+points.</p></li>
+<li><p>A set <span class="math inline">\(S\)</span> is
+<strong>bounded</strong> if there is an <span class="math inline">\(M
+&gt; 0\)</span> such that the open disk, centered at the origin with
+radius <span class="math inline">\(M\)</span>, contains <span class="math inline">\(S\)</span>. A set that is not bounded is
+<strong>unbounded</strong>.</p></li>
 </ol>
-<div id="submission-1" class="section level3">
-<h3>Submission</h3>
-<p>Present your results in R-Markdown, including the Taylor Series
-expansions, comparisons between the original and approximated functions,
-and your recommendations based on the analysis.</p>
-</div>
-</div>
-<div id="question-3-2" class="section level2">
-<h2>Question 3</h2>
-<p><strong>Inventory Management</strong></p>
-<p><strong>Scenario</strong></p>
-<p>In a manufacturing process, the demand for a product decreases as the
-price increases, modeled by <span class="math inline">\(D(p)=1-p\)</span>, where <span class="math inline">\(p\)</span> is the price. The cost associated with
-producing and selling the product is modeled as <span class="math inline">\(C(p)=e^p\)</span>. The company wants to maximize
-its profit, which is the difference between revenue and cost.</p>
-<p><strong>Task</strong></p>
-<ol style="list-style-type: decimal">
-<li><p><strong>Taylor Series Expansion:</strong> Expand the cost
-function <span class="math inline">\(C(p)=e^p\)</span> into a Taylor
-Series around <span class="math inline">\(p=0\)</span> up to the second
-degree. Discuss why approximating the cost function might be useful in a
-pricing strategy.</p></li>
-<li><p><strong>Approximating Profit:</strong> Using the Taylor Series
-expansion, approximate the profit function <span class="math inline">\(\Pi(p)=pD(p)-C(p)\)</span>. Compare the results
-when using the original nonlinear cost function versus the approximated
-cost function. What differences do you observe, and when might the
-approximation be sufficient?</p></li>
-<li><p><strong>Pricing Strategy:</strong> Based on the Taylor Series
-approximation, suggest a pricing strategy that could maximize profit.
-Explain how the Taylor Series approximation helps in making this
-decision.</p></li>
-</ol>
-<div id="submission-2" class="section level3">
-<h3>Submission</h3>
-<p>Include your analysis in R-Markdown, with Taylor Series expansions,
-comparisons of the approximated and original functions, and a discussion
-of the implications for pricing strategy.</p>
-</div>
-</div>
-<div id="question-4-2" class="section level2">
-<h2>Question 4</h2>
-<p><strong>Economic Forecasting</strong></p>
-<p><strong>Scenario</strong></p>
-<p>An economist is forecasting economic growth, which can be modeled by
-the logarithmic function <span class="math inline">\(G(x)=ln(1+x)\)</span>, where <span class="math inline">\(x\)</span> represents investment in
-infrastructure. The government wants to predict growth under different
-levels of investment.</p>
-<p><strong>Task</strong></p>
-<div id="i.-1" class="section level3">
-<h3>i.</h3>
-<p><strong>Maclaurin Series Expansion:</strong> Derive the Maclaurin
-Series expansion of <span class="math inline">\(G(x)=ln(x+1)\)</span> up
-to the second degree. Explain the significance of using this
-approximation for small values of <span class="math inline">\(x_x\)</span> in economic forecasting.</p>
-</div>
-<div id="ii.-1" class="section level3">
-<h3>ii.</h3>
-<p><strong>Approximation of Growth:</strong> Use the Taylor Series to
-approximate the growth for small investments. Compare this approximation
-with the actual growth function. Discuss the accuracy of the
-approximation for different ranges of <span class="math inline">\(x_x\)</span>.</p>
-</div>
-<div id="iii." class="section level3">
-<h3>iii.</h3>
-<p><strong>Policy Recommendation:</strong> Using the approximation,
-recommend a level of investment that could achieve a target growth rate.
-Discuss the limitations of using Taylor Series approximations for such
-policy recommendations.</p>
-</div>
-<div id="submission-3" class="section level3">
-<h3>Submission</h3>
-<p>Provide your answers in R-Markdown, with the Taylor Series
-expansions, comparisons between the approximated and original functions,
-and your investment recommendations.</p>
-</div>
-</div>
-</div>
-<div id="problem-5" class="section level1">
-<h1>Problem 5</h1>
-<p><strong>Profit, Cost, &amp; Pricing</strong></p>
-<div id="question-1-3" class="section level2">
-<h2>Question 1</h2>
-<p><strong>Profit Maximization</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A company produces two products, A and B. The profit function for the
-two products is given by <span class="math inline">\(\Pi(x,y)=30x-2x^2-3xy+24y-4y^2\)</span></p>
-<p>Where:</p>
+<p><strong>NOTE:</strong></p>
+<p>We know the general form of the ellipse equation is <span class="math inline">\(\frac{(x-k)^2}{a^2}+\frac{(y-k)^2}{b^2}=1\)</span>
+and from this we know</p>
 <ul>
-<li><span class="math inline">\(x\)</span> is the quantity of Product A
-produced and sold.</li>
-<li><span class="math inline">\(y\)</span> is the quantity of Product B
-produced and sold.</li>
-<li><span class="math inline">\(\Pi(x,y)\)</span> is the profit in
-dollars.</li>
+<li>This is an equation of an ellipse</li>
+<li>the center of the ellipse is <span class="math inline">\((h,k)\)</span> meaning <span class="math inline">\(h=1, \ k=3\)</span> or <span class="math inline">\((1,3)\)</span></li>
+<li>the length of the semi-minor axis of the ellipse is <span class="math inline">\(a\)</span></li>
+<li>the length of the semi-major axis of the ellipse is <span class="math inline">\(b\)</span></li>
 </ul>
-<p><strong>Task</strong></p>
-<p>Find all local maxima, local minima, and saddle points for the profit
-function <span class="math inline">\(\Pi(x,y)\)</span>. Write your
-answer(s) in the form <span class="math inline">\((x,y,\Pi(x,y))\)</span>. Separate multiple points
-with a comma.</p>
-<div id="discussion" class="section level3">
-<h3>Discussion</h3>
-<p>Discuss the implications of the results for the company’s production
-strategy. Which production levels maximize profit, and what risks are
-associated with the saddle points?</p>
-</div>
-</div>
-<div id="question-2-3" class="section level2">
-<h2>Question 2</h2>
-<p><strong>Pricing Strategy</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A supermarket sells two competing brands of a product: Brand X and
-Brand Y. The store manager estimates that the demand for these brands
-depends on their prices, given by the functions:</p>
-<ul>
-<li>Demand for Brand X: <span class="math inline">\(D_x(x,y)=120-15x+10y\)</span></li>
-<li>Demand for Brand Y: <span class="math inline">\(D_y(x,y)=80+5x-20y\)</span></li>
-</ul>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(x\)</span> is the price of Brand X in
-dollars.</li>
-<li><span class="math inline">\(y\)</span> is the price of Brand Y in
-dollars.</li>
-<li><span class="math inline">\(D_x(x,y)\)</span> and <span class="math inline">\(D_x(x,y)\)</span> are the quantities demanded for
-Brand X and Brand Y, respectively.</li>
-</ul>
-<p><strong>Task</strong></p>
-<ol style="list-style-type: decimal">
-<li><strong>Revenue Function:</strong> Find the revenue function R(x,y)
-for both brands combined.</li>
-<li><strong>Optimal Pricing:</strong> Determine the prices <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> that maximize the store’s total
-revenue. Are there any saddle points to consider in the pricing
-strategy?</li>
-</ol>
-<div id="discussion-1" class="section level3">
-<h3>Discussion</h3>
-<p>Explain the significance of the optimal pricing strategy and how it
-can be applied in a competitive retail environment.</p>
-</div>
-</div>
-<div id="question-3-3" class="section level2">
-<h2>Question 3</h2>
-<p><strong>Cost Minimization</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A manufacturing company operates two plants, one in New York and one
-in Chicago. The company needs to produce a total of 200 units of a
-product each week. The total weekly cost of production is given by <span class="math inline">\(C(x,y)=\frac{1}{8}x^2+\frac{1}{10}y^2+12x+18y+1500\)</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(x\)</span> is the number of units
-produced in New York.</li>
-<li><span class="math inline">\(y\)</span> is the number of units
-produced in Chicago.</li>
-<li><span class="math inline">\(C(x,y)\)</span> is the total cost in
-dollars.</li>
-</ul>
-<p><strong>Task</strong></p>
-<ol style="list-style-type: decimal">
-<li>Determine how many units should be produced in each plant to
-minimize the total weekly cost.</li>
-<li>What is the minimized total cost, and how does the distribution of
-production between the two plants affect overall efficiency?</li>
-</ol>
-<div id="discussion-2" class="section level3">
-<h3>Discussion</h3>
-<p>Discuss the benefits of this cost-minimization strategy and any
-practical considerations that might influence the allocation of
-production between the two plants.</p>
-</div>
-</div>
-<div id="question-4-3" class="section level2">
-<h2>Question 4</h2>
-<p><strong>Marketing Mix</strong></p>
-<p><strong>Scenario</strong></p>
-<p>A company is launching a marketing campaign that involves spending on
-online ads (<span class="math inline">\(x\)</span>) and television ads
-(<span class="math inline">\(y\)</span>). The effectiveness of the
-campaign, measured in customer reach, is modeled by the function <span class="math inline">\(E(x,y)=500x+700y-5x^2-10xy-8y^2\)</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(x\)</span> is the amount spent on online
-ads (in thousands of dollars).</li>
-<li><span class="math inline">\(y\)</span> is the amount spent on
-television ads (in thousands of dollars).</li>
-<li><span class="math inline">\(E(x,y)\)</span> is the estimated
-customer reach.</li>
-</ul>
-<p><strong>Task</strong></p>
-<ol style="list-style-type: decimal">
-<li>Find the spending levels for online and television ads that maximize
-customer reach.</li>
-<li>Identify any saddle points and discuss how they could affect the
-marketing strategy.</li>
-</ol>
-<div id="discussion-3" class="section level3">
-<h3>Discussion</h3>
-<p>Explain how the results can be used to allocate the marketing budget
-effectively and what the company should consider if it encounters saddle
-points in the optimization.</p>
-<p><strong>As always, include a professional pdf only with all code,
-text, graphics, explanations, etc.</strong></p>
+<p><strong>Solution</strong></p>
+<p><strong>Boundary</strong></p>
+<p>for <em>(a) Give one boundary point…</em> I can use <span class="math inline">\(x=1\)</span> and substitute into the equation for
+our equality:</p>
+<p><span class="math inline">\(\frac{(x-1)^2}{4} + \frac{(y-3)^2}{9}=1
+\rightarrow \frac{(1-1)^2}{4} + \frac{(y-3)^2}{9}=1 \rightarrow
+y-3=\sqrt{9}\)</span></p>
+<p>which becomes <span class="math inline">\(y = \pm 3 - 3\)</span>
+which gives us <span class="math inline">\(y=6\)</span> and <span class="math inline">\(y=0\)</span></p>
+<p>So our boundaries are <span class="math inline">\((1,6)\)</span> or
+<span class="math inline">\((1,0)\)</span>.</p>
+<p><strong>Interior point</strong></p>
+<p>for <em>(a)… one interior point</em> I’ll use a point within the
+boundaries <span class="math inline">\((1,4)\)</span></p>
+<p>which when substituted into our strict inequality <span class="math inline">\(\frac{(x-1)^2}{4} +
+\frac{(y-3)^2}{9}&lt;1\)</span></p>
+<p><span class="math inline">\(\frac{(1-1)^2}{4} +
+\frac{(4-3)^2}{9}&lt;1 \rightarrow \frac{1}{9}&lt;1\)</span> holds
+true.</p>
+<p><strong>Open/Closed</strong></p>
+<p>Our solution for the equality which proved set <span class="math inline">\(S\)</span> contains all of its boundary points and
+definition point <span class="math inline">\(v.\)</span> shows that our
+set <span class="math inline">\(S\)</span> is
+<strong>closed</strong>.</p>
+<p><strong>Bounded/Unbounded</strong></p>
+<p>The semi-major axis along the y-direction is given as b or <span class="math inline">\(\sqrt{9}\)</span> from our original equation.</p>
+<p>Our Horizontal extent is when <span class="math inline">\(y=3\)</span> (semi-major) and when substituted
+into our equality equation <span class="math inline">\(\frac{(x-1)^2}{4}
++ \frac{(3-3)^2}{9}=1\)</span> gives us <span class="math inline">\(x=
+\pm 2 +1\)</span> or <span class="math inline">\(x=3\)</span> or <span class="math inline">\(x=-1\)</span> showing our horizontal extent is
+<span class="math inline">\(3-(-1)=span \ of \ 4\)</span></p>
+<p>This shows us that this equation is clearly bounded</p>
+<p>Substituting the maximum <span class="math inline">\(x\)</span> value
+of <span class="math inline">\(x=3\)</span> into:</p>
+<p><span class="math inline">\(\frac{(x-1)^2}{4} + \frac{(y-3)^2}{9}=1
+\rightarrow \frac{(3-1)^2}{4} + \frac{(y-3)^2}{9}=1 \rightarrow 1 +
+\frac{(y-3)^2}{9}=1 \rightarrow y-3=0 \rightarrow y=3\)</span></p>
+<p>giving us the point <span class="math inline">\((3,3)\)</span></p>
+<p>likewise using the maximum <span class="math inline">\(y=6\)</span>:</p>
+<p><span class="math inline">\(\frac{(x-1)^2}{4} + \frac{(6-3)^2}{9}=1
+\rightarrow \frac{(x-1)^2}{4} + 1=1 \rightarrow x=1\)</span></p>
+<p>giving us the point <span class="math inline">\((1,6)\)</span></p>
+<p>if we calculate the distance between these points from the origin we
+get</p>
+<p><span class="math inline">\(d =
+\sqrt{(1-0)^2+(6-0)^2}=\sqrt{37}\)</span> and <span class="math inline">\(d = \sqrt{(3-0)^2+(3-0)^2}=\sqrt{18}\)</span>
+making our closest value to <span class="math inline">\(M \approx
+\sqrt{37}\)</span></p>
+<p>Therefore</p>
+<p><span class="math inline">\(S \subseteq \left\{ (x,y) \mid x^2 + y^2
+&lt; \sqrt{37} \right\}\)</span></p>
 <!-- rnb-text-end -->
-</div>
-</div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogJ0RBVEEgNjA1OiBDb21wdXRhdGlvbmFsIE1hdGhlbWF0aWNzIEhvbWV3b3JrIDMnDQphdXRob3I6ICJHYWJyaWVsIENhbXBvcyINCmRhdGU6ICJMYXN0IGVkaXRlZCBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVCICVkLCAlWScpYCINCm91dHB1dDoNCiAgcGRmX2RvY3VtZW50Og0KICAgIGxhdGV4X2VuZ2luZTogeGVsYXRleA0KICBnZW9tZXRyeTogbGVmdD0wLjVjbSxyaWdodD0wLjVjbSx0b3A9MWNtLGJvdHRvbT0yY20NCiAgaHRtbF9kb2N1bWVudDoNCiAgICBkZl9wcmludDogcGFnZWQNCiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdA0KdXJsY29sb3I6IGJsdWUNCi0tLQ0KDQojIyBMaWJyYXJ5DQoNCmBgYHtyLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KIyBEYXRhIGxvYWQNCmRhdGEoY2FycykNCiMgbGlicmFyaWVzDQpsaWJyYXJ5KGRwbHlyKQ0KbGlicmFyeShnZ3Bsb3QyKQ0KbGlicmFyeShnZ3RoZW1lcykNCmxpYnJhcnkobG10ZXN0KQ0KYGBgDQoNCg0KIyBQcm9ibGVtIDENCg0KKipUcmFuc3BvcnRhdGlvbiBTYWZldHkqKg0KDQoqKlRhc2sqKg0KDQpVc2luZyB0aGUgY2FycyBkYXRhc2V0IGluIFIsIHBlcmZvcm0gdGhlIGZvbGxvd2luZyBzdGVwczoNCg0KIyMgMSANCg0KKipEYXRhIFZpc3VhbGl6YXRpb24qKg0KDQojIyMgaQ0KDQpDcmVhdGUgYSBzY2F0dGVyIHBsb3Qgb2Ygc3RvcHBpbmcgZGlzdGFuY2UgKGRpc3QpIGFzIGEgZnVuY3Rpb24gb2Ygc3BlZWQgKHNwZWVkKS4NCg0KYGBge3J9DQpnZ3Bsb3QoY2FycywgYWVzKHggPSBzcGVlZCwgeSA9IGRpc3QpKSArDQogIGdlb21fcG9pbnQoKSArDQogIGxhYnMoDQogICAgdGl0bGUgPSAiU3RvcHBpbmcgRGlzdGFuY2UgYXMgYSBGdW5jdGlvbiBvZiBTcGVlZCIsDQogICAgeCA9ICJTcGVlZCAobXBoKSIsDQogICAgeSA9ICJTdG9wcGluZyBEaXN0YW5jZSAoZnQpIg0KICApICsNCiAgdGhlbWVfbWluaW1hbCgpDQpgYGANCg0KIyMjIGlpDQoNCkFkZCBhIHJlZ3Jlc3Npb24gbGluZSB0byB0aGUgcGxvdCB0byB2aXN1YWxseSBhc3Nlc3MgdGhlIHJlbGF0aW9uc2hpcC4NCg0KYGBge3IsIG1lc3NhZ2U9RkFMU0V9DQpnZ3Bsb3QoY2FycywgYWVzKHggPSBzcGVlZCwgeSA9IGRpc3QpKSArDQogIGdlb21fcG9pbnQoY29sb3IgPSAiZGFya29yYW5nZSIsIHNpemUgPSAzKSArIA0KICBnZW9tX3Ntb290aChtZXRob2QgPSAibG0iLCBjb2xvciA9ICJzdGVlbGJsdWUiLCBzZSA9IEZBTFNFKSArDQogIGxhYnMoDQogICAgdGl0bGUgPSAiU3RvcHBpbmcgRGlzdGFuY2UgYXMgYSBGdW5jdGlvbiBvZiBTcGVlZCIsDQogICAgeCA9ICJTcGVlZCAobXBoKSIsDQogICAgeSA9ICJTdG9wcGluZyBEaXN0YW5jZSAoZnQpIg0KICApICsNCiAgdGhlbWVfbWluaW1hbCgpDQpgYGANCg0KDQojIyAyIA0KDQoqKkJ1aWxkIGEgTGluZWFyIE1vZGVsKioNCg0KIyMjIGkNCg0KQ29uc3RydWN0IGEgc2ltcGxlIGxpbmVhciByZWdyZXNzaW9uIG1vZGVsIHdoZXJlIHN0b3BwaW5nIGRpc3RhbmNlIChkaXN0KSBpcyB0aGUgZGVwZW5kZW50IHZhcmlhYmxlIGFuZCBzcGVlZCAoc3BlZWQpIGlzIHRoZSBpbmRlcGVuZGVudCB2YXJpYWJsZS4NCg0KYGBge3J9DQpjYXJzX21vZGVsIDwtIGxtKGRpc3R+c3BlZWQsIGRhdGEgPSBjYXJzKQ0KYGBgDQoNCg0KIyMjIGlpDQoNClN1bW1hcml6ZSB0aGUgbW9kZWwgdG8gZXZhbHVhdGUgaXRzIGNvZWZmaWNpZW50cywgUi1zcXVhcmVkIHZhbHVlLCBhbmQgcC12YWx1ZS4NCg0KYGBge3J9DQpzdW1tYXJ5KGNhcnNfbW9kZWwpDQpgYGANCg0KLSAqKkludGVyY2VwdCAmIFNwZWVkKiogb2YgLTE3LjU3OTEganVzdCBpbmRpY2F0ZXMgdGhlIHN0b3BwaW5nIGRpc3RhbmNlIGF0IDAgbXBoLiBUaGUgdmFsdWUgaXMgbm90IGltcG9ydGFudCBvbmx5IGJlY2F1c2UgbG9naWNhbGx5IGEgdmVoaWNsZSBub3QgaW4gbW90aW9uICgwbXBoKSBkb2VzIG5vdCByZXF1aXJlIHN0b3BwaW5nIGRpc3RhbmNlLiBUaGUgdmFsdWUgb2YgJDMuOTMyNCQgaW5kaWNhdGVzIGZvciBldmVyeSAxIG1waCAkMy45MzI0IFwgZnQkIGlzIG5lZWRlZCB0byBzdG9wLiBUaGVyZWZvcmUgYSBtaW5pbXVtIHNwZWVkIG9mICRcYXBwcm94IDQuNDggXCBtcGgkIGlzIG5lZWRlZCBiZWZvcmUgYW55IGRpc3RhbmNlIGlzIGFjdHVhbGx5IG5lZWRlZCB0byBzdG9wLg0KLSAqKlItU3F1YXJlZCoqIHZhbHVlIG9mICQwLjY1MTEkIGluZGljYXRlcyAkXGFwcHJveCA2NVwlJCBvZiB2YXJpYW5jZSBpcyBjYXB0dXJlZCBieSB0aGlzIHJlbGF0aW9uc2hpcCwgc28gaXRzIGEgbW9kZXJhdGUgaW5kaWNhdG9yLCBhbmQgdGhlcmUgbWF5IGJlIHNldmVyYWwgbW9yZSBhbmQgcG90ZW50aWFsbHkgc3Ryb25nZXIgZmFjdG9yIHRoYXQgY2FuIGJlIHVzZWQgdG8gcHJlZGljdCB0aGUgZGlzdGFuY2UgbmVlZGVkIHRvIHN0b3AuDQotICoqUC1WYWx1ZSoqIG9mICQxLjQ5ZV57MTJ9JCBpbmRpY2F0ZXMgdGhhdCB0aGUgcmVsYXRpb25zaGlwIGlzIHN0YXRpc3RpY2FsbHkgc2lnbmlmaWNhbnQuDQoNCiMjIyAzDQoNCioqTW9kZWwgUXVhbGl0eSBFdmFsdWF0aW9uKioNCg0KIyMjIGkNCg0KQ2FsY3VsYXRlIGFuZCBpbnRlcnByZXQgdGhlIFItc3F1YXJlZCB2YWx1ZSB0byBhc3Nlc3MgdGhlIHByb3BvcnRpb24gb2YgdmFyaWFuY2UgaW4gc3RvcHBpbmcgZGlzdGFuY2UgZXhwbGFpbmVkIGJ5IHNwZWVkLg0KDQotICoqUi1TcXVhcmVkKiogYXMgaW5kaWNhdGVkIGFib3ZlIHRoaXMgbWVhbnMgJFxhcHByb3ggNjVcJSQgb2YgdGhlIHZhcmlhbmNlIGlzIGNhcHR1cmVkLCBtYWtpbmcgdGhpcyBhIG1vZGVyYXRlIGZhY3RvciB0byBzdG9wcGluZyBkaXN0YW5jZS4NCi0gKipSLVNxdWFyZWQgQWRqdXN0ZWQqKiBGcmFua2x5LCB0aGVyZSBpcyBvbmx5IDIgYXR0cmlidXRlcyB0byB0aGlzIHRhYmxlLCBzbyBhZGp1c3RpbmcgYWNjb3JkaW5nIHRvIHRoZSBudW1iZXIgb2YgcHJlZGljdG9ycyBvZiB0aGUgbW9kZWwgbWFrZXMgbGl0dGxlIGRpZmZlcmVuY2UsIHRoZXJlZm9yZSB0aGUgdmFyaWFuY2Ugb2YgJDAuNjQzOCQgb3IgJFxhcHByb3ggNjRcJSQgIGlzIHJlbGF0aXZlbHkgdGhlIHNhbWUgdG8gdGhlIG9yaWdpbmFsLCBhbmQgdGhlIHJlbWFpbmluZyBmYWN0b3JzIHdvdWxkIGluY2x1ZGUgYXR0cmlidXRlcyBub3QgY29sbGVjdGVkIGluIG91ciBkYXRhc2V0Lg0KDQojIyMgaWkNCg0KUGVyZm9ybSBhIHJlc2lkdWFsIGFuYWx5c2lzIHRvIGNoZWNrIHRoZSBhc3N1bXB0aW9ucyBvZiB0aGUgbGluZWFyIHJlZ3Jlc3Npb24gbW9kZWwsIGluY2x1ZGluZyBsaW5lYXJpdHksIGhvbW9zY2VkYXN0aWNpdHksIGluZGVwZW5kZW5jZSwgYW5kIG5vcm1hbGl0eSBvZiByZXNpZHVhbHMuDQoNCioqSW4gb3JkZXIgdG8gZG8gdGhpcyB3aXRob3V0IHJlcGVhdGluZyB0aGUgc3RlcHMgZm9yIFNlY3Rpb24gNCB3ZSBsZXZlcmFnZSB0aGUgdmFyaW91cyBmdW5jdGlvbnMgaW4gUiB0aHJvdWdoIHRoZSBwYWNrYWdlIFtsbXRlc3RdKGh0dHBzOi8vY3Jhbi5yLXByb2plY3Qub3JnL3dlYi9wYWNrYWdlcy9sbXRlc3QvaW5kZXguaHRtbCkqKg0KDQoNCmBgYHtyfQ0KY2Fyc19yZXNpZF92YWx1ZXMgPC0gcmVzaWQoY2Fyc19tb2RlbCkNCmNhcnNfZml0dGVkX3ZhbHVlcyA8LSBmaXR0ZWQoY2Fyc19tb2RlbCkNCmBgYA0KDQpgYGB7cn0NCnN1bW1hcnkoY2Fyc19yZXNpZF92YWx1ZXMpDQpgYGANCg0KYGBge3J9DQpsbXRlc3Q6OmJwdGVzdChjYXJzX21vZGVsKQ0KYGBgDQoNCmBgYHtyfQ0KY29yKGNhcnNfZml0dGVkX3ZhbHVlcywgY2FycyRkaXN0KQ0KYGBgDQoNCg0KYGBge3J9DQpkd3Rlc3QoY2Fyc19tb2RlbCkNCmBgYA0KDQpgYGB7ciwgd2FybmluZz1GQUxTRX0NCmtzLnRlc3QoY2Fyc19yZXNpZF92YWx1ZXMsICJwbm9ybSIsIG1lYW49bWVhbihjYXJzX3Jlc2lkX3ZhbHVlcywgc2QgPSBzZChjYXJzX3Jlc2lkX3ZhbHVlcykpKQ0KYGBgDQoNCg0KDQoNCi0gV2UgaGF2ZSBhbiBtZWFuIG9mIDAgd2hpY2ggaXMgaWRlYWwNCi0gQSBjb3JyZWxhdGlvbiBvZiAgJDAuODA2ODk0OSQgc3VnZ2VzdHMgc3Ryb25nIGxpbmVhcml0eSBzaW5jZSBpdCBpcyBjbG9zZSB0byAxLg0KLSB0aGUgJHAtdmFsdWU+MC4wNSQgdGhyb3VnaCB0aGUgKkJyZXVzY2gtUGFnYW4gdGVzdCogKCAqKmJwdGVzdCgpKiogKSB3aGljaCBpdCBpcyBhdCAkMC43Mjk3JCBpbmRpY2F0ZXMgaG9tb3NjZWRhc3RpY2l0eS4gDQotIHRoZSAkcC12YWx1ZSQgdGhyb3VnaCB0aGUgKkR1cmJpbi1XYXRzb24gdGVzdCogKCAqKmR3dGVzdCgpKiogKSBvZiAkMC4wOTUyMiQgaW5kaWNhdGVkIHJlc2lkdWFscyBhcmUgaW5kZXBlbmRlbnQgb3IgaGFzIG5vIHNpZ25pZmljYW50IGF1dG9jb3JyZWxhdGlvbiBpbiByZXNpZHVhbHMuDQotIHRoZSAkcC12YWx1ZSQgdGhyb3VnaCB0aGUgKktvbG1vZ29yYXYtU21pcm5vdiB0ZXN0KiAoICoqa3MudGVzdCgpKiogKSBvZiAkMy4yODMgXHRpbWVzIDEwXi0xMSQvIGluZGljYXRlcyBpdHMgbm90IG5vcm1hbGx5IGRpc3RyaWJ1dGVkLg0KDQoNCiMjIDQNCg0KKipSZXNpZHVhbCBBbmFseXNpcyoqDQoNCiMjIyBpDQoNClBsb3QgdGhlIHJlc2lkdWFscyB2ZXJzdXMgZml0dGVkIHZhbHVlcyB0byBjaGVjayBmb3IgYW55IHBhdHRlcm5zLg0KDQpgYGB7cn0NCnBsb3QoY2Fyc19maXR0ZWRfdmFsdWVzLCBjYXJzX3Jlc2lkX3ZhbHVlcywgDQogICAgIHhsYWIgPSAiRml0dGVkIFZhbHVlcyIsIA0KICAgICB5bGFiID0gIlJlc2lkdWFscyIsIA0KICAgICBtYWluID0gIkNhcnM6IFJlc2lkdWFscyB2cyBGaXR0ZWQgVmFsdWVzIiwNCiAgICAgcGNoID0gMjAsIA0KICAgICBjb2wgPSAibmF2eWJsdWUiKQ0KYWJsaW5lKGggPSAwLCBjb2wgPSAiZGFya3JlZCIsIGx0eSA9IDIpDQpgYGANCg0KDQoNCiMjIyBpaQ0KDQpDcmVhdGUgYSBRLVEgcGxvdCBvZiB0aGUgcmVzaWR1YWxzIHRvIGFzc2VzcyBub3JtYWxpdHkuDQoNCmBgYHtyfQ0KcXFub3JtKGNhcnNfcmVzaWRfdmFsdWVzLCANCiAgICAgICBtYWluID0gIlEtUSBQbG90IG9mIFJlc2lkdWFscyIsIA0KICAgICAgIHBjaCA9IDIwLCANCiAgICAgICBjb2wgPSAiZGFya2JsdWUiKQ0KcXFsaW5lKGNhcnNfcmVzaWRfdmFsdWVzLCBjb2wgPSAiZGFya29yYW5nZSIsIGx0eSA9IDIpDQpgYGANCg0KDQojIyMgaWlpDQoNClBlcmZvcm0gYSBTaGFwaXJvLVdpbGsgdGVzdCBmb3Igbm9ybWFsaXR5IG9mIHJlc2lkdWFscy4NCg0KYGBge3J9DQpjYXJzX3NoYXBpcm9fdGVzdCA8LSBzaGFwaXJvLnRlc3QoY2Fyc19yZXNpZF92YWx1ZXMpDQpjYXJzX3NoYXBpcm9fdGVzdA0KYGBgDQoNCg0KIyMjIGl2DQoNClBsb3QgYSBoaXN0b2dyYW0gb2YgcmVzaWR1YWxzIHRvIGZ1cnRoZXIgY2hlY2sgZm9yIG5vcm1hbGl0eS4NCg0KYGBge3J9DQpoaXN0KGNhcnNfcmVzaWRfdmFsdWVzLCANCiAgICAgYnJlYWtzID0gMTAsICMgQWRqdXN0IHRoZSBudW1iZXIgb2YgYmlucyBhcyBuZWVkZWQNCiAgICAgY29sID0gImxpZ2h0Z3JleSIsIA0KICAgICBtYWluID0gIkhpc3RvZ3JhbSBvZiBSZXNpZHVhbHMiLCANCiAgICAgeGxhYiA9ICJSZXNpZHVhbHMiLA0KICAgICB5bGFiID0gIkZyZXF1ZW5jeSIsDQogICAgIGJvcmRlciA9ICJibGFjayIpDQpgYGANCg0KDQojIyMgQ29uY2x1c2lvbg0KDQpCYXNlZCBvbiB0aGUgbW9kZWwgc3VtbWFyeSBhbmQgcmVzaWR1YWwgYW5hbHlzaXMsIGRldGVybWluZSB3aGV0aGVyIHRoZSBsaW5lYXIgbW9kZWwgaXMgYXBwcm9wcmlhdGUgZm9yIHRoaXMgZGF0YS4gRGlzY3VzcyBhbnkgcG90ZW50aWFsIHZpb2xhdGlvbnMgb2YgbW9kZWwgYXNzdW1wdGlvbnMgYW5kIHN1Z2dlc3QgaW1wcm92ZW1lbnRzIGlmIG5lY2Vzc2FyeS4NCg0KVGhlIG1vZGVsIGZvciB0aGlzIGRhdGEgc2V0IGlzIHJlYXNvbmFibHkgYXBwcm9wcmlhdGUsIGFzIGl0IGRlbW9uc3RyYXRlcyBtb2RlcmF0ZSBleHBsYW5hdG9yeSBwb3dlciAkKFJeMiBcYXBwcm94IDAuNjUpJC4gV2hpbGUgdGhlIFEtUSBwbG90IGFuZCBoaXN0b2dyYW0gc3VnZ2VzdCByZXNpZHVhbHMgaW5kaWNhdGUgbmVhci1ub3JtYWwgcmVzaWR1YWxzLCB0aGUgU2hhcGlyby1XaWxrIHRlc3QgJChwPTAuMDIxNTIpJCBzdWdnZXN0cyBtaWxkIG5vbi1ub3JtYWxpdHkuIEFkZGl0aW9uYWxseSwgdGhlIHJlc2lkdWFscyB2cyBmaXR0ZWQgcGxvdCByZXZlYWxzIDMgb3V0bGllcnMgdGhhdCBtYXkgaW1wYWN0IHRoZSBtb2RlbHMgdmFsaWRpdHkuIFRvIGltcHJvdmUgdGhlIG1vZGVsLCB3ZSBjYW4gY29uc2lkZXIgcmVtb3Zpbmcgb3IgYWRqdXN0aW5nIGZvciB0aGVzZSBvdXRsaWVycyBvciB0ZXN0aW5nIGEgbm9uLWxpbmVhciByZWdyZXNzaW9uIG1vZGVsIHRvIGNhcHR1cmUgcG90ZW50aWFsIGN1cnZhdHVyZSBpbiB0aGUgZGF0YS4NCg0KIyBQcm9ibGVtIDINCg0KKipIZWFsdGggUG9saWN5IEFuYWx5c3QqKg0KDQpBcyBhIGhlYWx0aCBwb2xpY3kgYW5hbHlzdCBmb3IgYW4gaW50ZXJuYXRpb25hbCBvcmdhbml6YXRpb24sIHlvdSBhcmUgdGFza2VkIHdpdGggYW5hbHl6aW5nIGRhdGEgZnJvbSB0aGUgV29ybGQgSGVhbHRoIE9yZ2FuaXphdGlvbiAoV0hPKSB0byBpbmZvcm0gZ2xvYmFsIGhlYWx0aCBwb2xpY2llcy4gVGhlIGRhdGFzZXQgcHJvdmlkZWQgKHdoby5jc3YpIGNvbnRhaW5zIGNydWNpYWwgaGVhbHRoIGluZGljYXRvcnMgZm9yIHZhcmlvdXMgY291bnRyaWVzIGZyb20gdGhlIHllYXIgMjAwOC4gVGhlIHZhcmlhYmxlcyBpbmNsdWRlOg0KDQotIENvdW50cnk6IE5hbWUgb2YgdGhlIGNvdW50cnkNCi0gTGlmZUV4cDogQXZlcmFnZSBsaWZlIGV4cGVjdGFuY3kgZm9yIHRoZSBjb3VudHJ5IGluIHllYXJzDQotIEluZmFudFN1cnZpdmFsOiBQcm9wb3J0aW9uIG9mIHRob3NlIHN1cnZpdmluZyB0byBvbmUgeWVhciBvciBtb3JlDQotIFVuZGVyNVN1cnZpdmFsOiBQcm9wb3J0aW9uIG9mIHRob3NlIHN1cnZpdmluZyB0byBmaXZlIHllYXJzIG9yIG1vcmUNCi0gVEJGcmVlOiBQcm9wb3J0aW9uIG9mIHRoZSBwb3B1bGF0aW9uIHdpdGhvdXQgVEINCi0gUHJvcE1EOiBQcm9wb3J0aW9uIG9mIHRoZSBwb3B1bGF0aW9uIHdobyBhcmUgTURzDQotIFByb3BSTjogUHJvcG9ydGlvbiBvZiB0aGUgcG9wdWxhdGlvbiB3aG8gYXJlIFJOcw0KLSBQZXJzRXhwOiBNZWFuIHBlcnNvbmFsIGV4cGVuZGl0dXJlcyBvbiBoZWFsdGhjYXJlIGluIFVTIGRvbGxhcnMgYXQgYXZlcmFnZSBleGNoYW5nZSByYXRlDQotIEdvdnRFeHA6IE1lYW4gZ292ZXJubWVudCBleHBlbmRpdHVyZXMgcGVyIGNhcGl0YSBvbiBoZWFsdGhjYXJlLCBVUyBkb2xsYXJzIGF0IGF2ZXJhZ2UgZXhjaGFuZ2UgcmF0ZQ0KLSBUb3RFeHA6IFN1bSBvZiBwZXJzb25hbCBhbmQgZ292ZXJubWVudCBleHBlbmRpdHVyZXMNCg0KWW91ciBhbmFseXNpcyB3aWxsIGRpcmVjdGx5IGluZmx1ZW5jZSByZWNvbW1lbmRhdGlvbnMgZm9yIGltcHJvdmluZyBnbG9iYWwgbGlmZSBleHBlY3RhbmN5IGFuZCB0aGUgYWxsb2NhdGlvbiBvZiBoZWFsdGhjYXJlIHJlc291cmNlcy4NCg0KYGBge3IsIHdhcm5pbmc9RkFMU0V9DQp3aG9fZGYgPC0gcmVhZC5jc3YoIndoby5jc3YiLCBmaWxlRW5jb2RpbmcgPSAiVVRGLTgiKSU+JQ0KICAgICAgICAgICAgICBzZWxlY3QoLUxpZmVFeHAuMSwtWCkNCmBgYA0KDQojIyBRdWVzdGlvbiAxIA0KDQoqKkluaXRpYWwgQXNzZXNzbWVudCBvZiBIZWFsdGhjYXJlIEV4cGVuZGl0dXJlcyBhbmQgTGlmZSBFeHBlY3RhbmN5KioNCg0KKipUYXNrKioNCg0KQ3JlYXRlIGEgc2NhdHRlcnBsb3Qgb2YgTGlmZUV4cCB2cy4gVG90RXhwIHRvIHZpc3VhbGl6ZSB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gaGVhbHRoY2FyZSBleHBlbmRpdHVyZXMgYW5kIGxpZmUgZXhwZWN0YW5jeSBhY3Jvc3MgY291bnRyaWVzLiBUaGVuLCBydW4gYSBzaW1wbGUgbGluZWFyIHJlZ3Jlc3Npb24gd2l0aCBMaWZlRXhwIGFzIHRoZSBkZXBlbmRlbnQgdmFyaWFibGUgYW5kIFRvdEV4cCBhcyB0aGUgaW5kZXBlbmRlbnQgdmFyaWFibGUgKHdpdGhvdXQgdHJhbnNmb3JtaW5nIHRoZSB2YXJpYWJsZXMpLg0KDQotIFByb3ZpZGUgYW5kIGludGVycHJldCB0aGUgRi1zdGF0aXN0aWMsIFItc3F1YXJlZCB2YWx1ZSwgc3RhbmRhcmQgZXJyb3IsIGFuZCBwLXZhbHVlcy4NCi0gRGlzY3VzcyB3aGV0aGVyIHRoZSBhc3N1bXB0aW9ucyBvZiBzaW1wbGUgbGluZWFyIHJlZ3Jlc3Npb24gKGxpbmVhcml0eSwgaW5kZXBlbmRlbmNlLCBob21vc2NlZGFzdGljaXR5LCBhbmQgbm9ybWFsaXR5IG9mIHJlc2lkdWFscykgYXJlIG1ldCBpbiB0aGlzIGFuYWx5c2lzLg0KDQoNCmBgYHtyfQ0Kc3RyKHdob19kZikNCmBgYA0KDQpgYGB7cn0NCnN1bW1hcnkod2hvX2RmKQ0KYGBgDQoNCioqQ3JlYXRlIGEgc2NhdHRlcnBsb3Qgb2YgTGlmZUV4cCB2cy4gVG90RXhwKioNCg0KYGBge3IsIHdhcm5pbmc9RkFMU0V9DQpnZ3Bsb3Qod2hvX2RmLCBhZXMoeCA9IFRvdEV4cCwgeSA9IExpZmVFeHApKSArDQogIGdlb21fcG9pbnQoYWxwaGEgPSAwLjcpICsNCiAgbGFicygNCiAgICB0aXRsZSA9ICJTY2F0dGVycGxvdCBvZiBMaWZlIEV4cGVjdGFuY3kgdnMgVG90YWwgRXhwZW5kaXR1cmVzIiwNCiAgICB4ID0gIlRvdGFsIEhlYWx0aGNhcmUgRXhwZW5kaXR1cmVzIChVUyBEb2xsYXJzKSIsDQogICAgeSA9ICJMaWZlIEV4cGVjdGFuY3kgKFllYXJzKSINCiAgKSArDQogIHRoZW1lX21pbmltYWwoKQ0KYGBgDQoNCmBgYHtyfQ0Kd2hvX21vZGVsIDwtIGxtKExpZmVFeHAgfiBUb3RFeHAsIGRhdGEgPSB3aG9fZGYpDQpgYGANCg0KYGBge3J9DQpzdW1tYXJ5KHdob19tb2RlbCkNCmBgYA0KDQpgYGB7cn0NCiNSZXNpZHVhbHMgdnMgRml0dGVkDQpwbG90KHdob19tb2RlbCwgd2hpY2ggPSAxKQ0KYGBgDQoNCmBgYHtyfQ0KIyBRLVEgcGxvdA0KcGxvdCh3aG9fbW9kZWwsIHdoaWNoID0gMikNCmBgYA0KDQpgYGB7cn0NCiMgSGlzdG9ncmFtIG9mIHJlc2lkdWFscw0KaGlzdChyZXNpZHVhbHMod2hvX21vZGVsKSwgYnJlYWtzID0gMjAsIG1haW4gPSAiSGlzdG9ncmFtIG9mIFJlc2lkdWFscyIsIHhsYWIgPSAiUmVzaWR1YWxzIikNCmBgYA0KDQoqKkRpc2N1c3Npb24qKg0KDQojIyMgaS4NCg0KQ29uc2lkZXIgdGhlIGltcGxpY2F0aW9ucyBvZiB5b3VyIGZpbmRpbmdzIGZvciBoZWFsdGggcG9saWN5LiBBcmUgaGlnaGVyIGhlYWx0aGNhcmUgZXhwZW5kaXR1cmVzIGdlbmVyYWxseSBhc3NvY2lhdGVkIHdpdGggbG9uZ2VyIGxpZmUgZXhwZWN0YW5jeT8gDQoNClRoZSBkYXRhIHNob3dzIGEgbW9kZXJhdGUgcG9zaXRpdmUgcmVsYXRpb25zaGlwIGJldHdlZW4gaGVhbHRoY2FyZSBleHBlbmRpdHVyZXMgYW5kIGxpZmUgZXhwZWN0YW5jeS4NCg0KLSAkRi1zdGF0aXN0aWMkIG9mICQxNC45NiQgYW5kICRwLXZhbHVlIFxhcHByb3ggMC4wMDA0JCBpbmRpY2F0ZXMgc3RhdGlzdGljYWwgc2lnbmlmaWNhbmNlLCBzdWdnZXN0aW5nIHRoZSB2YXJpYWJsZXMgaGF2ZSBhIG1lYW5pbmdmdWwgcmVsYXRpb25zaGlwIHdpdGggbGlmZSBleHBlY3RhbmN5LiBIb3dldmVyLCB0aGUgbW9kZWxzIGV4cGxhaW5zIGxpbWl0ZWQgdmFyaWFiaWxpdHkgaW4gbGlmZSBleHBlY3RhbmN5Lg0KLSBTdGFuZGFyZCBFcnJvciAkKFNFKSQgb2YgJDEwLjE1JCBzdWdnZXN0cyBhIHJlbGF0aXZlbHkgZ29vZCBmaXQscHJvdmlkaW5nIHJlYXNvbmFibGUgcHJlY2lzaW9uIG9mIHRoZSBlc3RpbWF0aW5nIHJlZ3Jlc3Npb24gY29lZmZpY2llbnQgc3VjaCBhcyBzbG9wZSBvciBpbnRlcmNlcHQuDQotIEEgcG9zaXRpdmUgY29lZmZpY2llbnQgJDkuNjQxIFx0aW1lcyAxMF57LTV9JCBpbXBsaWVzIGFzIGhlYWx0aGNhcmUgZXhwZW5kaXR1cmUgaW5jcmVhc2VzLCBsaWZlIGV4cGVjdGFuY3kgaW1wcm92ZXMuIEhvd2V2ZXIsIHRoZSBtYWduaXR1ZGUgc3VnZ2VzdHMgYSBzbWFsbCBpbmNyZW1lbnRhbCBlZmZlY3QuDQotIFRoZSByZXNpZHVhbHMgZGV2aWF0ZXMgc2lnbmlmaWNhbnRseSBmcm9tIG5vcm1hbGl0eSwgYXMgc2hvd24gYnkgdGhlIFEtUSBwbG90IGFuZCBzdXBwb3J0ZWQgYnkgdGhlIEhpc3RvZ3JhbSBvZiBSZXNpZHVhbHMuDQotIFRoZXJlIGFyZSBubyBldmlkZW50IHNpZ25zIG9mIGhvbW9zY2VkYXN0aWNpdHkuIFRoZSBwb2ludHMgZG8gbm90IHNob3cgcmFuZG9tbmVzcyBvciBmb3JtIGEgZnVubmVsIG9yIGZhbiBsaWtlIHNoYXBlLg0KLSBUaGVyZSBpcyBhIGNsZWFyIHBhdHRlcm4gd2l0aCB0aGUgcmVzaWR1YWxzLCB3aGljaCBkbyBub3QgYXBwZWFyIHJhbmRvbSwgd2l0aCBhIHZpc2libGUgY3VydmF0dXJlLiBUaGlzIGluZGljYXRlcyBhIG5vbi1saW5lYXIgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIHZhcmlhYmxlcywgYW5kIG1ha2VzIGl0IGlubmFwcHJvcHJpYXRlIHRvIGFzc3VtZSBpbmRlcGVuZGVuY2Ugb2YgcmVzaWR1YWxzLg0KDQojIyMgaWkuDQoNCldoYXQgZG8gdGhlIGFzc3VtcHRpb25zIG9mIHRoZSByZWdyZXNzaW9uIG1vZGVsIHN1Z2dlc3QgYWJvdXQgdGhlIHJlbGlhYmlsaXR5IG9mIHRoaXMgcmVsYXRpb25zaGlwPw0KJFJeMiA9IDAuMjc3MiQgc3VnZ2VzdHMgdGhlIHJlbGF0aW9uc2hpcCBpcyBubyBwYXJ0aWN1bGFybHkgc3Ryb25nLCBpbXBseWluZyB0aGF0IHdoaWxlIGhlYWx0aGNhcmUgZXhwZW5kaXR1cmVzIGV4cGxhaW4gc29tZSB2YXJpYXRpb24gaW4gbGlmZSBleHBlY3RhbmN5LCB0aGUgbW9kZWwgZG9lcyBub3QgY2FwdHVyZSBhbGwgdGhlIGluZmx1ZW5jaW5nIGZhY3RvcnMuDQoNCiMjIFF1ZXN0aW9uIDINCg0KKipUcmFuc2Zvcm1pbmcgVmFyaWFibGVzIGZvciBhIEJldHRlciBGaXQqKg0KDQoqKlRhc2sqKg0KDQpSZWNvZ25pemluZyBwb3RlbnRpYWwgbm9uLWxpbmVhciByZWxhdGlvbnNoaXBzLCB0cmFuc2Zvcm0gdGhlIHZhcmlhYmxlcyBhcyBmb2xsb3dzDQoNCi0gUmFpc2UgbGlmZSBleHBlY3RhbmN5IHRvIHRoZSA0LjYgcG93ZXIgKExpZmVFeHBeNC42KS4NCi0gUmFpc2UgdG90YWwgZXhwZW5kaXR1cmVzIHRvIHRoZSAwLjA2IHBvd2VyIChUb3RFeHBeMC4wNiksIHdoaWNoIGlzIG5lYXJseSBhIGxvZ2FyaXRobWljIHRyYW5zZm9ybWF0aW9uLg0KDQpDcmVhdGUgYSBuZXcgc2NhdHRlcnBsb3Qgd2l0aCB0aGUgdHJhbnNmb3JtZWQgdmFyaWFibGVzIGFuZCByZS1ydW4gdGhlIHNpbXBsZSBsaW5lYXIgcmVncmVzc2lvbiBtb2RlbC4NCg0KLSBQcm92aWRlIGFuZCBpbnRlcnByZXQgdGhlIEYtc3RhdGlzdGljLCBSLXNxdWFyZWQgdmFsdWUsIHN0YW5kYXJkIGVycm9yLCBhbmQgcC12YWx1ZXMgZm9yIHRoZSB0cmFuc2Zvcm1lZCBtb2RlbC4NCi0gQ29tcGFyZSB0aGlzIG1vZGVsIHRvIHRoZSBvcmlnaW5hbCBtb2RlbCAoZnJvbSBRdWVzdGlvbiAxKS4gV2hpY2ggbW9kZWwgcHJvdmlkZXMgYSBiZXR0ZXIgZml0LCBhbmQgd2h5Pw0KDQpgYGB7cn0NCndob19kZiRMaWZlRXhwX3QgPC0gd2hvX2RmJExpZmVFeHBeNC42DQp3aG9fZGYkVG90RXhwX3QgPC0gd2hvX2RmJFRvdEV4cF4wLjYNCmBgYA0KDQpgYGB7ciwgd2FybmluZz1GQUxTRX0NCmdncGxvdCh3aG9fZGYsIGFlcyh4ID0gVG90RXhwX3QsIHkgPSBMaWZlRXhwX3QpKSArDQogIGdlb21fcG9pbnQoYWxwaGEgPSAwLjcpICsNCiAgbGFicygNCiAgICB0aXRsZSA9ICJTY2F0dGVycGxvdCBvZiBMaWZlIEV4cGVjdGFuY3leNC42IHZzIFRvdGFsIEV4cGVuZGl0dXJlc14wLjYiLA0KICAgIHggPSAiVG90YWwgSGVhbHRoY2FyZSBFeHBlbmRpdHVyZXMgKFVTIERvbGxhcnMpIiwNCiAgICB5ID0gIkxpZmUgRXhwZWN0YW5jeSAoWWVhcnMpIg0KICApICsNCiAgdGhlbWVfY2xlYW4oKQ0KYGBgDQoNCmBgYHtyfQ0Kd2hvX21vZGVsX3QgPC0gbG0oTGlmZUV4cF90IH4gVG90RXhwX3QsIGRhdGEgPSB3aG9fZGYpDQpzdW1tYXJ5KHdob19tb2RlbF90KQ0KYGBgDQoNCmBgYHtyfQ0KI1Jlc2lkdWFscyB2cyBGaXR0ZWQNCnBsb3Qod2hvX21vZGVsX3QsIHdoaWNoID0gMSkNCmBgYA0KDQoNCmBgYHtyfQ0KIyBRLVEgcGxvdA0KcGxvdCh3aG9fbW9kZWxfdCwgd2hpY2ggPSAyKQ0KYGBgDQoNCmBgYHtyfQ0KIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzDQpoaXN0KHJlc2lkdWFscyh3aG9fbW9kZWxfdCksIGJyZWFrcyA9IDIwLCBtYWluID0gIkhpc3RvZ3JhbSBvZiBSZXNpZHVhbHMiLCB4bGFiID0gIlJlc2lkdWFscyIpDQpgYGANCg0KLSAkRi1zdGF0aXN0aWMkIG9mICQ1Ni4wOSQgYW5kICRwLXZhbHVlID0gNC42MSBcdGltZXMgMTBeezl9JCBpbmRpY2F0ZXMgdGhlIHRyYW5zZm9ybWVkIG1vZGVsIGlzIHN0YXRpc3RpY2FsIHNpZ25pZmljYW5jZSBhbmQgY2FwdHVyZXMgZ3JlYXRlciBwcm9wb3J0aW9uIG9mIHZhcmlhYmlsaXR5Lg0KLSBTdGFuZGFyZCBFcnJvciAkKFNFKSQgb2YgJDExNiw5MDAsMDAwJCBzdWdnZXN0cyBhIHdvcnNlIGZpdCB3aXRoIHRoZSBwcmVjaXNpb24gb2YgdGhlIGVzdGltYXRlZCByZWdyZXNzaW9uIGNvZWZmaWNpZW50LiBIb3dldmVyLCB0aGlzIGlzIG1vcmUgbGlrZWx5IGEgcmVzdWx0IG9mIHRoZSBncmVhdGVyIG1hZ25pdHVkZSBvZiB0aGUgdHJhbnNmb3JtZWQgdmFyaWFibGVzIHJhdGhlciB0aGFuIGFuIGFjdHVhbCBkZWNsaW5lIGluIHBlcmZvcm1hbmNlLg0KLSBQb3NpdGl2ZSBjb2VmZmljaWVudCAkMjk1LDUxOCQgaW1wbGllcyBhcyBoZWFsdGhjYXJlIGV4cGVuZGl0dXJlIGluY3JlYXNlcyBzbyBkb2VzIGxpZmUgZXhwZWN0YW5jeSBzdGlsbCwgcmVmbGVjdGluZyBhIHN0cm9uZ2VyIHJlbGF0aW9uc2hpcCBjb21wYXJlZCB0byB0aGUgb3JpZ2luYWwgbW9kZWwuDQotIFRoZSByZXNpZHVhbHMgYXBwZWFyIG1vcmUgbm9ybWFsaXplZCwgYXMgc2hvd24gd2l0aCB0aGUgSGlzdG9ncmFtIG9mIFJlc2lkdWFscyBhbmQgUS1RIHBsb3QuIERldmlhdGlvbnMgYXJlIHN0aWxsIHByZXNlbnQsIGhvd2V2ZXIgdGhleSBhcmUgbGVzcyBzZXZlcmUgdGhhbiB0aGUgb3JpZ2luYWwgbW9kZWwuDQotIE5vIGhvbW9zY2VkYXN0aWNpdHkgYXBwZWFycyB3aXRoIHRoZSB0cmFuc2Zvcm1hdGlvbi4NCi0gUmVzaWR1YWwgcGF0dGVybnMgc3RpbGwgZG8gbm90IHN1cHBvcnQgaW5kZXBlbmRlbmNlIGJldHdlZW4gdGhlIHZhcmlhYmxlcy4NCg0KKipEaXNjdXNzaW9uKioNCg0KIyMjIGkgDQoNCkhvdyBkbyB0aGUgdHJhbnNmb3JtYXRpb25zIGltcGFjdCB0aGUgaW50ZXJwcmV0YXRpb24gb2YgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGhlYWx0aGNhcmUgc3BlbmRpbmcgYW5kIGxpZmUgZXhwZWN0YW5jeT8gDQoNCiRSXjIgPSAwLjU4OTgkIHN1Z2dlc3RzIHRoZSByZWxhdGlvbnNoaXAgaXMgc3Ryb25nLCBwYXJ0aWN1bGFybHkgd2hlbiBjb21wYXJlIHRvIHRoZSBwcmVkZWNlc3Nvci4NCg0KIyMjIGlpDQoNCldoeSBtaWdodCB0aGUgdHJhbnNmb3JtZWQgbW9kZWwgYmUgbW9yZSBhcHByb3ByaWF0ZSBmb3IgcG9saWN5IHJlY29tbWVuZGF0aW9ucz8NCg0KVGhlIHN0cm9uZ2VyIHJlbGF0aW9uc2hpcCBpcyBoaWdobGlnaHRlZCBhZnRlciB0aGUgdHJhbnNmb3JtYXRpb24sIHdoaWNoIGJldHRlciBhY2NvdW50cyBmb3IgdGhlIGNvbXBsZXgsIG5vbi1saW5lYXIgcmVsYXRpb25zaGlwIGJldHdlZW4gaGVhbHRoY2FyZSBleHBlbmRpdHVyZXMgYW5kIGxpZmUgZXhwZWN0YW5jeS4gVGhpcyBhcHByb2FjaCByZWR1Y2VzIHJpc2sgaW4gbW9kZWwgc3BlY2lmaWNhdGlvbiBhbmQgY2FwdHVyZXMgdGhlIGRpbWluaXNoaW5nIHJldHVybiBvbiBoZWFsdGhjYXJlIHNwZW5kaW5nLCB0aGF0IGhhcyBsZXNzIG9mIGFuIGltcGFjdCBhZnRlciBhIGNlcnRhaW4gdGhyZXNob2xkLg0KDQojIyBRdWVzdGlvbiAzDQoNCioqRm9yZWNhc3RpbmcgTGlmZSBFeHBlY3RhbmN5IEJhc2VkIG9uIFRyYW5zZm9ybWVkIEV4cGVuZGl0dXJlcyoqDQoNCioqVGFzayoqDQoNClVzaW5nIHRoZSByZXN1bHRzIGZyb20gdGhlIHRyYW5zZm9ybWVkIG1vZGVsIGluIFF1ZXN0aW9uIDIsIGZvcmVjYXN0IHRoZSBsaWZlIGV4cGVjdGFuY3kgZm9yIGNvdW50cmllcyB3aXRoIHRoZSBmb2xsb3dpbmcgdHJhbnNmb3JtZWQgdG90YWwgZXhwZW5kaXR1cmVzICQoVG90YWxFeHBeezAuMDZ9KSQ6DQoNCi0gV2hlbiAkVG90RXhwXnswLjA2fT0xLjUkDQotIFdoZW4gJFRvdEV4cF57MC4wNn09Mi41JA0KDQpgYGB7cn0NCndob19kZiRUb3RFeHBfdDE1IDwtIHdob19kZiRUb3RFeHBeMS41DQp3aG9fZGYkVG90RXhwX3QyNSA8LSB3aG9fZGYkVG90RXhwXjIuNQ0KYGBgDQoNCmBgYHtyLCB3YXJuaW5nPUZBTFNFfQ0KZ2dwbG90KHdob19kZiwgYWVzKHggPSBUb3RFeHBfdDE1LCB5ID0gTGlmZUV4cF90KSkgKw0KICBnZW9tX3BvaW50KGFscGhhID0gMC43KSArDQogIGxhYnMoDQogICAgdGl0bGUgPSAiU2NhdHRlcnBsb3Qgb2YgTGlmZSBFeHBlY3RhbmN5XjEuNSB2cyBUb3RhbCBFeHBlbmRpdHVyZXNeMC42IiwNCiAgICB4ID0gIlRvdGFsIEhlYWx0aGNhcmUgRXhwZW5kaXR1cmVzIChVUyBEb2xsYXJzKSIsDQogICAgeSA9ICJMaWZlIEV4cGVjdGFuY3kgKFllYXJzKSINCiAgKQ0KYGBgDQoNCmBgYHtyfQ0Kd2hvX21vZGVsX3QxNSA8LSBsbShMaWZlRXhwX3QgfiBUb3RFeHBfdDE1LCBkYXRhID0gd2hvX2RmKQ0Kc3VtbWFyeSh3aG9fbW9kZWxfdDE1KQ0KYGBgDQoNCmBgYHtyfQ0KI1Jlc2lkdWFscyB2cyBGaXR0ZWQNCnBsb3Qod2hvX21vZGVsX3QxNSwgd2hpY2ggPSAxKQ0KYGBgDQoNCmBgYHtyfQ0KIyBRLVEgcGxvdA0KcGxvdCh3aG9fbW9kZWxfdDE1LCB3aGljaCA9IDIpDQpgYGANCg0KYGBge3J9DQojIEhpc3RvZ3JhbSBvZiByZXNpZHVhbHMNCmhpc3QocmVzaWR1YWxzKHdob19tb2RlbF90MTUpLCBicmVha3MgPSAyMCwgbWFpbiA9ICJIaXN0b2dyYW0gb2YgUmVzaWR1YWxzIiwgeGxhYiA9ICJSZXNpZHVhbHMiKQ0KYGBgDQoNCg0KYGBge3IsIHdhcm5pbmc9RkFMU0V9DQpnZ3Bsb3Qod2hvX2RmLCBhZXMoeCA9IFRvdEV4cF90MjUsIHkgPSBMaWZlRXhwX3QpKSArDQogIGdlb21fcG9pbnQoYWxwaGEgPSAwLjcpICsNCiAgbGFicygNCiAgICB0aXRsZSA9ICJTY2F0dGVycGxvdCBvZiBMaWZlIEV4cGVjdGFuY3leMi41IHZzIFRvdGFsIEV4cGVuZGl0dXJlc14wLjYiLA0KICAgIHggPSAiVG90YWwgSGVhbHRoY2FyZSBFeHBlbmRpdHVyZXMgKFVTIERvbGxhcnMpIiwNCiAgICB5ID0gIkxpZmUgRXhwZWN0YW5jeSAoWWVhcnMpIg0KICApICsNCiAgdGhlbWVfY2FsYygpDQpgYGANCg0KYGBge3J9DQp3aG9fbW9kZWxfdDI1IDwtIGxtKExpZmVFeHBfdCB+IFRvdEV4cF90MjUsIGRhdGEgPSB3aG9fZGYpDQpzdW1tYXJ5KHdob19tb2RlbF90MjUpDQpgYGANCg0KYGBge3J9DQojUmVzaWR1YWxzIHZzIEZpdHRlZA0KcGxvdCh3aG9fbW9kZWxfdDI1LCB3aGljaCA9IDEpDQpgYGANCg0KYGBge3J9DQojIFEtUSBwbG90DQpwbG90KHdob19tb2RlbF90MjUsIHdoaWNoID0gMikNCmBgYA0KDQpgYGB7cn0NCiMgSGlzdG9ncmFtIG9mIHJlc2lkdWFscw0KaGlzdChyZXNpZHVhbHMod2hvX21vZGVsX3QyNSksIGJyZWFrcyA9IDIwLCBtYWluID0gIkhpc3RvZ3JhbSBvZiBSZXNpZHVhbHMiLCB4bGFiID0gIlJlc2lkdWFscyIpDQpgYGANCg0KKipEaXNjdXNzaW9uOioqDQoNCkRpc2N1c3MgdGhlIGltcGxpY2F0aW9ucyBvZiB0aGVzZSBmb3JlY2FzdHMgZm9yIGNvdW50cmllcyB3aXRoIGRpZmZlcmVudCBsZXZlbHMgb2YgaGVhbHRoY2FyZSBzcGVuZGluZy4gV2hhdCBkbyB0aGVzZSBwcmVkaWN0aW9ucyBzdWdnZXN0IGFib3V0IHRoZSBwb3RlbnRpYWwgaW1wYWN0IG9mIGluY3JlYXNpbmcgaGVhbHRoY2FyZSBleHBlbmRpdHVyZXMgb24gbGlmZSBleHBlY3RhbmN5Pw0KDQpUaGUgcmVzdWx0cyByZXZlYWwgdGhhdCB0cmFuc2Zvcm1lZCBoZWFsdGhjYXJlIGV4cGVuZGl0dXJlcyBwb3NpdGl2ZWx5IGNvcnJlbGF0ZSB3aXRoIGxpZmUgZXhwZWN0YW5jeSwgZW1waGFzaXppbmcgdGhlIHJvbGUgb2YgaGVhbHRoY2FyZSBzcGVuZGluZyBpbiBpbXByb3ZpbmcgcG9wdWxhdGlvbiBoZWFsdGgsIGJ1dCBpdHMgbm90IGFzIHNpbXBsZSBhcyAic3BlbmQgbW9yZSwgbGl2ZSBmb3JldmVyIi4gSW4gY291bnRyaWVzIHdpdGggbG93ZXIgbGV2ZWxzIG9mIHNwZW5kaW5nLCBpbmNyZWFzZWQgaW52ZXN0bWVudCBpbiBoZWFsdGhjYXJlIGNvdWxkIHlpZWxkIHN1YnN0YW50aWFsIGdhaW5zIGluIGxpZmUgZXhwZWN0YW5jeSxidXQgcmV0dXJucyB3aWxsIGRpbWluaXNoIGFzIGV4cGVuZGl0dXJlcyBncm93IGxhcmdlci4gVGhlIHJlc2lkdWFsIHN0YW5kYXJkIGVycm9yIGFuZCBhZGp1c3RlZCAkUl4yJCB2YWx1ZXMsIGluZGljYXRlIHN1YnN0YW50aWFsIHVuZXhwbGFpbmVkIHZhcmlhYmlsaXR5IGFuZCBzdWdnZXN0aW5nIGxpZmUgZXhwZWN0YW5jeSBpcyBpbmZsdWVuY2VkIGJ5IGZhY3RvcnMgYmV5b25kIHNwZW5kaW5nLiBBIG11bHRpZmFjZXRlZCBhcHByb2FjaCB0aGF0IHRhcmdldHMgc3BlbmRpbmcgYW5kIGFkZHJlc3NlcyBvdGhlciBkZXRlcm1pbmVudHMgd291bGQgeWllbGQgZ3JlYXRlciBiZW5lZml0cyB0byB0aGUgYW5hbHlzaXMuDQoNCiMjIFF1ZXN0aW9uIDQNCg0KKipJbnRlcmFjdGlvbiBFZmZlY3RzIGluIE11bHRpcGxlIFJlZ3Jlc3Npb24qKg0KDQoqKlRhc2sqKg0KDQpCdWlsZCBhIG11bHRpcGxlIHJlZ3Jlc3Npb24gbW9kZWwgdG8gaW52ZXN0aWdhdGUgdGhlIGNvbWJpbmVkIGVmZmVjdCBvZiB0aGUgcHJvcG9ydGlvbiBvZiBNRHMgYW5kIHRvdGFsIGhlYWx0aGNhcmUgZXhwZW5kaXR1cmVzIG9uIGxpZmUgZXhwZWN0YW5jeS4gU3BlY2lmaWNhbGx5LCB1c2UgdGhlIG1vZGVsOg0KDQokTGlmZUV4cD1iXzArYl8xIFx0aW1lcyBQcm9wTUQgKyBiXzIgXHRpbWVzIFRvdEV4cCArIGJfMyBcdGltZXMgKFByb3BNRCBcdGltZXMgVG90RXhwKSQNCg0KLSBpbnRlcnByZXQgdGhlIEYtc3RhdGlzdGljLCBSLXNxdWFyZWQgdmFsdWUsIHN0YW5kYXJkIGVycm9yLCBhbmQgcC12YWx1ZXMuDQotIEV2YWx1YXRlIHRoZSBpbnRlcmFjdGlvbiB0ZXJtIChQcm9wTUQgKiBUb3RFeHApLiANCg0KV2hhdCBkb2VzIHRoaXMgaW50ZXJhY3Rpb24gdGVsbCB1cyBhYm91dCB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIG51bWJlciBvZiBNRHMsIGhlYWx0aGNhcmUgc3BlbmRpbmcsIGFuZCBsaWZlIGV4cGVjdGFuY3k/DQoNCioqRmlyc3QgSSdsbCBjcmVhdGUgYW4gaW50ZXJhY3Rpb24gbW9kZWwgYW5kIHRlc3QgZm9yIHNpZ25pZmljYW5jZSoqDQoNCmBgYHtyfQ0Kd2hvX21vZGVsX3RNRF9pbnQgPC0gbG0oTGlmZUV4cCB+IFByb3BNRCAqIFRvdEV4cCwgZGF0YSA9IHdob19kZikNCnN1bW1hcnkod2hvX21vZGVsX3RNRF9pbnQpDQpgYGANCg0KYGBge3J9DQojUmVzaWR1YWxzIHZzIEZpdHRlZA0KcGxvdCh3aG9fbW9kZWxfdE1EX2ludCwgd2hpY2ggPSAxKQ0KYGBgDQoNCmBgYHtyfQ0KIyBRLVEgcGxvdA0KcGxvdCh3aG9fbW9kZWxfdE1EX2ludCwgd2hpY2ggPSAyKQ0KYGBgDQoNCmBgYHtyfQ0KIyBIaXN0b2dyYW0gb2YgcmVzaWR1YWxzDQpoaXN0KHJlc2lkdWFscyh3aG9fbW9kZWxfdE1EX2ludCksIGJyZWFrcyA9IDIwLCBtYWluID0gIkhpc3RvZ3JhbSBvZiBSZXNpZHVhbHMiLCB4bGFiID0gIlJlc2lkdWFscyIpDQpgYGANCg0KDQoqKkNvbnNpZGVyaW5nIHRoZSByZXN1bHRzIEkgd2lsbCBjcmVhdGUgYW4gYWRkaXRpdmUgbW9kZWwgdG8gaW50ZXJwcmV0IGhvdyB0aGV5IGpvaW50bHkgYWZmZWN0IExpZmVFeHAqKg0KDQoNCmBgYHtyfQ0Kd2hvX21vZGVsX3RNRF9hZGQgPC0gbG0oTGlmZUV4cCB+IFByb3BNRCArIFRvdEV4cCwgZGF0YSA9IHdob19kZikNCnN1bW1hcnkod2hvX21vZGVsX3RNRF9hZGQpDQpgYGANCg0KDQpgYGB7cn0NCiNSZXNpZHVhbHMgdnMgRml0dGVkDQpwbG90KHdob19tb2RlbF90TURfYWRkLCB3aGljaCA9IDEpDQpgYGANCg0KYGBge3J9DQojIFEtUSBwbG90DQpwbG90KHdob19tb2RlbF90TURfYWRkLCB3aGljaCA9IDIpDQpgYGANCg0KYGBge3J9DQojIEhpc3RvZ3JhbSBvZiByZXNpZHVhbHMNCmhpc3QocmVzaWR1YWxzKHdob19tb2RlbF90TURfYWRkKSwgYnJlYWtzID0gMjAsIG1haW4gPSAiSGlzdG9ncmFtIG9mIFJlc2lkdWFscyIsIHhsYWIgPSAiUmVzaWR1YWxzIikNCmBgYA0KDQoqKkRpc2N1c3Npb24qKg0KDQojIyMgaQ0KDQpIb3cgZG9lcyB0aGUgcHJlc2VuY2Ugb2YgbW9yZSBNRHMgYW1wbGlmeSBvciBkaW1pbmlzaCB0aGUgZWZmZWN0IG9mIGhlYWx0aGNhcmUgZXhwZW5kaXR1cmVzIG9uIGxpZmUgZXhwZWN0YW5jeT8gDQoNCi0gUG9zaXRpdmUgY29lZmZpY2llbnQgJDQuMzk2IFx0aW1lcyAxMF4zJCBmcm9tIHRoZSBpbnRlcmFjdGlvbiBtb2RlbCBzdWdnZXN0cyB0aGF0IG9uIGF2ZXJhZ2UsIGFuIGluY3JlYXNlIG9mIHByb3BvcnRpb24gb2YgTURTIGxlYWRzIHRvIGhpZ2hlciBsaWZlIGV4cGVjdGFuY3kuDQotIFBvc2l0aXZlIGNvZWZmaWNpZW50ICQyLjA1MCBcdGltZXMgMTBeey00fSQgaW1wbGllcyBpbmNyZWFzZWQgaGVhbHRoY2FyZSBleHBlbmRpdHVyZXMgaXMgYXNzb2NpYXRlZCB3aXRoIGhpZ2hlciBsaWZlIGV4cGVjdGFuY3ksIGFzc3VtaW5nIFByb3BNRCBzdGF5cyBjb25zdGFudC4NCi0gTmVnYXRpdmUgY29lZmZpY2llbnQgJC00LjkzNSBcdGltZXMgMTBeey0yfSQgc3VnZ2VzdHMgUHJvcE1EIGFuZCBMaWZlRXhwIGRlcGVuZHMgb24gVG90RXhwLCBhbmQgdmljZS12ZXJzYSwgd2l0aCB0aGUgcG9zaXRpdmUgZWZmZWN0IG9mIFByb3BNRCBhbmQgTGlmZUV4cCBkaW1pbmlzaGluZyBhcyBUb3RFeHAgaW5jcmVhc2UsIHZpY2UtdmVyc2EuDQotIFRoaXMgZ2VuZXJhbGx5IGltcGxpZXMgZGltaW5pc2hpbmcgcmV0dXJuIG9uIGluY3JlYXNlIG9mIEV4cGVuZGl0dXJlcyBhbmQgTURzLg0KLSBUaGUgcC12YWx1ZSBmb3IgJFByb3BNRCQgYW5kICRUb3RFeHAkIHdoaWNoIGlzICQwLjAyOTY5JCBzdWdnZXN0cyBhIG1lYW5pbmdmdWwgcmVsYXRpb25zaGlwLg0KLSBGb3IgdGhlIGFkZGl0aXZlIG1vZGVsIHRoZSBjb2VmZmljaWVudHMgUHJvcE1EKCQzLjUzMyBcdGltZXMgMTBeezN9JCkgYW5kIC0gVG90RXhwKCQ1LjU3OSBcdGltZXMgMTBeey01fSQpIGFyZSBzdGlsbCBwb3NpdGl2ZSBidXQgc21hbGxlciB0aGFuIHRoZSBpbnRlcmFjdGlvbiBtb2RlbC4NCi0gVGhlICRSXjIgPSAwLjQ1MiQgZnJvbSB0aGUgaW50ZXJhY3Rpb24gbW9kZWwgcmVkdWNpbmcgdG8gJFJeMiA9IDAuMzUxOSQgaW4gdGhlIGFkZGl0aXZlLCBzdWdnZXN0cyBsZXNzIHZpc2liaWxpdHkgd2l0aCB0aGUgYWRkaXRpdmUuDQoNCiMjIyBpaSANCg0KV2hhdCBwb2xpY3kgcmVjb21tZW5kYXRpb25zIGNhbiBiZSBkcmF3biBmcm9tIHRoaXMgYW5hbHlzaXM/DQoNClNpbmNlIHRoZSByZXN1bHRzIGJhc2ljYWxseSBkZXNjcmliZSBkaW1pbmlzaGluZyByZXR1cm5zIG9uIGV4Y2Vzc2l2ZSBpbmNyZWFzZSBvZiBNRHMgb3IgRXhwZW5kaXR1cmVzLCBhIGJhbGFuY2UgYmV0d2VlbiB0aGUgdHdvIGlzIGlkZWFsLiBGb3IgbG93LXNwZW5kaW5nIGNvdW50cmllcywgaW5jcmVhc2luZyBNRHMgY2FuIG9mZnNldCBkZWNyZWFzZWQgbGlmZSBleHBlY3RhbmN5LCB3aGlsZSBpbiBoaWdoIHNwZW5kaW5nIGNvbnV0cmllcywgaW5jcmVhc2luZyBNRHMgbWF5IG5vdCBwcm9kdWNlIHN1YnN0YW50aWFsIGltcHJvdmVtZW50IGluIGxpZmUgZXhwZWN0YW5jeS4NCg0KIyMgUXVlc3Rpb24gNQ0KDQoqKkZvcmVjYXN0aW5nIExpZmUgRXhwZWN0YW5jeSB3aXRoIEludGVyYWN0aW9uIFRlcm1zKioNCg0KKipUYXNrKioNCg0KVXNpbmcgdGhlIG11bHRpcGxlIHJlZ3Jlc3Npb24gbW9kZWwgZnJvbSBRdWVzdGlvbiA0LCBmb3JlY2FzdCB0aGUgbGlmZSBleHBlY3RhbmN5IGZvciBhIGNvdW50cnkgd2hlcmU6DQoNClRoZSBwcm9wb3J0aW9uIG9mIE1EcyBpcyAwLjAzIChQcm9wTUQgPSAwLjAzKS4NClRoZSB0b3RhbCBoZWFsdGhjYXJlIGV4cGVuZGl0dXJlIGlzIDE0IChUb3RFeHAgPSAxNCkuDQoNCioqRGlzY3Vzc2lvbioqDQoNCiMjIyBpDQoNCkRvZXMgdGhpcyBmb3JlY2FzdCBzZWVtIHJlYWxpc3RpYz8gDQoNCiMjIyBpaQ0KDQpXaHkgb3Igd2h5IG5vdD8gDQoNCiMjIyBpaWkNCg0KQ29uc2lkZXIgYm90aCB0aGUgcG90ZW50aWFsIHN0cmVuZ3RocyBhbmQgbGltaXRhdGlvbnMgb2YgdXNpbmcgdGhpcyBtb2RlbCBmb3IgZm9yZWNhc3RpbmcgaW4gcmVhbC13b3JsZCBwb2xpY3kgc2V0dGluZ3MuDQoNCiMgUHJvYmxlbSAzDQoNCiMjIFF1ZXN0aW9uIDENCg0KKipJbnZlbnRvcnkgQ29zdCoqDQoNCioqU2NlbmFyaW8qKg0KDQpBIHJldGFpbCBjb21wYW55IGlzIHBsYW5uaW5nIGl0cyBpbnZlbnRvcnkgc3RyYXRlZ3kgZm9yIHRoZSB1cGNvbWluZyB5ZWFyLiBUaGV5IGV4cGVjdCB0byBzZWxsIDExMCB1bml0cyBvZiBhIGhpZ2gtZGVtYW5kIHByb2R1Y3QuIFRoZSBzdG9yYWdlIGNvc3QgaXMgXCQzLjc1IHBlciB1bml0IHBlciB5ZWFyLCBhbmQgdGhlcmUgaXMgYSBmaXhlZCBvcmRlcmluZyBjb3N0IG9mIFwkOC4yNSBwZXIgb3JkZXIuIFRoZSBjb21wYW55IHdhbnRzIHRvIG1pbmltaXplIGl0cyB0b3RhbCBpbnZlbnRvcnkgY29zdC4NCg0KKipUYXNrKioNCg0KVXNpbmcgY2FsY3VsdXMsIGRldGVybWluZSB0aGUgb3B0aW1hbCBsb3Qgc2l6ZSAodGhlIG51bWJlciBvZiB1bml0cyB0byBvcmRlciBlYWNoIHRpbWUpIGFuZCB0aGUgbnVtYmVyIG9mIG9yZGVycyB0aGUgY29tcGFueSBzaG91bGQgcGxhY2UgcGVyIHllYXIgdG8gbWluaW1pemUgdG90YWwgaW52ZW50b3J5IGNvc3RzLiBBc3N1bWUgdGhhdCB0aGUgdG90YWwgY29zdCBmdW5jdGlvbiBpcyBnaXZlbiBieToNCg0KJEMoUSk9XGZyYWN7RH17UX0gXHRpbWVzIFMgKyBcZnJhY3tRfXsyfSBcdGltZXMgSCQNCg0KV2hlcmU6DQoNCi0gJEQkIGlzIHRvdGFsIGRlbWFuZCAoMTEwIHVuaXRzKS4NCi0gJFEkIGlzIHRoZSBvcmRlciBxdWFudGl0eS4NCi0gJFMkIGlzIHRoZSBmaXhlZCBvcmRlcmluZyBjb3N0IHBlciBvcmRlciAoJDguMjUpLg0KLSAkSCQgaXMgdGhlIGhvbGRpbmcgY29zdCBwZXIgdW5pdCBwZXIgeWVhciAoJDMuNzUpLg0KDQojIyBRdWVzdGlvbiAyDQoNCioqUmV2ZW51ZSBNYXhpbWl6YXRpb24qKg0KDQoqKlNjZW5hcmlvKioNCg0KQSBjb21wYW55IGlzIHJ1bm5pbmcgYW4gb25saW5lIGFkdmVydGlzaW5nIGNhbXBhaWduLiBUaGUgZWZmZWN0aXZlbmVzcyBvZiB0aGUgY2FtcGFpZ24sIGluIHRlcm1zIG9mIHJldmVudWUgZ2VuZXJhdGVkIHBlciBkYXksIGlzIG1vZGVsZWQgYnkgdGhlIGZ1bmN0aW9uOiAkUih0KT0tMzE1MHReey00fS0yMjB0KzY1MzAkDQpXaGVyZToNCg0KLSAkUih0KSQgcmVwcmVzZW50cyB0aGUgcmV2ZW51ZSBpbiBkb2xsYXJzIGFmdGVyICR0JCBkYXlzIG9mIHRoZSBjYW1wYWlnbi4NCg0KKipUYXNrKioNCg0KRGV0ZXJtaW5lIHRoZSB0aW1lICR0JCBhdCB3aGljaCB0aGUgcmV2ZW51ZSBpcyBtYXhpbWl6ZWQgYnkgZmluZGluZyB0aGUgY3JpdGljYWwgcG9pbnRzIG9mIHRoZSByZXZlbnVlIGZ1bmN0aW9uIGFuZCBkZXRlcm1pbmluZyB3aGljaCBwb2ludCBwcm92aWRlcyB0aGUgbWF4aW11bSB2YWx1ZS4gV2hhdCBpcyB0aGUgbWF4aW11bSByZXZlbnVlIHRoZSBjb21wYW55IGNhbiBleHBlY3QgZnJvbSB0aGlzIGNhbXBhaWduPw0KDQojIyBRdWVzdGlvbiAzIA0KDQoqKkRlbWFuZCBBcmVhIFVuZGVyIEN1cnZlKioNCg0KKipTY2VuYXJpbyoqDQoNCkEgY29tcGFueSBzZWxscyBhIHByb2R1Y3QgYXQgYSBwcmljZSB0aGF0IGRlY3JlYXNlcyBvdmVyIHRpbWUgYWNjb3JkaW5nIHRvIHRoZSBsaW5lYXIgZGVtYW5kIGZ1bmN0aW9uOg0KV2hlcmU6ICRQKHgpPTJ4LTkuMyQNCg0KJFAoeCkkIGlzIHRoZSBwcmljZSBpbiBkb2xsYXJzLCBhbmQgJHgkIGlzIHRoZSBxdWFudGl0eSBzb2xkLg0KDQoqKlRhc2sqKg0KDQogIFRoZSBjb21wYW55IGlzIGludGVyZXN0ZWQgaW4gY2FsY3VsYXRpbmcgdGhlIHRvdGFsIHJldmVudWUgZ2VuZXJhdGVkIGJ5IHRoaXMgcHJvZHVjdCBiZXR3ZWVuIHR3byBxdWFudGl0eSBsZXZlbHMsICR4XzEgPSAyJCBhbmQgJHhfMiA9IDUkLCB3aGVyZSB0aGUgcHJpY2Ugc3RpbGwgZ2VuZXJhdGVzIHNhbGVzLiBDb21wdXRlIHRoZSBhcmVhIHVuZGVyIHRoZSBkZW1hbmQgY3VydmUgYmV0d2VlbiB0aGVzZSB0d28gcG9pbnRzLCByZXByZXNlbnRpbmcgdGhlIHRvdGFsIHJldmVudWUgZ2VuZXJhdGVkIG92ZXIgdGhpcyByYW5nZS4NCg0KIyMgUXVlc3Rpb24gNA0KDQoqKlByb2ZpdCBPcHRpbWl6YXRpb24qKg0KDQoqKlNjZW5hcmlvKioNCg0KQSBiZWF1dHkgc3VwcGx5IHN0b3JlIHNlbGxzIGZsYXQgaXJvbnMsIGFuZCB0aGUgcHJvZml0IGZ1bmN0aW9uIGFzc29jaWF0ZWQgd2l0aCBzZWxsaW5nIA0KeCBmbGF0IGlyb25zIGlzIGdpdmVuIGJ5Og0KDQokXFBpKHgpID0geGxuKDl4KS1cZnJhY3t4XjZ9ezZ9JCANCg0KV2hlcmU6DQoNCi0gJFxQaSh4KSQgaXMgdGhlIHByb2ZpdCBpbiBkb2xsYXJzLg0KDQoqKlRhc2sqKg0KDQpVc2UgY2FsY3VsdXMgdG8gZmluZCB0aGUgdmFsdWUgb2YgJHgkIHRoYXQgbWF4aW1pemVzIHByb2ZpdC4gQ2FsY3VsYXRlIHRoZSBtYXhpbXVtIHByb2ZpdCB0aGF0IGNhbiBiZSBhY2hpZXZlZCBhbmQgZGV0ZXJtaW5lIGlmIHRoaXMgb3B0aW1hbCBzYWxlcyBsZXZlbCBpcyBmZWFzaWJsZSBnaXZlbiBtYXJrZXQgY29uZGl0aW9ucy4NCg0KIyMgUXVlc3Rpb24gNQ0KDQoqKlNwZW5kaW5nIEJlaGF2aW9yKioNCg0KKipTY2VuYXJpbyoqDQoNCkEgbWFya2V0IHJlc2VhcmNoIGZpcm0gaXMgYW5hbHl6aW5nIHRoZSBzcGVuZGluZyBiZWhhdmlvciBvZiBjdXN0b21lcnMgaW4gYSByZXRhaWwgc3RvcmUuIFRoZSBzcGVuZGluZyBiZWhhdmlvciBpcyBtb2RlbGVkIGJ5IHRoZSBwcm9iYWJpbGl0eSBkZW5zaXR5IGZ1bmN0aW9uOiAkZih4KT1cZnJhY3sxfXs2eH0kDQoNCldoZXJlICR4JCByZXByZXNlbnRzIHNwZW5kaW5nIGluIGRvbGxhcnMuDQoNCioqVGFzayoqDQoNCkRldGVybWluZSB3aGV0aGVyIHRoaXMgZnVuY3Rpb24gaXMgYSB2YWxpZCBwcm9iYWJpbGl0eSBkZW5zaXR5IGZ1bmN0aW9uIG92ZXIgdGhlIGludGVydmFsICRbMSxlXjZdJC4gSWYgaXQgaXMsIGNhbGN1bGF0ZSB0aGUgcHJvYmFiaWxpdHkgdGhhdCBhIGN1c3RvbWVyIHNwZW5kcyBiZXR3ZWVuIFwkMSBhbmQgXCQkZV42JC4NCg0KIyMgUXVlc3Rpb24gNg0KDQoqKk1hcmtldCBTaGFyZSBFc3RpbWF0aW9uKioNCg0KKipTY2VuYXJpbyoqDQoNCkFuIGVsZWN0cm9uaWNzIGNvbXBhbnkgaXMgYW5hbHl6aW5nIGl0cyBtYXJrZXQgc2hhcmUgb3ZlciBhIGNlcnRhaW4gcGVyaW9kLiBUaGUgcmF0ZSBvZiBtYXJrZXQgcGVuZXRyYXRpb24gaXMgZ2l2ZW4gYnk6ICRcZnJhY3tkTn17ZHR9PVxmcmFjezUwMH17dF40KzEwfSQNCg0KV2hlcmUgJE4odCkkIGlzIHRoZSBjdW11bGF0aXZlIG1hcmtldCBzaGFyZSBhdCB0aW1lICR0JC4NCg0KKipUYXNrKioNCg0KSW50ZWdyYXRlIHRoaXMgZnVuY3Rpb24gdG8gZmluZCB0aGUgY3VtdWxhdGl2ZSBtYXJrZXQgc2hhcmUgJE4odCkkIGFmdGVyICR0JCBkYXlzLCBnaXZlbiB0aGF0IHRoZSBpbml0aWFsIG1hcmtldCBzaGFyZSAkTigxKT02NTMwJC4gV2hhdCB3aWxsIHRoZSBtYXJrZXQgc2hhcmUgYmUgYWZ0ZXIgMTAgZGF5cz8NCg0KIyBQcm9ibGVtIDQNCg0KKipCdXNpbmVzcyBPcHRpbWl6YXRpb24qKg0KDQpBcyBhIGRhdGEgc2NpZW50aXN0IGF0IGEgY29uc3VsdGFuY3kgZmlybSwgeW91IGFyZSB0YXNrZWQgd2l0aCBvcHRpbWl6aW5nIHZhcmlvdXMgYnVzaW5lc3MgZnVuY3Rpb25zIHRvIGltcHJvdmUgZWZmaWNpZW5jeSBhbmQgcHJvZml0YWJpbGl0eS4gVGF5bG9yIFNlcmllcyBleHBhbnNpb25zIGFyZSBhIHBvd2VyZnVsIHRvb2wgdG8gYXBwcm94aW1hdGUgY29tcGxleCBmdW5jdGlvbnMsIGFsbG93aW5nIGZvciBzaW1wbGVyIGNhbGN1bGF0aW9ucyBhbmQgbW9yZSBzdHJhaWdodGZvcndhcmQgZGVjaXNpb24tbWFraW5nLiBUaGlzIHdlZWssIHlvdSB3aWxsIHdvcmsgb24gVGF5bG9yIFNlcmllcyBleHBhbnNpb25zIG9mIHBvcHVsYXIgZnVuY3Rpb25zIGNvbW1vbmx5IGVuY291bnRlcmVkIGluIGJ1c2luZXNzIHNjZW5hcmlvcy4NCg0KIyMgUXVlc3Rpb24gMQ0KDQoqKlJldmVudWUgYW5kIENvc3QqKg0KDQoqKlNjZW5hcmlvKioNCg0KQSBjb21wYW55J3MgcmV2ZW51ZSBmcm9tIGEgcHJvZHVjdCBjYW4gYmUgYXBwcm94aW1hdGVkIGJ5IHRoZSBmdW5jdGlvbiAkUih4KT1lXngkLCB3aGVyZSAkeCQgaXMgdGhlIG51bWJlciBvZiB1bml0cyBzb2xkLiBUaGUgY29zdCBvZiBwcm9kdWN0aW9uIGlzIGdpdmVuIGJ5ICRDKHgpPWxuKDEreCkkLiBUaGUgY29tcGFueSB3YW50cyB0byBtYXhpbWl6ZSBpdHMgcHJvZml0LCBkZWZpbmVkIGFzICRcUGkoeCk9Uih4KS1DKHgpJC4NCg0KKipUYXNrKioNCg0KMS4gKipBcHByb3hpbWF0ZSB0aGUgUmV2ZW51ZSBGdW5jdGlvbjoqKiBVc2UgdGhlIFRheWxvciBTZXJpZXMgZXhwYW5zaW9uIGFyb3VuZCAkeD0wJCAoTWFjbGF1cmluIHNlcmllcykgdG8gYXBwcm94aW1hdGUgdGhlIHJldmVudWUgZnVuY3Rpb24gJFIoeCk9ZV54JCB1cCB0byB0aGUgc2Vjb25kIGRlZ3JlZS4gRXhwbGFpbiB3aHkgdGhpcyBhcHByb3hpbWF0aW9uIG1pZ2h0IGJlIHVzZWZ1bCBpbiBhIGJ1c2luZXNzIGNvbnRleHQuDQoyLiAqKkFwcHJveGltYXRlIHRoZSBDb3N0IEZ1bmN0aW9uOioqIFNpbWlsYXJseSwgYXBwcm94aW1hdGUgdGhlIGNvc3QgZnVuY3Rpb24gJEMoeCk9bG4oMSt4KSQgdXNpbmcgaXRzIE1hY2xhdXJpbiBzZXJpZXMgZXhwYW5zaW9uIHVwIHRvIHRoZSBzZWNvbmQgZGVncmVlLiBEaXNjdXNzIHRoZSBpbXBsaWNhdGlvbnMgb2YgdGhpcyBhcHByb3hpbWF0aW9uIGZvciBkZWNpc2lvbi1tYWtpbmcgaW4gcHJvZHVjdGlvbi4NCg0KMy4gKipMaW5lYXIgdnMuIE5vbmxpbmVhciBPcHRpbWl6YXRpb246KiogVXNpbmcgdGhlIFRheWxvciBTZXJpZXMgZXhwYW5zaW9ucywgYXBwcm94aW1hdGUgdGhlIHByb2ZpdCBmdW5jdGlvbiAkXFBpKHgpJC4gQ29tcGFyZSB0aGUgb3B0aW1pemF0aW9uIHJlc3VsdHMgd2hlbiB1c2luZyB0aGUgbGluZWFyIGFwcHJveGltYXRpb25zIHZlcnN1cyB0aGUgb3JpZ2luYWwgbm9ubGluZWFyIGZ1bmN0aW9ucy4gV2hhdCBhcmUgdGhlIGRpZmZlcmVuY2VzLCBhbmQgd2hlbiBtaWdodCBpdCBiZSBtb3JlIGFwcHJvcHJpYXRlIHRvIHVzZSB0aGUgYXBwcm94aW1hdGlvbj8NCg0KIyMjIFN1Ym1pc3Npb24NCg0KUHJvdmlkZSB5b3VyIHNvbHV0aW9ucyB1c2luZyBSLU1hcmtkb3duLiBJbmNsdWRlIHRoZSBUYXlsb3IgU2VyaWVzIGV4cGFuc2lvbnMsIHRoZSBhcHByb3hpbWF0ZWQgZnVuY3Rpb25zLCBhbmQgYSBkaXNjdXNzaW9uIG9mIHRoZSBpbXBsaWNhdGlvbnMgb2YgdXNpbmcgdGhlc2UgYXBwcm94aW1hdGlvbnMgZm9yIGJ1c2luZXNzIGRlY2lzaW9uLW1ha2luZy4NCg0KIyMgUXVlc3Rpb24gMg0KDQoqKkZpbmFuY2lhbCBNb2RlbGluZyoqDQoNCioqU2NlbmFyaW8qKg0KDQpBIGZpbmFuY2lhbCBhbmFseXN0IGlzIG1vZGVsaW5nIHRoZSByaXNrIGFzc29jaWF0ZWQgd2l0aCBhIG5ldyBpbnZlc3RtZW50LiBUaGUgcmlzayBpcyBwcm9wb3J0aW9uYWwgdG8gdGhlIHNxdWFyZSByb290IG9mIHRoZSBpbnZlc3RlZCBhbW91bnQsIG1vZGVsZWQgYXMgJGYoeCk9XHNxcnR7eH0kLCB3aGVyZSAkeCQgaXMgdGhlIGFtb3VudCBpbnZlc3RlZC4gSG93ZXZlciwgdG8gc2ltcGxpZnkgY2FsY3VsYXRpb25zLCB0aGUgYW5hbHlzdCB3YW50cyB0byB1c2UgYSBUYXlsb3IgU2VyaWVzIGV4cGFuc2lvbiB0byBhcHByb3hpbWF0ZSB0aGlzIGZ1bmN0aW9uIGZvciBzbWFsbCBpbnZlc3RtZW50cy4NCg0KKipUYXNrKioNCg0KMS4gKipNYWNsYXVyaW4gU2VyaWVzIEV4cGFuc2lvbjoqKiBEZXJpdmUgdGhlIFRheWxvciBTZXJpZXMgZXhwYW5zaW9uIG9mICRmKHgpPVxzcXJ0e3h9JCBhcm91bmQgJHg9MCQgIHVwIHRvIHRoZSBzZWNvbmQgZGVncmVlLg0KDQoyLiAqKlByYWN0aWNhbCBBcHBsaWNhdGlvbjoqKiBVc2UgdGhlIGRlcml2ZWQgc2VyaWVzIHRvIGFwcHJveGltYXRlIHRoZSByaXNrIGZvciBzbWFsbCBpbnZlc3RtZW50IGFtb3VudHMgKGUuZy4sIHdoZW4gJHgkIGlzIHNtYWxsKS4gQ29tcGFyZSB0aGUgYXBwcm94aW1hdGVkIHJpc2sgd2l0aCB0aGUgYWN0dWFsIGZ1bmN0aW9uIHZhbHVlcyBmb3Igc21hbGwgYW5kIG1vZGVyYXRlIGludmVzdG1lbnRzLiBEaXNjdXNzIHdoZW4gdGhpcyBhcHByb3hpbWF0aW9uIG1pZ2h0IGJlIHVzZWZ1bCBpbiBmaW5hbmNpYWwgbW9kZWxpbmcuDQoNCjMuICoqT3B0aW1pemF0aW9uIFNjZW5hcmlvOioqIFN1cHBvc2UgdGhlIGdvYWwgaXMgdG8gbWluaW1pemUgcmlzayB3aGlsZSBtYWludGFpbmluZyBhIGNlcnRhaW4gbGV2ZWwgb2YgaW52ZXN0bWVudCByZXR1cm4uIFVzaW5nIHRoZSBUYXlsb3IgU2VyaWVzIGFwcHJveGltYXRpb24sIHN1Z2dlc3QgYW4gb3B0aW1hbCBpbnZlc3RtZW50IGFtb3VudCAkeCQNCiB0aGF0IGJhbGFuY2VzIHJpc2sgYW5kIHJldHVybi4NCg0KIyMjIFN1Ym1pc3Npb24NCg0KUHJlc2VudCB5b3VyIHJlc3VsdHMgaW4gUi1NYXJrZG93biwgaW5jbHVkaW5nIHRoZSBUYXlsb3IgU2VyaWVzIGV4cGFuc2lvbnMsIGNvbXBhcmlzb25zIGJldHdlZW4gdGhlIG9yaWdpbmFsIGFuZCBhcHByb3hpbWF0ZWQgZnVuY3Rpb25zLCBhbmQgeW91ciByZWNvbW1lbmRhdGlvbnMgYmFzZWQgb24gdGhlIGFuYWx5c2lzLg0KDQojIyBRdWVzdGlvbiAzIA0KDQoqKkludmVudG9yeSBNYW5hZ2VtZW50KioNCg0KDQoqKlNjZW5hcmlvKioNCg0KSW4gYSBtYW51ZmFjdHVyaW5nIHByb2Nlc3MsIHRoZSBkZW1hbmQgZm9yIGEgcHJvZHVjdCBkZWNyZWFzZXMgYXMgdGhlIHByaWNlIGluY3JlYXNlcywgbW9kZWxlZCBieSAkRChwKT0xLXAkLCB3aGVyZSAkcCQgaXMgdGhlIHByaWNlLiBUaGUgY29zdCBhc3NvY2lhdGVkIHdpdGggcHJvZHVjaW5nIGFuZCBzZWxsaW5nIHRoZSBwcm9kdWN0IGlzIG1vZGVsZWQgYXMgJEMocCk9ZV5wJC4gVGhlIGNvbXBhbnkgd2FudHMgdG8gbWF4aW1pemUgaXRzIHByb2ZpdCwgd2hpY2ggaXMgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiByZXZlbnVlIGFuZCBjb3N0Lg0KDQoqKlRhc2sqKg0KDQoxLiAqKlRheWxvciBTZXJpZXMgRXhwYW5zaW9uOioqIEV4cGFuZCB0aGUgY29zdCBmdW5jdGlvbiAkQyhwKT1lXnAkIGludG8gYSBUYXlsb3IgU2VyaWVzIGFyb3VuZCAkcD0wJCB1cCB0byB0aGUgc2Vjb25kIGRlZ3JlZS4gRGlzY3VzcyB3aHkgYXBwcm94aW1hdGluZyB0aGUgY29zdCBmdW5jdGlvbiBtaWdodCBiZSB1c2VmdWwgaW4gYSBwcmljaW5nIHN0cmF0ZWd5Lg0KDQoyLiAqKkFwcHJveGltYXRpbmcgUHJvZml0OioqIFVzaW5nIHRoZSBUYXlsb3IgU2VyaWVzIGV4cGFuc2lvbiwgYXBwcm94aW1hdGUgdGhlIHByb2ZpdCBmdW5jdGlvbiAkXFBpKHApPXBEKHApLUMocCkkLiBDb21wYXJlIHRoZSByZXN1bHRzIHdoZW4gdXNpbmcgdGhlIG9yaWdpbmFsIG5vbmxpbmVhciBjb3N0IGZ1bmN0aW9uIHZlcnN1cyB0aGUgYXBwcm94aW1hdGVkIGNvc3QgZnVuY3Rpb24uIFdoYXQgZGlmZmVyZW5jZXMgZG8geW91IG9ic2VydmUsIGFuZCB3aGVuIG1pZ2h0IHRoZSBhcHByb3hpbWF0aW9uIGJlIHN1ZmZpY2llbnQ/DQoNCjMuICoqUHJpY2luZyBTdHJhdGVneToqKiBCYXNlZCBvbiB0aGUgVGF5bG9yIFNlcmllcyBhcHByb3hpbWF0aW9uLCBzdWdnZXN0IGEgcHJpY2luZyBzdHJhdGVneSB0aGF0IGNvdWxkIG1heGltaXplIHByb2ZpdC4gRXhwbGFpbiBob3cgdGhlIFRheWxvciBTZXJpZXMgYXBwcm94aW1hdGlvbiBoZWxwcyBpbiBtYWtpbmcgdGhpcyBkZWNpc2lvbi4NCg0KIyMjIFN1Ym1pc3Npb24NCg0KSW5jbHVkZSB5b3VyIGFuYWx5c2lzIGluIFItTWFya2Rvd24sIHdpdGggVGF5bG9yIFNlcmllcyBleHBhbnNpb25zLCBjb21wYXJpc29ucyBvZiB0aGUgYXBwcm94aW1hdGVkIGFuZCBvcmlnaW5hbCBmdW5jdGlvbnMsIGFuZCBhIGRpc2N1c3Npb24gb2YgdGhlIGltcGxpY2F0aW9ucyBmb3IgcHJpY2luZyBzdHJhdGVneS4NCg0KIyMgUXVlc3Rpb24gNA0KDQoqKkVjb25vbWljIEZvcmVjYXN0aW5nKioNCg0KKipTY2VuYXJpbyoqDQoNCkFuIGVjb25vbWlzdCBpcyBmb3JlY2FzdGluZyBlY29ub21pYyBncm93dGgsIHdoaWNoIGNhbiBiZSBtb2RlbGVkIGJ5IHRoZSBsb2dhcml0aG1pYyBmdW5jdGlvbiAkRyh4KT1sbigxK3gpJCwgd2hlcmUgJHgkIHJlcHJlc2VudHMgaW52ZXN0bWVudCBpbiBpbmZyYXN0cnVjdHVyZS4gVGhlIGdvdmVybm1lbnQgd2FudHMgdG8gcHJlZGljdCBncm93dGggdW5kZXIgZGlmZmVyZW50IGxldmVscyBvZiBpbnZlc3RtZW50Lg0KDQoqKlRhc2sqKg0KDQojIyMgaS4NCg0KKipNYWNsYXVyaW4gU2VyaWVzIEV4cGFuc2lvbjoqKiBEZXJpdmUgdGhlIE1hY2xhdXJpbiBTZXJpZXMgZXhwYW5zaW9uIG9mICRHKHgpPWxuKHgrMSkkIHVwIHRvIHRoZSBzZWNvbmQgZGVncmVlLiBFeHBsYWluIHRoZSBzaWduaWZpY2FuY2Ugb2YgdXNpbmcgdGhpcyBhcHByb3hpbWF0aW9uIGZvciBzbWFsbCB2YWx1ZXMgb2YgJHhfeCQgaW4gZWNvbm9taWMgZm9yZWNhc3RpbmcuDQoNCiMjIyBpaS4NCg0KKipBcHByb3hpbWF0aW9uIG9mIEdyb3d0aDoqKiBVc2UgdGhlIFRheWxvciBTZXJpZXMgdG8gYXBwcm94aW1hdGUgdGhlIGdyb3d0aCBmb3Igc21hbGwgaW52ZXN0bWVudHMuIENvbXBhcmUgdGhpcyBhcHByb3hpbWF0aW9uIHdpdGggdGhlIGFjdHVhbCBncm93dGggZnVuY3Rpb24uIERpc2N1c3MgdGhlIGFjY3VyYWN5IG9mIHRoZSBhcHByb3hpbWF0aW9uIGZvciBkaWZmZXJlbnQgcmFuZ2VzIG9mICR4X3gkLg0KDQojIyMgaWlpLg0KDQoqKlBvbGljeSBSZWNvbW1lbmRhdGlvbjoqKiBVc2luZyB0aGUgYXBwcm94aW1hdGlvbiwgcmVjb21tZW5kIGEgbGV2ZWwgb2YgaW52ZXN0bWVudCB0aGF0IGNvdWxkIGFjaGlldmUgYSB0YXJnZXQgZ3Jvd3RoIHJhdGUuIERpc2N1c3MgdGhlIGxpbWl0YXRpb25zIG9mIHVzaW5nIFRheWxvciBTZXJpZXMgYXBwcm94aW1hdGlvbnMgZm9yIHN1Y2ggcG9saWN5IHJlY29tbWVuZGF0aW9ucy4NCg0KIyMjIFN1Ym1pc3Npb24NCg0KUHJvdmlkZSB5b3VyIGFuc3dlcnMgaW4gUi1NYXJrZG93biwgd2l0aCB0aGUgVGF5bG9yIFNlcmllcyBleHBhbnNpb25zLCBjb21wYXJpc29ucyBiZXR3ZWVuIHRoZSBhcHByb3hpbWF0ZWQgYW5kIG9yaWdpbmFsIGZ1bmN0aW9ucywgYW5kIHlvdXIgaW52ZXN0bWVudCByZWNvbW1lbmRhdGlvbnMuDQoNCiMgUHJvYmxlbSA1IA0KDQoqKlByb2ZpdCwgQ29zdCwgJiBQcmljaW5nKioNCg0KIyMgUXVlc3Rpb24gMSANCg0KKipQcm9maXQgTWF4aW1pemF0aW9uKioNCg0KKipTY2VuYXJpbyoqDQoNCkEgY29tcGFueSBwcm9kdWNlcyB0d28gcHJvZHVjdHMsIEEgYW5kIEIuIFRoZSBwcm9maXQgZnVuY3Rpb24gZm9yIHRoZSB0d28gcHJvZHVjdHMgaXMgZ2l2ZW4gYnkgJFxQaSh4LHkpPTMweC0yeF4yLTN4eSsyNHktNHleMiQNCg0KV2hlcmU6DQoNCi0gJHgkIGlzIHRoZSBxdWFudGl0eSBvZiBQcm9kdWN0IEEgcHJvZHVjZWQgYW5kIHNvbGQuDQotICR5JCBpcyB0aGUgcXVhbnRpdHkgb2YgUHJvZHVjdCBCIHByb2R1Y2VkIGFuZCBzb2xkLg0KLSAkXFBpKHgseSkkIGlzIHRoZSBwcm9maXQgaW4gZG9sbGFycy4NCg0KKipUYXNrKioNCg0KRmluZCBhbGwgbG9jYWwgbWF4aW1hLCBsb2NhbCBtaW5pbWEsIGFuZCBzYWRkbGUgcG9pbnRzIGZvciB0aGUgcHJvZml0IGZ1bmN0aW9uICRcUGkoeCx5KSQuDQpXcml0ZSB5b3VyIGFuc3dlcihzKSBpbiB0aGUgZm9ybSAkKHgseSxcUGkoeCx5KSkkLiBTZXBhcmF0ZSBtdWx0aXBsZSBwb2ludHMgd2l0aCBhIGNvbW1hLg0KDQojIyMgRGlzY3Vzc2lvbg0KDQpEaXNjdXNzIHRoZSBpbXBsaWNhdGlvbnMgb2YgdGhlIHJlc3VsdHMgZm9yIHRoZSBjb21wYW554oCZcyBwcm9kdWN0aW9uIHN0cmF0ZWd5LiBXaGljaCBwcm9kdWN0aW9uIGxldmVscyBtYXhpbWl6ZSBwcm9maXQsIGFuZCB3aGF0IHJpc2tzIGFyZSBhc3NvY2lhdGVkIHdpdGggdGhlIHNhZGRsZSBwb2ludHM/DQoNCiMjIFF1ZXN0aW9uIDIgDQoNCioqUHJpY2luZyBTdHJhdGVneSoqDQoNCioqU2NlbmFyaW8qKg0KDQpBIHN1cGVybWFya2V0IHNlbGxzIHR3byBjb21wZXRpbmcgYnJhbmRzIG9mIGEgcHJvZHVjdDogQnJhbmQgWCBhbmQgQnJhbmQgWS4gVGhlIHN0b3JlIG1hbmFnZXIgZXN0aW1hdGVzIHRoYXQgdGhlIGRlbWFuZCBmb3IgdGhlc2UgYnJhbmRzIGRlcGVuZHMgb24gdGhlaXIgcHJpY2VzLCBnaXZlbiBieSB0aGUgZnVuY3Rpb25zOg0KDQotIERlbWFuZCBmb3IgQnJhbmQgWDogJERfeCh4LHkpPTEyMC0xNXgrMTB5JA0KLSBEZW1hbmQgZm9yIEJyYW5kIFk6ICREX3koeCx5KT04MCs1eC0yMHkkDQoNCldoZXJlOg0KDQotICR4JCBpcyB0aGUgcHJpY2Ugb2YgQnJhbmQgWCBpbiBkb2xsYXJzLg0KLSAkeSQgaXMgdGhlIHByaWNlIG9mIEJyYW5kIFkgaW4gZG9sbGFycy4NCi0gJERfeCh4LHkpJCBhbmQgJERfeCh4LHkpJCBhcmUgdGhlIHF1YW50aXRpZXMgZGVtYW5kZWQgZm9yIEJyYW5kIFggYW5kIEJyYW5kIFksIHJlc3BlY3RpdmVseS4NCg0KKipUYXNrKioNCg0KMS4gKipSZXZlbnVlIEZ1bmN0aW9uOioqIEZpbmQgdGhlIHJldmVudWUgZnVuY3Rpb24gUih4LHkpIGZvciBib3RoIGJyYW5kcyBjb21iaW5lZC4NCjIuICoqT3B0aW1hbCBQcmljaW5nOioqIERldGVybWluZSB0aGUgcHJpY2VzICR4JCBhbmQgJHkkIHRoYXQgbWF4aW1pemUgdGhlIHN0b3Jl4oCZcyB0b3RhbCByZXZlbnVlLiBBcmUgdGhlcmUgYW55IHNhZGRsZSBwb2ludHMgdG8gY29uc2lkZXIgaW4gdGhlIHByaWNpbmcgc3RyYXRlZ3k/DQoNCiMjIyBEaXNjdXNzaW9uDQoNCkV4cGxhaW4gdGhlIHNpZ25pZmljYW5jZSBvZiB0aGUgb3B0aW1hbCBwcmljaW5nIHN0cmF0ZWd5IGFuZCBob3cgaXQgY2FuIGJlIGFwcGxpZWQgaW4gYSBjb21wZXRpdGl2ZSByZXRhaWwgZW52aXJvbm1lbnQuDQoNCiMjIFF1ZXN0aW9uIDMgDQoNCioqQ29zdCBNaW5pbWl6YXRpb24qKg0KDQoqKlNjZW5hcmlvKioNCg0KQSBtYW51ZmFjdHVyaW5nIGNvbXBhbnkgb3BlcmF0ZXMgdHdvIHBsYW50cywgb25lIGluIE5ldyBZb3JrIGFuZCBvbmUgaW4gQ2hpY2Fnby4gVGhlIGNvbXBhbnkgbmVlZHMgdG8gcHJvZHVjZSBhIHRvdGFsIG9mIDIwMCB1bml0cyBvZiBhIHByb2R1Y3QgZWFjaCB3ZWVrLiBUaGUgdG90YWwgd2Vla2x5IGNvc3Qgb2YgcHJvZHVjdGlvbiBpcyBnaXZlbiBieSAkQyh4LHkpPVxmcmFjezF9ezh9eF4yK1xmcmFjezF9ezEwfXleMisxMngrMTh5KzE1MDAkDQoNCldoZXJlOg0KDQotICR4JCBpcyB0aGUgbnVtYmVyIG9mIHVuaXRzIHByb2R1Y2VkIGluIE5ldyBZb3JrLg0KLSAkeSQgaXMgdGhlIG51bWJlciBvZiB1bml0cyBwcm9kdWNlZCBpbiBDaGljYWdvLg0KLSAkQyh4LHkpJCBpcyB0aGUgdG90YWwgY29zdCBpbiBkb2xsYXJzLg0KDQoqKlRhc2sqKg0KDQoxLiBEZXRlcm1pbmUgaG93IG1hbnkgdW5pdHMgc2hvdWxkIGJlIHByb2R1Y2VkIGluIGVhY2ggcGxhbnQgdG8gbWluaW1pemUgdGhlIHRvdGFsIHdlZWtseSBjb3N0Lg0KMi4gV2hhdCBpcyB0aGUgbWluaW1pemVkIHRvdGFsIGNvc3QsIGFuZCBob3cgZG9lcyB0aGUgZGlzdHJpYnV0aW9uIG9mIHByb2R1Y3Rpb24gYmV0d2VlbiB0aGUgdHdvIHBsYW50cyBhZmZlY3Qgb3ZlcmFsbCBlZmZpY2llbmN5Pw0KDQojIyMgRGlzY3Vzc2lvbg0KDQpEaXNjdXNzIHRoZSBiZW5lZml0cyBvZiB0aGlzIGNvc3QtbWluaW1pemF0aW9uIHN0cmF0ZWd5IGFuZCBhbnkgcHJhY3RpY2FsIGNvbnNpZGVyYXRpb25zIHRoYXQgbWlnaHQgaW5mbHVlbmNlIHRoZSBhbGxvY2F0aW9uIG9mIHByb2R1Y3Rpb24gYmV0d2VlbiB0aGUgdHdvIHBsYW50cy4NCg0KIyMgUXVlc3Rpb24gNA0KDQoqKk1hcmtldGluZyBNaXgqKg0KDQoqKlNjZW5hcmlvKioNCg0KQSBjb21wYW55IGlzIGxhdW5jaGluZyBhIG1hcmtldGluZyBjYW1wYWlnbiB0aGF0IGludm9sdmVzIHNwZW5kaW5nIG9uIG9ubGluZSBhZHMgKCR4JCkgYW5kIHRlbGV2aXNpb24gYWRzICgkeSQpLiBUaGUgZWZmZWN0aXZlbmVzcyBvZiB0aGUgY2FtcGFpZ24sIG1lYXN1cmVkIGluIGN1c3RvbWVyIHJlYWNoLCBpcyBtb2RlbGVkIGJ5IHRoZSBmdW5jdGlvbiAkRSh4LHkpPTUwMHgrNzAweS01eF4yLTEweHktOHleMiQNCg0KV2hlcmU6DQoNCi0gJHgkIGlzIHRoZSBhbW91bnQgc3BlbnQgb24gb25saW5lIGFkcyAoaW4gdGhvdXNhbmRzIG9mIGRvbGxhcnMpLg0KLSAkeSQgaXMgdGhlIGFtb3VudCBzcGVudCBvbiB0ZWxldmlzaW9uIGFkcyAoaW4gdGhvdXNhbmRzIG9mIGRvbGxhcnMpLg0KLSAkRSh4LHkpJCBpcyB0aGUgZXN0aW1hdGVkIGN1c3RvbWVyIHJlYWNoLg0KDQoqKlRhc2sqKg0KDQoxLiBGaW5kIHRoZSBzcGVuZGluZyBsZXZlbHMgZm9yIG9ubGluZSBhbmQgdGVsZXZpc2lvbiBhZHMgdGhhdCBtYXhpbWl6ZSBjdXN0b21lciByZWFjaC4NCjIuIElkZW50aWZ5IGFueSBzYWRkbGUgcG9pbnRzIGFuZCBkaXNjdXNzIGhvdyB0aGV5IGNvdWxkIGFmZmVjdCB0aGUgbWFya2V0aW5nIHN0cmF0ZWd5Lg0KDQojIyMgRGlzY3Vzc2lvbg0KDQpFeHBsYWluIGhvdyB0aGUgcmVzdWx0cyBjYW4gYmUgdXNlZCB0byBhbGxvY2F0ZSB0aGUgbWFya2V0aW5nIGJ1ZGdldCBlZmZlY3RpdmVseSBhbmQgd2hhdCB0aGUgY29tcGFueSBzaG91bGQgY29uc2lkZXIgaWYgaXQgZW5jb3VudGVycyBzYWRkbGUgcG9pbnRzIGluIHRoZSBvcHRpbWl6YXRpb24uDQoNCioqQXMgYWx3YXlzLCBpbmNsdWRlIGEgcHJvZmVzc2lvbmFsIHBkZiBvbmx5IHdpdGggYWxsIGNvZGUsIHRleHQsIGdyYXBoaWNzLCBleHBsYW5hdGlvbnMsIGV0Yy4qKg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogJ0RBVEEgNjA1OiBDb21wdXRhdGlvbmFsIE1hdGhlbWF0aWNzIERpc2N1c3Npb24gQm9hcmQgMTUnDQphdXRob3I6ICJHYWJyaWVsIENhbXBvcyINCmRhdGU6ICJMYXN0IGVkaXRlZCBgciBmb3JtYXQoU3lzLnRpbWUoKSwgJyVCICVkLCAlWScpYCINCm91dHB1dDoNCiAgaHRtbF9kb2N1bWVudDoNCiAgICBkZl9wcmludDogcGFnZWQNCiAgZ2VvbWV0cnk6IGxlZnQ9MC41Y20scmlnaHQ9MC41Y20sdG9wPTFjbSxib3R0b209MmNtDQogIHBkZl9kb2N1bWVudDoNCiAgICBsYXRleF9lbmdpbmU6IHhlbGF0ZXgNCiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdA0KdXJsY29sb3I6IGJsdWUNCi0tLQ0KDQojIFdlZWsgMTUgRGlzY3Vzc2lvbjoNCg0KUGljayBhbnkgZXhlcmNpc2UgaW4gQ2hhcHRlciAxMiBvZiB0aGUgY2FsY3VsdXMgdGV4dGJvb2suICBQb3N0IHRoZSBzb2x1dGlvbiBvciB5b3VyIGF0dGVtcHQuICBEaXNjdXNzIGFueSBpc3N1ZXMgeW91IG1pZ2h0IGhhdmUgaGFkLg0KDQpXaGF0IHdlcmUgdGhlIG1vc3QgdmFsdWFibGUgZWxlbWVudHMgeW91IHRvb2sgYXdheSBmcm9tIHRoaXMgY291cnNlPyAgDQoNCioqSW4gdGhpcyBjb3Vyc2UsIGRvIG5vdCBhdHRhY2ggZmlsZXMgdG8gYW55IG9mIHRoZSBkaXNjdXNzaW9uIHBvc3RzLiAgUHJvdmlkZSB5b3VyIGNvZGUgYW5kIGNvbW1lbnRhcnkgcGx1cyBmaWd1cmVzIGRpcmVjdGx5IGluIHRoZSB0ZXh0IGJveC4gIE1hbnkgc3R1ZGVudHMgZG9uJ3QgZG93bmxvYWQgZmlsZXMgb3Igb3BlbiBvdGhlciBsaW5rcy4qKg0KDQpQYWdlIDY5OA0KDQpFeGVyY2lzZSAxMi4yDQoNClF1ZXN0aW9uDQoNCioqSW4gRXhlcmNpc2VzIDcg4oCTIDEwLCBhIHNldCBTIGlzIGdpdmVuLioqDQoNCihhKSAqKkdpdmUgb25lIGJvdW5kYXJ5IHBvaW50IGFuZCBvbmUgaW50ZXJpb3IgcG9pbnQsIHdoZW4gcG9zc2libGUsIG9mIFMuKioNCihiKSAqKlN0YXRlIHdoZXRoZXIgUyBpcyBvcGVuLCBjbG9zZWQsIG9yIG5laXRoZXIuKioNCihjKSAqKlN0YXRlIHdoZXRoZXIgUyBpcyBib3VuZGVkIG9yIHVuYm91bmRlZC4qKg0KDQoNCiRTID0gXGxlZnRceyAoeCx5KSBcbWlkIFxmcmFjeyh4LTEpXjJ9ezR9ICsgXGZyYWN7KHktMyleMn17OX0gXGxlcSAxIFxyaWdodFx9JA0KDQpwYWdlIDY4OSBmcm9tIG91ciBjYWxjdWx1cyBib29rIHN0YXRlcw0KDQoqKkRlZmluaXRpb24gMTIuMi4xKiogDQoNCioqT3BlbiBEaXNrLCBCb3VuZGFyeSBhbmQgSW50ZXJpb3IgUG9pbnRzLCBPcGVuIGFuZCBDbG9zZWQgU2V0cywgQm91bmRlZCBTZXRzKioNCg0KaS4gQW4gKipvcGVuIGRpc2sqKiAkQiQgaW4gJFxtYXRoYmJ7Un1eMiQgY2VudGVyZWQgYXQgJCh4XzAsIHlfMCQpIHdpdGggcmFkaXVzIHIgaXMgdGhlIHNldCBvZiBhbGwgcG9pbnRzICQoeCwgeSkkIHN1Y2ggdGhhdCAkXHNxcnR7KHgg4oiSIHhfMCleMiArICh5IOKIkiB5XzApXjJ9IDwgciQuDQoNCmlpLiBMZXQgJFMkIGJlIGEgc2V0IG9mIHBvaW50cyBpbiAkXG1hdGhiYntSfV4yJC4gQSBwb2ludCBQIGluICRcbWF0aGJie1J9XjIkIGlzIGEgKipib3VuZGFyeSBwb2ludCoqIG9mICRTJCBpZiBhbGwgb3BlbiBkaXNrcyBjZW50ZXJlZCBhdCAkUCQgY29udGFpbiBib3RoIHBvaW50cyBpbiAkUyQgYW5kIHBvaW50cyBub3QgaW4gJFMkLg0KDQppaWkuIEEgcG9pbnQgJFAkIGluICRTJCBpcyBhbiAqKmludGVyaW9yIHBvaW50Kiogb2YgJFMkIGlmIHRoZXJlIGlzIGFuIG9wZW4gZGlzayBjZW50ZXJlZCBhdCAkUCQgdGhhdCBjb250YWlucyBvbmx5IHBvaW50cyBpbiAkUyQuDQoNCml2LiBBIHNldCAkUyQgaXMgKipvcGVuKiogaWYgZXZlcnkgcG9pbnQgaW4gJFMkIGlzIGFuIGludGVyaW9yIHBvaW50Lg0KDQp2LiBBIHNldCAkUyQgaXMgKipjbG9zZWQqKiBpZiBpdCBjb250YWlucyBhbGwgb2YgaXRzIGJvdW5kYXJ5IHBvaW50cy4NCg0KdmkuIEEgc2V0ICRTJCBpcyAqKmJvdW5kZWQqKiBpZiB0aGVyZSBpcyBhbiAkTSA+IDAkIHN1Y2ggdGhhdCB0aGUgb3BlbiBkaXNrLCBjZW50ZXJlZCBhdCB0aGUgb3JpZ2luIHdpdGggcmFkaXVzICRNJCwgY29udGFpbnMgJFMkLiBBIHNldCB0aGF0IGlzIG5vdCBib3VuZGVkIGlzICoqdW5ib3VuZGVkKiouDQoNCg0KKipOT1RFOioqDQoNCldlIGtub3cgdGhlIGdlbmVyYWwgZm9ybSBvZiB0aGUgZWxsaXBzZSBlcXVhdGlvbiBpcyAkXGZyYWN7KHgtayleMn17YV4yfStcZnJhY3soeS1rKV4yfXtiXjJ9PTEkIGFuZCBmcm9tIHRoaXMgd2Uga25vdw0KDQotIFRoaXMgaXMgYW4gZXF1YXRpb24gb2YgYW4gZWxsaXBzZQ0KLSB0aGUgY2VudGVyIG9mIHRoZSBlbGxpcHNlIGlzICQoaCxrKSQgbWVhbmluZyAkaD0xLCBcIGs9MyQgb3IgJCgxLDMpJA0KLSB0aGUgbGVuZ3RoIG9mIHRoZSBzZW1pLW1pbm9yIGF4aXMgb2YgdGhlIGVsbGlwc2UgaXMgJGEkDQotIHRoZSBsZW5ndGggb2YgdGhlIHNlbWktbWFqb3IgYXhpcyBvZiB0aGUgZWxsaXBzZSBpcyAkYiQNCg0KKipTb2x1dGlvbioqDQoNCioqQm91bmRhcnkqKg0KDQpmb3IgKihhKSBHaXZlIG9uZSBib3VuZGFyeSBwb2ludC4uLiogSSBjYW4gdXNlICR4PTEkIGFuZCBzdWJzdGl0dXRlIGludG8gdGhlIGVxdWF0aW9uIGZvciBvdXIgZXF1YWxpdHk6DQoNCiRcZnJhY3soeC0xKV4yfXs0fSArIFxmcmFjeyh5LTMpXjJ9ezl9PTEgXHJpZ2h0YXJyb3cgXGZyYWN7KDEtMSleMn17NH0gKyBcZnJhY3soeS0zKV4yfXs5fT0xIFxyaWdodGFycm93IHktMz1cc3FydHs5fSQNCg0Kd2hpY2ggYmVjb21lcyAkeSA9IFxwbSAzIC0gMyQgd2hpY2ggZ2l2ZXMgdXMgJHk9NiQgYW5kICR5PTAkDQoNClNvIG91ciBib3VuZGFyaWVzIGFyZSAkKDEsNikkIG9yICQoMSwwKSQuDQoNCioqSW50ZXJpb3IgcG9pbnQqKg0KDQpmb3IgKihhKS4uLiBvbmUgaW50ZXJpb3IgcG9pbnQqIEknbGwgdXNlIGEgcG9pbnQgd2l0aGluIHRoZSBib3VuZGFyaWVzICQoMSw0KSQNCg0Kd2hpY2ggd2hlbiBzdWJzdGl0dXRlZCBpbnRvIG91ciBzdHJpY3QgaW5lcXVhbGl0eSAkXGZyYWN7KHgtMSleMn17NH0gKyBcZnJhY3soeS0zKV4yfXs5fTwxJA0KDQokXGZyYWN7KDEtMSleMn17NH0gKyBcZnJhY3soNC0zKV4yfXs5fTwxIFxyaWdodGFycm93IFxmcmFjezF9ezl9PDEkIGhvbGRzIHRydWUuDQoNCioqT3Blbi9DbG9zZWQqKg0KDQpPdXIgc29sdXRpb24gZm9yIHRoZSBlcXVhbGl0eSB3aGljaCBwcm92ZWQgc2V0ICRTJCBjb250YWlucyBhbGwgb2YgaXRzIGJvdW5kYXJ5IHBvaW50cyBhbmQgZGVmaW5pdGlvbiBwb2ludCAkdi4kIHNob3dzIHRoYXQgb3VyIHNldCAkUyQgaXMgKipjbG9zZWQqKi4NCg0KKipCb3VuZGVkL1VuYm91bmRlZCoqDQoNClRoZSBzZW1pLW1ham9yIGF4aXMgYWxvbmcgdGhlIHktZGlyZWN0aW9uIGlzIGdpdmVuIGFzIGIgb3IgJFxzcXJ0ezl9JCBmcm9tIG91ciBvcmlnaW5hbCBlcXVhdGlvbi4NCg0KT3VyIEhvcml6b250YWwgZXh0ZW50IGlzIHdoZW4gJHk9MyQgKHNlbWktbWFqb3IpIGFuZCB3aGVuIHN1YnN0aXR1dGVkIGludG8gb3VyIGVxdWFsaXR5IGVxdWF0aW9uICRcZnJhY3soeC0xKV4yfXs0fSArIFxmcmFjeygzLTMpXjJ9ezl9PTEkIA0KZ2l2ZXMgdXMgJHg9IFxwbSAyICsxJCBvciAkeD0zJCBvciAkeD0tMSQgc2hvd2luZyBvdXIgaG9yaXpvbnRhbCBleHRlbnQgaXMgJDMtKC0xKT1zcGFuIFwgb2YgXCA0JA0KDQpUaGlzIHNob3dzIHVzIHRoYXQgdGhpcyBlcXVhdGlvbiBpcyBjbGVhcmx5IGJvdW5kZWQNCg0KU3Vic3RpdHV0aW5nIHRoZSBtYXhpbXVtICR4JCB2YWx1ZSBvZiAkeD0zJCBpbnRvOg0KDQokXGZyYWN7KHgtMSleMn17NH0gKyBcZnJhY3soeS0zKV4yfXs5fT0xIFxyaWdodGFycm93IFxmcmFjeygzLTEpXjJ9ezR9ICsgXGZyYWN7KHktMyleMn17OX09MSBccmlnaHRhcnJvdyAxICsgXGZyYWN7KHktMyleMn17OX09MSBccmlnaHRhcnJvdyB5LTM9MCBccmlnaHRhcnJvdyB5PTMkDQoNCmdpdmluZyB1cyB0aGUgcG9pbnQgJCgzLDMpJA0KDQpsaWtld2lzZSB1c2luZyB0aGUgbWF4aW11bSAkeT02JDoNCg0KJFxmcmFjeyh4LTEpXjJ9ezR9ICsgXGZyYWN7KDYtMyleMn17OX09MSBccmlnaHRhcnJvdyBcZnJhY3soeC0xKV4yfXs0fSArIDE9MSBccmlnaHRhcnJvdyB4PTEkDQoNCmdpdmluZyB1cyB0aGUgcG9pbnQgJCgxLDYpJA0KDQppZiB3ZSBjYWxjdWxhdGUgdGhlIGRpc3RhbmNlIGJldHdlZW4gdGhlc2UgcG9pbnRzIGZyb20gdGhlIG9yaWdpbiB3ZSBnZXQNCg0KJGQgPSBcc3FydHsoMS0wKV4yKyg2LTApXjJ9PVxzcXJ0ezM3fSQgYW5kICRkID0gXHNxcnR7KDMtMCleMisoMy0wKV4yfT1cc3FydHsxOH0kIG1ha2luZyBvdXIgY2xvc2VzdCB2YWx1ZSB0byAkTSBcYXBwcm94IFxzcXJ0ezM3fSQNCg0KVGhlcmVmb3JlDQoNCiRTIFxzdWJzZXRlcSBcbGVmdFx7ICh4LHkpIFxtaWQgeF4yICsgeV4yIDwgXHNxcnR7Mzd9IFxyaWdodFx9JA0KDQo=</div>
 
 
 
@@ -3008,7 +1916,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("test.Rmd");
+  window.initializeSourceEmbed("DATA_605_GCampos_Discussion15.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
