@@ -3,14 +3,25 @@ title: 'DATA 605: Computational Mathematics '
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  html_document:
-    df_print: paged
-  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
   pdf_document:
     latex_engine: xelatex
+    toc: true
+    toc_depth: 5
+  geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
+  html_document:
+    df_print: paged
   html_notebook: default
 urlcolor: blue
 ---
+
+# Library
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(readr)
+```
+
 
 **Final Examination: Business Analytics and Data Science**
 
@@ -18,7 +29,7 @@ urlcolor: blue
 
 You are required to complete this take-home final examination by the end of the last week of class. Your solutions should be uploaded in **pdf** format as a knitted document (with graphs, content, commentary, etc. in the pdf). This project will showcase your ability to apply the concepts learned throughout the course.
 
-The dataset you will use for this examination is provided as retail data.csv, which contains the following variables:
+The dataset you will use for this examination is provided as [retail data.csv](https://brightspace.cuny.edu/content/enforced/437177-SPS01_DATA_605_1249_15536/synthetic_retail_data.csv), which contains the following variables:
 
 - Product_ID: Unique identifier for each product.
 - Sales: Simulated sales numbers (in dollars).
@@ -32,6 +43,11 @@ The dataset you will use for this examination is provided as retail data.csv, wh
 **Business Risk and Revenue Modeling**
 
 **Context:** You are a data scientist working for a retail chain that models sales, inventory levels, and the impact of pricing and seasonality on revenue. Your task is to analyze various distributions that can describe sales variability and forecast potential revenue.
+
+```{r, message=FALSE}
+retail_df <- read_csv("synthetic_retail_data.csv")
+```
+
 
 ## Part 1:
 
@@ -50,6 +66,36 @@ Calculate Empirical Expected Value and Variance:
 
 Calculate the empirical mean and variance for all three variables.
 Compare these empirical values with the theoretical values derived from the estimated distribution parameters.
+
+#### X ~ Sales
+
+```{r}
+glimpse(retail_df)
+```
+
+```{r}
+summary(retail_df)
+```
+
+```{r}
+qqnorm(retail_df$Sales, main = "Q-Q Plot of Sales")
+qqline(retail_df$Sales, col = "red")
+```
+
+```{r, warning=FALSE}
+ggplot(retail_df, aes(x = Sales)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30, fill = "darkgreen",
+                 alpha = 0.5) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Histogram and Density Plot of Sales") +
+  theme_classic()
+```
+
+```{r}
+shapiro.test(retail_df$Sales)
+```
+
 
 ### 2. 
 
