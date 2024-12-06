@@ -6,10 +6,12 @@ output:
   pdf_document:
     latex_engine: xelatex
     toc: true
-    toc_depth: 5
+    toc_depth: 6
   geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
   html_document:
     df_print: paged
+    toc: true
+    toc_depth: 6
   html_notebook: default
 urlcolor: blue
 ---
@@ -18,7 +20,9 @@ urlcolor: blue
 
 ```{r}
 library(dplyr)
+library(e1071)
 library(ggplot2)
+library(MASS)
 library(readr)
 ```
 
@@ -44,12 +48,14 @@ The dataset you will use for this examination is provided as [retail data.csv](h
 
 **Context:** You are a data scientist working for a retail chain that models sales, inventory levels, and the impact of pricing and seasonality on revenue. Your task is to analyze various distributions that can describe sales variability and forecast potential revenue.
 
+## Data Load
+
 ```{r, message=FALSE}
 retail_df <- read_csv("synthetic_retail_data.csv")
 ```
 
 
-## Part 1:
+### Part 1:
 
 **Empirical and Theoretical Analysis of Distributions (5 Points)**
 
@@ -67,7 +73,9 @@ Calculate Empirical Expected Value and Variance:
 Calculate the empirical mean and variance for all three variables.
 Compare these empirical values with the theoretical values derived from the estimated distribution parameters.
 
-#### X ~ Sales
+```{r}
+head(retail_df)
+```
 
 ```{r}
 glimpse(retail_df)
@@ -77,15 +85,205 @@ glimpse(retail_df)
 summary(retail_df)
 ```
 
+#### X ~ Sales
+
+
 ```{r}
-qqnorm(retail_df$Sales, main = "Q-Q Plot of Sales")
-qqline(retail_df$Sales, col = "red")
+# Isolate Sales data
+retail_sales_df <- retail_df$Sales
+summary(retail_sales_df)
+sum(retail_sales_df<0)
+sum(is.na(retail_sales_df))
+shapiro.test(retail_sales_df)
 ```
 
 ```{r, warning=FALSE}
 ggplot(retail_df, aes(x = Sales)) +
   geom_histogram(aes(y = ..density..),
-                 bins = 30, fill = "darkgreen",
+                 bins = 30, fill = "steelblue",
+                 alpha = 0.5) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Histogram and Density Plot of Sales") +
+  theme_classic()
+```
+
+
+```{r}
+qqnorm(retail_sales_df, 
+       main = "Q-Q Plot of Sales")
+qqline(retail_sales_df, 
+       col = "red")
+```
+
+```{r}
+boxplot(retail_sales_df,
+        main = "Boxplot of Sales Data")
+```
+
+##### Initial analysis
+
+- For our **Sales** data our $Mean > Median$ ($636.92>533.54$) which indicates that our data is right skewed and not normalized. This is supported by our Histogram, our Q-Q plot and the shaprio test's $p-value$ of less than 0.05.
+- No $NAs$ are noted with the **Sales** data 
+- Our range for the values within **Sales** is 25.57 to 2447.49, encompassing a wide range.
+- Our Boxplot indicates that there are outliers, primarily for values $>1000$
+
+
+##### fitdstr Sales
+
+Since we are assuming Gamma distribution the parameter *"gamma"* will be used with *fitdistr()*. 
+
+```{r}
+sales_gamma_fit <- fitdistr(retail_sales_df, "gamma")
+print(sales_gamma_fit)
+```
+
+Considering no NAs or negative values were noted in our original data set, the $NaNs \ produced$ warning, is likely a result of the right-skewed data or from our outliers. I will remove the outliers to see if it removes the warning. Regardless, dealing with these outliers should improve precision.
+
+The below steps should remove values above our 99% quantile or below the 1%
+
+```{r}
+# compute quantiles at 1% and and 99%
+retail_sales_quantiles <- 
+  quantile(retail_sales_df, probs =c(0.01,0.99))
+# remove outliers below the 1% and above 99%
+retail_sales_df_clean<- retail_sales_df[
+  retail_sales_df >= retail_sales_quantiles[1] &
+    retail_sales_df <= retail_sales_quantiles[2]
+]
+sales_gamma_fit_clean <- fitdistr(retail_sales_df_clean, "gamma")
+print(sales_gamma_fit_clean)
+```
+
+The cleaned model still creates an error therefore I would like to see visually how well the values fit.
+
+```{r}
+hist(retail_sales_df,
+     breaks = 30,
+     probability = TRUE, 
+     main = "Fitted Gamma Distribution",
+     xlab = "Sales",
+     col = "steelblue")
+
+curve(dgamma(x,
+             shape = 1.8349640762,
+             rate = 0.0028810166), 
+      col = "red",
+      lwd = 2, 
+      add = TRUE)
+
+legend("topright",
+       legend = c("Data",
+                  "Fitted Gamma PDF"), 
+       col = c("lightblue",
+               "red"), lwd = 2)
+```
+
+
+
+```{r}
+hist(retail_sales_df,
+     breaks = 30,
+     probability = TRUE, 
+     main = "Fitted Gamma Distribution",
+     xlab = "Sales",
+     col = "steelblue")
+
+curve(dgamma(x,
+             shape = 2.0323543224,
+             rate = 0.0032518379 ), 
+      col = "red",
+      lwd = 2, 
+      add = TRUE)
+
+legend("topright",
+       legend = c("Data",
+                  "Fitted Gamma PDF"), 
+       col = c("lightblue",
+               "red"), lwd = 2)
+
+```
+
+Visually, both values seem to match the $Sales$ behavior. By calculating the absolute difference in mean, skewness and variance, I might get a better indication on which gamma distribution and gamma parameters, better emulates the datas behavior.
+
+```{r, fig.height=5}
+cmp_metrics <- c("Mean", "Variance", "Skewness")
+
+cmp_data_values <- c(617.595, 165599.6, 0.8891198)
+
+# Original Gamma differences
+cmp_shape1 <- 2.0323543224
+
+cmp_rate1 <- 0.0032518379
+
+cmp_original_gamma_values <- 
+  c(cmp_shape1 / cmp_rate1,
+    cmp_shape1 / (cmp_rate1^2),
+    2 / sqrt(cmp_shape1))
+
+cmp_original_differences <- 
+  abs(cmp_original_gamma_values - cmp_data_values)
+
+# New Gamma differences
+cmp_shape2 <- 1.8349640762
+cmp_rate2 <- 0.0028810166
+
+cmp_new_gamma_values <- 
+  c(cmp_shape2 / cmp_rate2,
+    cmp_shape2 / (cmp_rate2^2),
+    2 / sqrt(cmp_shape2))
+cmp_new_differences <-
+  abs(cmp_new_gamma_values - cmp_data_values)
+
+# Prepare data for ggplot
+plot_data <- data.frame(
+  Metric = rep(cmp_metrics,
+               times = 2),
+  Difference = 
+    c(cmp_original_differences,
+                 cmp_new_differences),
+  Gamma = rep(c("Original Gamma",
+                "New Gamma"), 
+              each = length(cmp_metrics))
+)
+
+# Create the clustered bar plot
+ggplot(plot_data, aes(x = Metric, y = Difference, fill = Gamma)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9)) +
+  geom_text(aes(label = round(Difference, 2)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3.5) +
+  labs(
+    title = "Comparison of Differences from Data Metrics",
+    x = "Metric",
+    y = "Absolute Difference"
+  ) +
+  scale_fill_manual(values = c("Original Gamma" = "skyblue", "New Gamma" = "orange")) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_blank()
+  )
+
+```
+
+##### Answer
+
+the original shape=1.8349640762 and rate=0.0028810166 are best for this gamma distribution.
+
+#### Y ~ Inventory Levels
+
+```{r}
+retail_inv_df <- retail_df$Inventory_Levels
+summary(retail_inv_df)
+sum(retail_inv_df<0)
+sum(is.na(retail_inv_df))
+shapiro.test(retail_inv_df)
+```
+
+```{r}
+ggplot(retail_df, aes(x = Inventory_Levels )) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30, fill = "steelblue",
                  alpha = 0.5) +
   geom_density(color = "red", size = 1) +
   ggtitle("Histogram and Density Plot of Sales") +
@@ -93,19 +291,29 @@ ggplot(retail_df, aes(x = Sales)) +
 ```
 
 ```{r}
-shapiro.test(retail_df$Sales)
+qqnorm(retail_inv_df, 
+       main = "Q-Q Plot of Sales")
+qqline(retail_inv_df, 
+       col = "red")
+```
+
+```{r}
+boxplot(retail_inv_df,
+        main = "Boxplot of Sales Data")
 ```
 
 
-### 2. 
+##### Initial analysis
 
-## Part 2:
+## 2. 
+
+# Part 2:
 
 **Probability Analysis and Independence Testing (5 Points)**
 
 **Task:**
 
-### 1.
+## 1.
 
 **Empirical Probabilities:** For the Lead_Time_Days variable (assumed to be normally distributed), calculate the following empirical probabilities:
 
@@ -113,7 +321,7 @@ shapiro.test(retail_df$Sales)
 - $P(Z> \mu + \sigma > Z > \mu)$
 - $P(Z> \mu + 2\sigma > Z > \mu)$
 
-### 2.
+## 2.
 
 **Correlation and Independence:**
 
@@ -132,7 +340,7 @@ shapiro.test(retail_df$Sales)
 
 **Task:**
 
-### 1.
+## 1.
 
 **Inventory Data Analysis:**
 
@@ -141,7 +349,7 @@ shapiro.test(retail_df$Sales)
 - Compute a correlation matrix for Sales, Price, and Inventory_Levels.
 - Test the hypotheses that the correlations between the variables are zero and provide a 95% confidence interval.
 
-### 2.
+## 2.
 
 **Discussion:**
 
@@ -153,7 +361,7 @@ shapiro.test(retail_df$Sales)
 
 **Task:**
 
-### 1.
+## 1.
 
 **Price Elasticity of Demand:**
 
@@ -168,7 +376,7 @@ shapiro.test(retail_df$Sales)
 
 **Task:**
 
-### 1.
+## 1.
 
 **Sales Forecasting Using Exponential Distribution:**
 
@@ -177,7 +385,7 @@ shapiro.test(retail_df$Sales)
 - Calculate the 5th and 95th percentiles using the cumulative distribution function (CDF) of the exponential distribution.
 - Compute a 95% confidence interval for the original data assuming normality and compare it with the empirical percentiles.
 
-### 2.
+## 2.
 
 **Discussion:**
 
@@ -189,15 +397,25 @@ shapiro.test(retail_df$Sales)
 
 **Task:**
 
-### 1.
+## 1.
 
 **Multiple Regression Model:**
 
 - Build a multiple regression model to predict Inventory_Levels based on Sales, Lead_Time_Days, and Price.
 - Provide a full summary of your model, including coefficients, R-squared value, and residual analysis.
 
-### 2.
+## 2.
 
 **Optimization:**
 
 - Use your model to optimize inventory levels for a peak sales season, balancing minimizing stockouts with minimizing overstock. 
+
+# References
+
+[Statology fitdistr-r](https://www.statology.org/fitdistr-r/)
+
+[rdocumentation MASS package fitdistr](https://www.rdocumentation.org/packages/MASS/versions/7.3-61/topics/fitdistr)
+
+[Statology - fit gamma distribution to dataset in r](https://www.statology.org/fit-gamma-distribution-to-dataset-in-r/)
+
+[rdocumentation qualtile](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/quantile)
