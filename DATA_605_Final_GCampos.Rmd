@@ -3,13 +3,13 @@ title: 'DATA 605: Computational Mathematics '
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  pdf_document:
-    latex_engine: xelatex
+  html_document:
+    df_print: paged
     toc: true
     toc_depth: 6
   geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
-  html_document:
-    df_print: paged
+  pdf_document:
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
   html_notebook: default
@@ -18,7 +18,7 @@ urlcolor: blue
 
 # Library
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(dplyr)
 library(e1071)
 library(ggplot2)
@@ -90,11 +90,11 @@ summary(retail_df)
 
 ```{r}
 # Isolate Sales data
-retail_sales_df <- retail_df$Sales
-summary(retail_sales_df)
-sum(retail_sales_df<0)
-sum(is.na(retail_sales_df))
-shapiro.test(retail_sales_df)
+sales_retail_df <- retail_df$Sales
+summary(sales_retail_df)
+sum(sales_retail_df<0)
+sum(is.na(sales_retail_df))
+shapiro.test(sales_retail_df)
 ```
 
 ```{r, warning=FALSE}
@@ -109,31 +109,31 @@ ggplot(retail_df, aes(x = Sales)) +
 
 
 ```{r}
-qqnorm(retail_sales_df, 
+qqnorm(sales_retail_df, 
        main = "Q-Q Plot of Sales")
-qqline(retail_sales_df, 
+qqline(sales_retail_df, 
        col = "red")
 ```
 
 ```{r}
-boxplot(retail_sales_df,
+boxplot(sales_retail_df,
         main = "Boxplot of Sales Data")
 ```
 
 ##### Initial analysis
 
-- For our **Sales** data our $Mean > Median$ ($636.92>533.54$) which indicates that our data is right skewed and not normalized. This is supported by our Histogram, our Q-Q plot and the shaprio test's $p-value$ of less than 0.05.
+- For our **Sales** data our $Mean > Median$ ($636.92>533.54$) which indicates that our data is right skewed and not normalized. This is supported by our Histogram, our Q-Q plot and the Shapiro test's $p-value$ of less than 0.05.
 - No $NAs$ are noted with the **Sales** data 
 - Our range for the values within **Sales** is 25.57 to 2447.49, encompassing a wide range.
-- Our Boxplot indicates that there are outliers, primarily for values $>1000$
+- Our Box plot indicates that there are outliers, primarily for values $>1000$
 
 
-##### fitdstr Sales
+##### fitdstr Sales Solution
 
-Since we are assuming Gamma distribution the parameter *"gamma"* will be used with *fitdistr()*. 
+Assume $X \sim Gamma(\alpha, \beta)$ the parameter *"gamma"* will be used with *fitdistr()*. 
 
 ```{r}
-sales_gamma_fit <- fitdistr(retail_sales_df, "gamma")
+sales_gamma_fit <- fitdistr(sales_retail_df, "gamma")
 print(sales_gamma_fit)
 ```
 
@@ -141,23 +141,23 @@ Considering no NAs or negative values were noted in our original data set, the $
 
 The below steps should remove values above our 99% quantile or below the 1%
 
-```{r}
+```{r, warning=FALSE}
 # compute quantiles at 1% and and 99%
-retail_sales_quantiles <- 
-  quantile(retail_sales_df, probs =c(0.01,0.99))
+sales_retail_quantiles <- 
+  quantile(sales_retail_df, probs =c(0.01,0.99))
 # remove outliers below the 1% and above 99%
-retail_sales_df_clean<- retail_sales_df[
-  retail_sales_df >= retail_sales_quantiles[1] &
-    retail_sales_df <= retail_sales_quantiles[2]
+sales_retail_df_clean<- sales_retail_df[
+  sales_retail_df >= sales_retail_quantiles[1] &
+    sales_retail_df <= sales_retail_quantiles[2]
 ]
-sales_gamma_fit_clean <- fitdistr(retail_sales_df_clean, "gamma")
+sales_gamma_fit_clean <- fitdistr(sales_retail_df_clean, "gamma")
 print(sales_gamma_fit_clean)
 ```
 
 The cleaned model still creates an error therefore I would like to see visually how well the values fit.
 
 ```{r}
-hist(retail_sales_df,
+hist(sales_retail_df_clean,
      breaks = 30,
      probability = TRUE, 
      main = "Fitted Gamma Distribution",
@@ -181,12 +181,12 @@ legend("topright",
 
 
 ```{r}
-hist(retail_sales_df,
+hist(sales_retail_df,
      breaks = 30,
      probability = TRUE, 
      main = "Fitted Gamma Distribution",
      xlab = "Sales",
-     col = "steelblue")
+     col = "royalblue")
 
 curve(dgamma(x,
              shape = 2.0323543224,
@@ -257,7 +257,7 @@ ggplot(plot_data, aes(x = Metric, y = Difference, fill = Gamma)) +
     x = "Metric",
     y = "Absolute Difference"
   ) +
-  scale_fill_manual(values = c("Original Gamma" = "skyblue", "New Gamma" = "orange")) +
+  scale_fill_manual(values = c("Original Gamma" = "steelblue", "New Gamma" = "royalblue")) +
   theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),
@@ -266,18 +266,66 @@ ggplot(plot_data, aes(x = Metric, y = Difference, fill = Gamma)) +
 
 ```
 
+Based on these results the original gamma parameters of 1.8349640762 and 0.0028810166 are the more accurate fit.
+
+```{r, echo=FALSE}
+rm(list = ls(pattern = "^cmp_|plot_data|_clean$|_quantiles$"))
+```
+
+##### Mean and Variance (X~Sales)
+
+Our Empirical mean and variance is just 
+
+```{r}
+sales_emp_mean<-mean(sales_retail_df)
+sales_emp_var<-var(sales_retail_df)
+```
+
+and our theoretical mean and variance is calculate as 
+
+$\mu_{gamma}=\frac{\alpha}{\beta}$
+
+$\sigma^2_{gamma}=\frac{\alpha}{\beta^2}$ or $\frac{shape}{rate^2}$
+
+```{r}
+sales_gamma_shape <- sales_gamma_fit$estimate["shape"]
+sales_gamma_rate <- sales_gamma_fit$estimate["rate"]
+
+sales_theo_gamma_mean <- sales_gamma_shape / sales_gamma_rate
+sales_theo_gamma_var <- sales_gamma_shape/ (sales_gamma_rate^2)
+```
+
+```{r}
+comparison_Sales <- data.frame(
+  Metric = c("Mean", "Variance"),
+  Empirical = c(sales_emp_mean, sales_emp_var),
+  Theoretical = c(sales_theo_gamma_mean, sales_theo_gamma_var)
+)
+```
+
 ##### Answer
 
-the original shape=1.8349640762 and rate=0.0028810166 are best for this gamma distribution.
+**The shape parameter of 1.8349640762 and the rate parameter of 0.0028810166 define the best-fit Gamma distribution for the data.**
+
+**Our Empirical and Theoretical, Variance and Mean are as follow:**
+
+```{r, echo=FALSE}
+print(comparison_Sales)
+```
+
+```{r}
+rm(list = ls(pattern = "^sales|^comparison"))
+```
+
 
 #### Y ~ Inventory Levels
 
 ```{r}
-retail_inv_df <- retail_df$Inventory_Levels
-summary(retail_inv_df)
-sum(retail_inv_df<0)
-sum(is.na(retail_inv_df))
-shapiro.test(retail_inv_df)
+inv_retail_df <- retail_df$Inventory_Levels
+summary(inv_retail_df)
+sum(inv_retail_df<0)
+sum(is.na(inv_retail_df))
+shapiro.test(inv_retail_df)
 ```
 
 ```{r}
@@ -286,24 +334,149 @@ ggplot(retail_df, aes(x = Inventory_Levels )) +
                  bins = 30, fill = "steelblue",
                  alpha = 0.5) +
   geom_density(color = "red", size = 1) +
-  ggtitle("Histogram and Density Plot of Sales") +
+  ggtitle("Histogram and Density Plot of Inventory Levels") +
   theme_classic()
 ```
 
 ```{r}
-qqnorm(retail_inv_df, 
+qqnorm(inv_retail_df, 
        main = "Q-Q Plot of Sales")
-qqline(retail_inv_df, 
+qqline(inv_retail_df, 
        col = "red")
 ```
 
 ```{r}
-boxplot(retail_inv_df,
+boxplot(inv_retail_df,
         main = "Boxplot of Sales Data")
 ```
 
 
 ##### Initial analysis
+
+- No NAs found in *Inventory_Levels*
+- No values below 0 for the *Inventory_Levels* values.
+- $488.55 \ (Mean) > 483.72 \ (Median)$ suggests the data may be right skewed.
+- Shapiro test had a $p-value =0.4646$. This is below 0.5, suggesting it is not normalized, however it is relatively close to being normal.
+- Q-Q plot and, Histogram and Density plot, show the data as near normal.
+
+##### fitdistr Inventory Levels
+
+Since we are assuming the Inventory Levels across products follows a Lognormal distribution  $(X \sim Lognormal(\mu,\sigma^2))$, the parameter for *fitdistr()* we use is *lognormal*. Since we are explicitly looking for the sum of inventory levels across similar products, we will *sum* can consider finding the values for the individual *Product_ID*'s before evaluating the distribution.
+
+```{r}
+retail_df %>%
+  group_by(Inventory_Levels) %>%
+  summarise(Count = n()) %>%
+  filter(Count > 1)
+```
+
+Since it appears that all *Product_ID*'s are unique I will refrain from using the sum.
+
+The parameters of this distribution will ultimately be $\mu_{log}$ and $\sigma_{log}$
+
+```{r}
+inv_lognormal <- 
+  fitdistr(inv_retail_df,"lognormal")
+
+inv_log_mean <- inv_lognormal$estimate["meanlog"]
+inv_log_var <- inv_lognormal$estimate["sdlog"]
+
+print(inv_lognormal)
+```
+
+```{r}
+# Histogram for Inventory Levels
+hist(inv_retail_df,
+     breaks = 30,
+     probability = TRUE, 
+     main = "Fitted Lognormal Distribution",
+     xlab = "Inventory Levels",
+     col = "slateblue")
+
+# Overlay the fitted lognormal curve
+curve(dlnorm(x,
+             meanlog = inv_log_mean,
+             sdlog = inv_log_var), 
+      col = "red",
+      lwd = 2, 
+      add = TRUE)
+
+# Add legend
+legend("topright",
+       legend = c("Data", "Fitted Lognormal PDF"), 
+       col = c("lightblue", "red"), 
+       lwd = 2)
+
+```
+
+##### Mean and Variance (Y~Inventory Levels)
+
+*Theoretical Mean* or $E[x]$ of a random variable $X \sim Lognormal(\mu,\sigma^2)$ is equal to $e^{\mu+\frac{\sigma^2}{2}}$ and its theoretical variance is $(e^{\sigma^2}-1) e^{2\mu+\sigma^2}$
+
+```{r}
+# Empirical statistics
+empirical_mean <- mean(retail_df$Inventory_Levels)
+empirical_variance <- var(retail_df$Inventory_Levels)
+
+# Theoretical mean and variance for lognormal distribution
+theoretical_mean <- 
+  exp(inv_log_mean +
+        (inv_log_var^2) / 2)
+
+theoretical_variance <- 
+  (exp(inv_log_var^2) - 1) * 
+  exp(2 * inv_log_mean + inv_log_var^2)
+
+# # Print results
+# cat("Empirical Mean:", empirical_mean, "\n")
+# cat("Theoretical Mean:", theoretical_mean, "\n")
+# cat("Empirical Variance:", empirical_variance, "\n")
+# cat("Theoretical Variance:", theoretical_variance, "\n")
+
+comparison_Inventory_Level <- data.frame(
+  Metric = c("Mean", "Variance"),
+  Empirical = c(empirical_mean, empirical_variance),
+  Theoretical = c(theoretical_mean, theoretical_variance)
+)
+
+```
+
+##### Answer
+
+The parameters for the Inventory Level distribution, $(X \sim Lognormal(\mu,\sigma^2))$ are $\mu_{log}=6.13303680$ and $\sigma^2_{log}=0.3633273$
+
+**Our Empirical and Theoretical, Variance and Mean are as follow:**
+
+```{r}
+print(comparison_Inventory_Level)
+```
+
+```{r}
+rm(list = ls()[!grepl("^retail", ls())])
+```
+
+
+#### Z ~ Lead Time
+
+```{r}
+ltd_retail_df <- retail_df$Lead_Time_Days
+summary(ltd_retail_df)
+sum(ltd_retail_df<0)
+sum(is.na(ltd_retail_df))
+shapiro.test(ltd_retail_df)
+```
+
+```{r}
+ggplot(retail_df, aes(x = Lead_Time_Days )) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30, fill = "steelblue",
+                 alpha = 0.5) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Histogram and Density Plot of Lead Times") +
+  theme_classic()
+```
+
+
 
 ## 2. 
 
@@ -418,4 +591,8 @@ boxplot(retail_inv_df,
 
 [Statology - fit gamma distribution to dataset in r](https://www.statology.org/fit-gamma-distribution-to-dataset-in-r/)
 
+[Wiki Gamma Distribution](https://en.wikipedia.org/wiki/Gamma_distribution)
+
 [rdocumentation qualtile](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/quantile)
+
+[statlect lognormal distribution](https://www.statlect.com/probability-distributions/log-normal-distribution)
