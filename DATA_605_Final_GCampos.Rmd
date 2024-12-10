@@ -19,8 +19,10 @@ urlcolor: blue
 # Library
 
 ```{r, message=FALSE, warning=FALSE}
+library(corrplot)
 library(dplyr)
 library(e1071)
+library(ggcorrplot)
 library(ggplot2)
 library(MASS)
 library(readr)
@@ -122,9 +124,9 @@ boxplot(sales_retail_df,
 
 ##### Initial analysis
 
-- For our **Sales** data our $Mean > Median$ ($636.92>533.54$) which indicates that our data is right skewed and not normalized. This is supported by our Histogram, our Q-Q plot and the Shapiro test's $p-value$ of less than 0.05.
-- No $NAs$ are noted with the **Sales** data 
-- Our range for the values within **Sales** is 25.57 to 2447.49, encompassing a wide range.
+- For our *Sales* data our $Mean > Median$ ($636.92>533.54$) which indicates that our data is right skewed and not normalized. This is supported by our Histogram, our Q-Q plot and the Shapiro test's $p-value$ of less than 0.05.
+- No $NAs$ are noted with the *Sales* data 
+- Our range for the values within *Sales* is 25.57 to 2447.49, encompassing a wide range.
 - Our Box plot indicates that there are outliers, primarily for values $>1000$
 
 
@@ -277,8 +279,8 @@ rm(list = ls(pattern = "^cmp_|plot_data|_clean$|_quantiles$"))
 Our Empirical mean and variance is just 
 
 ```{r}
-sales_emp_mean<-mean(sales_retail_df)
-sales_emp_var<-var(sales_retail_df)
+sales_empirical_mean<-mean(sales_retail_df)
+sales_empirical_var<-var(sales_retail_df)
 ```
 
 and our theoretical mean and variance is calculate as 
@@ -291,15 +293,15 @@ $\sigma^2_{gamma}=\frac{\alpha}{\beta^2}$ or $\frac{shape}{rate^2}$
 sales_gamma_shape <- sales_gamma_fit$estimate["shape"]
 sales_gamma_rate <- sales_gamma_fit$estimate["rate"]
 
-sales_theo_gamma_mean <- sales_gamma_shape / sales_gamma_rate
-sales_theo_gamma_var <- sales_gamma_shape/ (sales_gamma_rate^2)
+sales_theoretical_gamma_mean <- sales_gamma_shape / sales_gamma_rate
+sales_theoretical_gamma_var <- sales_gamma_shape/ (sales_gamma_rate^2)
 ```
 
 ```{r}
 comparison_Sales <- data.frame(
   Metric = c("Mean", "Variance"),
-  Empirical = c(sales_emp_mean, sales_emp_var),
-  Theoretical = c(sales_theo_gamma_mean, sales_theo_gamma_var)
+  Empirical = c(sales_empirical_mean, sales_empirical_var),
+  Theoretical = c(sales_theoretical_gamma_mean, sales_theoretical_gamma_var)
 )
 ```
 
@@ -314,7 +316,7 @@ print(comparison_Sales)
 ```
 
 ```{r}
-rm(list = ls(pattern = "^sales|^comparison"))
+rm(list = ls(pattern = "^comparison"))
 ```
 
 
@@ -361,7 +363,7 @@ boxplot(inv_retail_df,
 
 ##### fitdistr Inventory Levels
 
-Since we are assuming the Inventory Levels across products follows a Lognormal distribution  $(X \sim Lognormal(\mu,\sigma^2))$, the parameter for *fitdistr()* we use is *lognormal*. Since we are explicitly looking for the sum of inventory levels across similar products, we will *sum* can consider finding the values for the individual *Product_ID*'s before evaluating the distribution.
+Since we are assuming the Inventory Levels across products follows a Lognormal distribution  $(Y \sim Lognormal(\mu,\sigma^2))$, the parameter for *fitdistr()* we use is *lognormal*. Since we are explicitly looking for the sum of inventory levels across similar products, we will *sum* can consider finding the values for the individual *Product_ID*'s before evaluating the distribution.
 
 ```{r}
 retail_df %>%
@@ -383,6 +385,7 @@ inv_log_var <- inv_lognormal$estimate["sdlog"]
 
 print(inv_lognormal)
 ```
+
 
 ```{r}
 # Histogram for Inventory Levels
@@ -415,15 +418,15 @@ legend("topright",
 
 ```{r}
 # Empirical statistics
-empirical_mean <- mean(retail_df$Inventory_Levels)
-empirical_variance <- var(retail_df$Inventory_Levels)
+inv_empirical_mean <- mean(retail_df$Inventory_Levels)
+inv_empirical_variance <- var(retail_df$Inventory_Levels)
 
 # Theoretical mean and variance for lognormal distribution
-theoretical_mean <- 
+inv_theoretical_mean <- 
   exp(inv_log_mean +
         (inv_log_var^2) / 2)
 
-theoretical_variance <- 
+inv_theoretical_variance <- 
   (exp(inv_log_var^2) - 1) * 
   exp(2 * inv_log_mean + inv_log_var^2)
 
@@ -435,8 +438,8 @@ theoretical_variance <-
 
 comparison_Inventory_Level <- data.frame(
   Metric = c("Mean", "Variance"),
-  Empirical = c(empirical_mean, empirical_variance),
-  Theoretical = c(theoretical_mean, theoretical_variance)
+  Empirical = c(inv_empirical_mean, inv_empirical_variance),
+  Theoretical = c(inv_theoretical_mean, inv_theoretical_variance)
 )
 
 ```
@@ -452,7 +455,7 @@ print(comparison_Inventory_Level)
 ```
 
 ```{r}
-rm(list = ls()[!grepl("^retail", ls())])
+rm(list = ls(pattern = "^comparison"))
 ```
 
 
@@ -476,7 +479,48 @@ ggplot(retail_df, aes(x = Lead_Time_Days )) +
   theme_classic()
 ```
 
+```{r}
+qqnorm(ltd_retail_df, 
+       main = "Q-Q Plot of Sales")
+qqline(ltd_retail_df, 
+       col = "red")
+```
 
+```{r}
+boxplot(ltd_retail_df,
+        main = "Boxplot of Sales Data")
+```
+
+This data is basically normalized, with a slight right skewed and outliers that do not deviate much from the mean.
+
+##### Mean and Variance Lead Time
+
+We are using the same data with our theoretical Mean and Variance. Considering this, finding the mean and variance for our Lead Times should be the same. Another way of deriving our varian would be to square our standard deviation or $\sigma$. I've applied a few methods to show this.
+
+1. Finding the standard deviation and squaring it
+2. Using the *var()* function directly
+3. Using the *fitdistr()* function to conclude our mean and standard are the same (alternatively I called on the *estimate* attribute for my *fitdistr* which is a redundant call to this value)
+
+```{r}
+ltd_empirical_mean <- mean(retail_df$Lead_Time_Days)
+sd(retail_df$Lead_Time_Days)
+sd(retail_df$Lead_Time_Days)^2
+var(retail_df$Lead_Time_Days)
+```
+
+```{r}
+ltd_fitdistr<-fitdistr(ltd_retail_df,"normal")
+print(ltd_fitdistr)
+```
+
+```{r}
+ltd_fitdistr$estimate
+```
+
+##### Answer
+
+The estimated mean is $6.834298$ and standard deviation is $2.083214$
+Calculate Empirical Expected Value is $6.834298$ and Variance is $4.361587$
 
 ## 2. 
 
@@ -491,8 +535,90 @@ ggplot(retail_df, aes(x = Lead_Time_Days )) +
 **Empirical Probabilities:** For the Lead_Time_Days variable (assumed to be normally distributed), calculate the following empirical probabilities:
 
 - $P(Z> \mu | Z > \mu - \sigma)$
-- $P(Z> \mu + \sigma > Z > \mu)$
-- $P(Z> \mu + 2\sigma > Z > \mu)$
+- $P(Z> \mu + \sigma | Z > \mu)$
+- $P(Z> \mu + 2\sigma | Z > \mu)$
+
+**Notes**
+
+- We assume the **standard normal distribution in context to these probabilities, because they do not specify a random variable $X$ with its own mean $\mu$ and standard deviation $\sigma$
+- The standard normal distribution also known as the z distribution, can have the notation $N(\mu, \sigma)$ where N signifies the distribution is normal, while $\mu$, $\sigma$ and $\sigma^2$ retains its known definition as the mean, standard deviation and variance of the distribution. Please note **Reference** *vii* for a more in depth explanation.
+
+### i.
+
+- $P(Z> \mu | Z > \mu - \sigma)$ = $\frac{P(Z>\mu\ \cap \ Z>\mu-\sigma)}{Z>\mu-\sigma}$ 
+- Our numerator can be simplified to $P(Z>\mu)$. Stated plainly, $P(Z>\mu-\sigma)$ is encompassed with $P(Z>\mu)$, but both conditions cannot be met if we only satisfy $P(Z>\mu-\sigma)$ therefore we only need to satisfy the second condition $P(Z > \mu)$.
+- This simplifies our conditional probability $P(Z> \mu | Z > \mu - \sigma)$ = $\frac{P(Z>\mu\ \cap \ Z>\mu-\sigma)}{Z>\mu-\sigma}$ to $\frac{Z>\mu}{Z>\mu-\sigma}$
+- $N(\mu, \sigma)$ for the standard normal distribution is $Z' \sim N(0,1)$, since the mean of a standard normal distribution is $\mu=0$ with a standard deviation of $\sigma=1$ (Reference *vii*). 
+- $P(Z>\mu)$ represents 50% of the probability as it is the mean $\therefore \ P(Z>\mu)=0.5$
+- We can use the standardization formula $F_X(x) = P(X \leq x)=F_z(\frac{x- \mu}{\sigma})$ or just $Z=\frac{x- \mu}{\sigma}$ to substitute based on our second conditions probability (Grinstead and Snell’s Introduction to Probability pg. 214):
+  * random variable $X=\mu-\sigma$
+  * $X \sim N(\mu,\sigma^2) \rightarrow Z=\frac{(\mu-\sigma)-\mu}{\sigma} = -\frac{\sigma}{\sigma}=-1$ 
+  * This transforms our formula from $Z>\mu-\sigma$ to $Z>-1$
+
+we can find use *pnorm()* to get the value for $Z=-1$
+
+```{r}
+pnorm(-1)
+```
+
+Since $P(Z>-1)=1-P(Z \leq -1)$ we can solve by subtracting these values.
+
+```{r}
+1-pnorm(-1)
+```
+
+Again we are trying to solve for $\frac{Z>\mu}{Z>\mu-\sigma}$ and by substituting we get $\frac{0.5}{0.8413447}$ which is 
+
+
+**Conclusion**
+
+```{r}
+0.5/(1-pnorm(-1))
+```
+
+
+### ii. 
+
+- For $P(Z> \mu + \sigma | Z > \mu)$ we can use a similar conditional probability as above ($P(A|B)=\frac{P(A \cap B)}{P(B)}$) to get $\frac{P((Z > \mu + \sigma) \ \cap \ (Z>\mu))}{P(Z>\mu)}$
+- In this probability the $P(Z > \mu + \sigma)$ the condition encompasses $P(Z>\mu)$, since for $P((Z > \mu + \sigma) \ \cap \ (Z>\mu)$ to be true, $P(Z > \mu + \sigma)$ would be required.
+- Therefore $\frac{P((Z > \mu + \sigma) \ \cap \ (Z>\mu))}{P(Z>\mu)}$ can be written as $\frac{P(Z > \mu + \sigma)}{P(Z>\mu)}$
+- $P(Z>\mu)=0.5$ as per our last probabilities conclusions.
+- Again we can use the standardization formula $F_X(x) = P(X \leq x)=F_z(\frac{x- \mu}{\sigma})$ or just $Z=\frac{x- \mu}{\sigma}$ to substitute based on our second conditions probability (Grinstead and Snell’s Introduction to Probability pg. 214):
+* random variable $X=\mu+\sigma$
+  * $X \sim N(\mu,\sigma^2) \rightarrow Z=\frac{(\mu+\sigma)-\mu}{\sigma} = \frac{\sigma}{\sigma}=1$ 
+  * This transforms our formula from $Z>\mu+\sigma$ to $Z>1$
+
+Again we solve for $Z=1$ this using *pnorm()* and we understand $P(Z>1)=1-P(Z<1)$ because we are computing for the tail of this probability
+
+```{r}
+1-pnorm(1)
+```
+
+Which we will use substitute and solve for $\frac{P(Z > \mu + \sigma)}{P(Z>\mu)}$
+
+**Conclusion**
+
+```{r}
+(1-pnorm(1))/0.5
+```
+
+### iii.
+
+$P(Z> \mu + 2\sigma | Z > \mu)=\frac{P(Z>\mu + 2 \sigma \ \cap \ Z>\mu)}{Z>\mu}$ where $P(Z>\mu + 2 \sigma \ \cap \ Z>\mu)$ implies $Z>\mu + 2 \sigma$ for our numerator and $Z>\mu=0.5$ based on previous work.
+- Substituting for the standardization formula we get $X \sim N(\mu,\sigma^2) \rightarrow Z=\frac{(\mu+2\sigma)-\mu}{\sigma} = \frac{2\sigma}{\sigma}=2$
+- $P(Z>2)=1-P(Z<2)=\frac{1-P(Z<2)}{0.5}$ which is
+
+**Conclusion**
+
+```{r}
+(1-pnorm(2))/0.5
+```
+
+### Answers
+
+- $P(Z> \mu | Z > \mu - \sigma) \approx 0.594$
+- $P(Z> \mu + \sigma | Z > \mu) \approx 0.317$
+- $P(Z> \mu + 2\sigma | Z > \mu) \approx 0.0455$
 
 ## 2.
 
@@ -521,6 +647,240 @@ ggplot(retail_df, aes(x = Lead_Time_Days )) +
 - Create appropriate visualizations such as histograms and scatterplots for Inventory_Levels, Sales, and Price.
 - Compute a correlation matrix for Sales, Price, and Inventory_Levels.
 - Test the hypotheses that the correlations between the variables are zero and provide a 95% confidence interval.
+
+### Univariate Descriptive Statistics
+
+I surprisingly did this for the first part, but will repeat this for completion sake
+
+```{r}
+
+summary(sales_retail_df)
+
+sum(sales_retail_df < 0)
+sum(is.na(sales_retail_df))
+
+shapiro.test(sales_retail_df)
+
+ggplot(retail_df, aes(x = sales_retail_df)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30, fill = "steelblue",
+                 alpha = 0.5) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Histogram and Density Plot of Sales") +
+  theme_classic()
+
+qqnorm(sales_retail_df, main = "Q-Q Plot of Sales")
+qqline(sales_retail_df, col = "red")
+
+boxplot(sales_retail_df, main = "Boxplot of Sales")
+```
+
+
+```{r}
+summary(inv_retail_df)
+
+sum(inv_retail_df < 0)
+sum(is.na(inv_retail_df))
+
+shapiro.test(inv_retail_df)
+
+ggplot(retail_df, aes(x = Inventory_Levels)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30, fill = "steelblue",
+                 alpha = 0.5) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Histogram and Density Plot of Inventory Levels") +
+  theme_classic()
+
+qqnorm(inv_retail_df, main = "Q-Q Plot of Inventory Levels")
+qqline(inv_retail_df, col = "red")
+
+boxplot(inv_retail_df, main = "Boxplot of Inventory Levels Data")
+```
+
+Repeating the conclusions from my initial analysis
+
+**Sales Analysis**
+
+- For our *Sales* data our $Mean > Median$ ($636.92>533.54$) which indicates that our data is right skewed and not normalized. This is supported by our Histogram, our Q-Q plot and the Shapiro test's $p-value$ of less than 0.05.
+- No $NAs$ are noted with the *Sales* data 
+- Our range for the values within *Sales* is 25.57 to 2447.49, encompassing a wide range.
+- Our Box plot indicates that there are outliers, primarily for values $>1000$
+
+**Inventory Levels Analysis**
+
+- No NAs found in *Inventory_Levels*
+- No values below 0 for the *Inventory_Levels* values.
+- $488.55 \ (Mean) > 483.72 \ (Median)$ suggests the data may be right skewed.
+- Shapiro test had a $p-value =0.4646$. This is below 0.5, suggesting it is not normalized, however it is relatively close to being normal.
+- Q-Q plot and, Histogram and Density plot, show the data as near normal.
+
+### Scatterplots and Price
+
+Considering I already generated a histogram for *Inventory_Levels* and *Sales* I will only create a histogram for *Price* to visualize the relationships
+
+```{r}
+# Scatter plot: Price vs Sales
+ggplot(retail_df, aes(x = Sales, y = Price)) +
+  geom_point(alpha = 0.7, color = "darkgreen") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  ggtitle("Scatterplot of Price vs Sales") +
+  xlab("Sales") +
+  ylab("Price") +
+  theme_classic()
+
+ggplot(retail_df, aes(x = Sales, y = Price)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "loess", se = FALSE, color = "blue") +
+  ggtitle("Nonlinear Relationship: Price vs Sales") +
+  theme_gray()
+
+# Scatter plot: Inventory Levels vs Sales
+ggplot(retail_df, aes(x = Sales, y = Inventory_Levels)) +
+  geom_point(alpha = 0.7, color = "violet") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  ggtitle("Scatterplot of Inventory Levels vs Sales") +
+  xlab("Sales") +
+  ylab("Inventory Levels") +
+  theme_classic()
+
+ggplot(retail_df, aes(x = Sales, y = Inventory_Levels)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "loess", se = FALSE, color = "blue") +
+  ggtitle("Nonlinear Relationship: Inventory Levels vs Sales") +
+  theme_gray()
+
+# Scatter plot: Price vs Inventory Levels
+ggplot(retail_df, aes(x = Inventory_Levels, y = Price)) +
+  geom_point(alpha = 0.7, color = "orange") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  ggtitle("Scatterplot of Price vs Inventory Levels") +
+  xlab("Inventory Levels") +
+  ylab("Price") +
+  theme_classic()
+
+ggplot(retail_df, aes(x = Inventory_Levels, y = Price)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "loess", se = FALSE, color = "blue") +
+  ggtitle("Nonlinear Relationship: Price vs Inventory Levels") +
+  theme_gray()
+
+
+
+ggplot(retail_df, aes(x = Price)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30, fill = "steelblue",
+                 alpha = 0.5) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Histogram and Density Plot of Price") +
+  theme_classic()
+```
+
+- Scatter plots of There does not seem to be a strong relationship between these variables, as the Price hardly changes based on Inventory_Level or Sales, and the same can be said regarding Sales' impact on inventory.
+- Regardless there is a trend which is somewhat expected:
+  * As Sales increases so does price, and Inventory Levels slightly diminishes.
+  * As Inventory Levels increase there is a drop in price
+- This follows for the most part the understood relationship of supply and demand.
+
+**Price Histogram**
+
+The data here is clearly left skewed, and interpreting this for a business took some reading. My understanding is, because it still is somewhat normalized, the $20 mark (our mode) is likely a preferred price of this businesses customers. The skew is representative of either a lack of demand or lack of supply of cheaper items.
+
+### Correlation Plot
+
+```{r}
+cor_matrix_retail <-
+  cor(retail_df[,c("Price",
+                   "Sales",
+                   "Inventory_Levels")],
+      use = "complete.obs")
+
+print(cor_matrix_retail)
+```
+
+
+```{r}
+# Correlation plot
+corrplot(cor_matrix_retail, method = "color", 
+         col = colorRampPalette(c("blue", "white", "red"))(100),
+         addCoef.col = "black", # Add coefficients
+         tl.col = "black",      # Color for labels
+         title = "Correlation Plot for Price, Sales, and Inventory Levels",
+         mar = c(0, 0, 1, 0))   # Margin adjustment
+```
+
+The correlation plots are created using *corrplot()* and shows:
+
+- The positive relationship with Sales and Price; as Sales increases so does Price, vice-versa.
+- The negative relationship between Sales and Inventory Levels; as Sales increases Inventory Levels decreases, and the increase in Inventory Levels is reflecting a decrease in Sales.
+- The negative relationship between Price and Inventory Levels; greater inventory of an item results in a decrease in Price, while scarcity or lower Inventory Levels of an item leads to a price hike.
+
+### Hypothesis Test
+
+**Price and Sales**:
+
+- Null Hypothesis ($H_{0_{Price \ and \ Sales}}$): The correlation between the two variables is zero ($r=0$).
+- Alternative Hypothesis ($H_{1_{Price \ and \ Sales}}$): The correlation between the two variables is not zero ($r \neq 0$)
+
+**Price and Inventory Levels**:
+
+- Null Hypothesis ($H_{0_{Price \ and \ Inventory \ Levels}}$): The correlation between the two variables is zero ($r=0$).
+- Alternative Hypothesis ($H_{1_{Price \ and \ Inventory \ Levels}}$): The correlation between the two variables is not zero ($r \neq 0$)
+
+
+**Sales and Inventory Levels**:
+
+- Null Hypothesis ($H_{0_{Sales \ and \ Inventory \ Levels}}$): The correlation between the two variables is zero ($r=0$).
+- Alternative Hypothesis ($H_{1_{Sales \ and \ Inventory \ Levels}}$): The correlation between the two variables is not zero ($r \neq 0$)
+
+Below is a method to run the correlation test *cor.test* for all variable pairings and make a it into a data frame.
+
+```{r}
+correlation_data_hyp <- retail_df[, c("Price", "Sales", "Inventory_Levels")]
+
+variable_pairs <- 
+  combn(names(correlation_data_hyp),
+        2,
+        simplify = FALSE)
+
+cor_test_results <- 
+  lapply(variable_pairs, 
+         function(pair) {
+           test <- 
+             cor.test(correlation_data_hyp[[pair[1]]],
+                      correlation_data_hyp[[pair[2]]],
+                      use = "complete.obs")
+  data.frame(
+    Variable1 = pair[1],
+    Variable2 = pair[2],
+    Correlation = test$estimate,
+    p_value = test$p.value,
+    CI_lower = test$conf.int[1],
+    CI_upper = test$conf.int[2]
+  )
+})
+
+# Combine results into a single data frame
+cor_test_summary <- 
+  do.call(rbind, cor_test_results)
+
+colnames(cor_test_summary) <-
+  c("Variable 1",
+    "Variable 2",
+    "Correlation (r)",
+    "p-value",
+    "CI Lower",
+    "CI Upper")
+```
+
+The results are as follows.
+
+```{r}
+cor_test_summary
+```
+
+Regardless of the *Correlation (r)*
+
 
 ## 2.
 
@@ -585,14 +945,16 @@ ggplot(retail_df, aes(x = Lead_Time_Days )) +
 
 # References
 
-[Statology fitdistr-r](https://www.statology.org/fitdistr-r/)
+i. [Statology fitdistr-r](https://www.statology.org/fitdistr-r/)
 
-[rdocumentation MASS package fitdistr](https://www.rdocumentation.org/packages/MASS/versions/7.3-61/topics/fitdistr)
+ii. [rdocumentation MASS package fitdistr](https://www.rdocumentation.org/packages/MASS/versions/7.3-61/topics/fitdistr)
 
-[Statology - fit gamma distribution to dataset in r](https://www.statology.org/fit-gamma-distribution-to-dataset-in-r/)
+iii. [Statology - fit gamma distribution to dataset in r](https://www.statology.org/fit-gamma-distribution-to-dataset-in-r/)
 
-[Wiki Gamma Distribution](https://en.wikipedia.org/wiki/Gamma_distribution)
+iv. [Wiki Gamma Distribution](https://en.wikipedia.org/wiki/Gamma_distribution)
 
-[rdocumentation qualtile](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/quantile)
+v. [rdocumentation qualtile](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/quantile)
 
-[statlect lognormal distribution](https://www.statlect.com/probability-distributions/log-normal-distribution)
+vi. [statlect lognormal distribution](https://www.statlect.com/probability-distributions/log-normal-distribution)
+
+vii. [Penn State University Online Stat 200 book](https://online.stat.psu.edu/stat200/book/export/html/124)
