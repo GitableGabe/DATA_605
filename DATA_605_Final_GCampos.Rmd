@@ -3,13 +3,13 @@ title: 'DATA 605: Computational Mathematics '
 author: "Gabriel Campos"
 date: "Last edited `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  html_document:
-    df_print: paged
+  pdf_document:
+    latex_engine: xelatex
     toc: true
     toc_depth: 6
   geometry: left=0.5cm,right=0.5cm,top=1cm,bottom=2cm
-  pdf_document:
-    latex_engine: xelatex
+  html_document:
+    df_print: paged
     toc: true
     toc_depth: 6
   html_notebook: default
@@ -24,7 +24,11 @@ library(dplyr)
 library(e1071)
 library(ggcorrplot)
 library(ggplot2)
+library(Hmisc)
+library(kableExtra)
 library(MASS)
+library(Matrix)
+library(matrixcalc)
 library(readr)
 ```
 
@@ -72,8 +76,6 @@ retail_df <- read_csv("synthetic_retail_data.csv")
 - **Z ~ Lead Time:** Assume that Lead_Time_Days follows a Normal distribution. Estimate the mean and standard deviation.
 Calculate Empirical Expected Value and Variance:
 
-Calculate the empirical mean and variance for all three variables.
-Compare these empirical values with the theoretical values derived from the estimated distribution parameters.
 
 ```{r}
 head(retail_df)
@@ -89,6 +91,7 @@ summary(retail_df)
 
 #### X ~ Sales
 
+**X ~ Sales:** Consider the Sales variable from the dataset. Assume it follows a Gamma distribution and estimate its shape and scale parameters using the fitdistr function from the MASS package.
 
 ```{r}
 # Isolate Sales data
@@ -274,7 +277,7 @@ Based on these results the original gamma parameters of 1.8349640762 and 0.00288
 rm(list = ls(pattern = "^cmp_|plot_data|_clean$|_quantiles$"))
 ```
 
-##### Mean and Variance (X~Sales)
+##### Mean and Variance (X~Sales) Solution
 
 Our Empirical mean and variance is just 
 
@@ -309,18 +312,9 @@ comparison_Sales <- data.frame(
 
 **The shape parameter of 1.8349640762 and the rate parameter of 0.0028810166 define the best-fit Gamma distribution for the data.**
 
-**Our Empirical and Theoretical, Variance and Mean are as follow:**
-
-```{r, echo=FALSE}
-print(comparison_Sales)
-```
-
-```{r}
-rm(list = ls(pattern = "^comparison"))
-```
-
-
 #### Y ~ Inventory Levels
+
+**Y ~ Inventory Levels:** Assume that the sum of inventory levels across similar products follows a Lognormal distribution. Estimate the parameters for this distribution.
 
 ```{r}
 inv_retail_df <- retail_df$Inventory_Levels
@@ -448,18 +442,12 @@ comparison_Inventory_Level <- data.frame(
 
 The parameters for the Inventory Level distribution, $(X \sim Lognormal(\mu,\sigma^2))$ are $\mu_{log}=6.13303680$ and $\sigma^2_{log}=0.3633273$
 
-**Our Empirical and Theoretical, Variance and Mean are as follow:**
-
-```{r}
-print(comparison_Inventory_Level)
-```
-
-```{r}
-rm(list = ls(pattern = "^comparison"))
-```
-
 
 #### Z ~ Lead Time
+
+**Z ~ Lead Time:** Assume that Lead_Time_Days follows a Normal distribution. Estimate the mean and standard deviation.
+
+Calculate Empirical Expected Value and Variance:
 
 ```{r}
 ltd_retail_df <- retail_df$Lead_Time_Days
@@ -493,7 +481,7 @@ boxplot(ltd_retail_df,
 
 This data is basically normalized, with a slight right skewed and outliers that do not deviate much from the mean.
 
-##### Mean and Variance Lead Time
+##### Mean and Variance Lead Time Solution
 
 We are using the same data with our theoretical Mean and Variance. Considering this, finding the mean and variance for our Lead Times should be the same. Another way of deriving our varian would be to square our standard deviation or $\sigma$. I've applied a few methods to show this.
 
@@ -520,9 +508,34 @@ ltd_fitdistr$estimate
 ##### Answer
 
 The estimated mean is $6.834298$ and standard deviation is $2.083214$
-Calculate Empirical Expected Value is $6.834298$ and Variance is $4.361587$
+Calculated Empirical Expected Value is $6.834298$ and Variance is $4.361587$
 
 ## 2. 
+
+Calculate the empirical mean and variance for all three variables.
+Compare these empirical values with the theoretical values derived from the estimated distribution parameters.
+
+### Answer
+
+**Our Empirical and Theoretical, Variance and Mean are as follow:**
+
+For **X~Sales**
+
+```{r, echo=FALSE}
+print(comparison_Sales)
+```
+
+For **Y~Inventory**
+
+```{r}
+print(comparison_Inventory_Level)
+```
+
+For **Z~Lead Times** the Empirical and Theoretical Mean is $6.834298$ and the Empirical and Theoretical Variance is $4.361587$
+
+```{r, echo=FALSE}
+rm(list = ls(pattern = "^comparison"))
+```
 
 # Part 2:
 
@@ -627,6 +640,86 @@ $P(Z> \mu + 2\sigma | Z > \mu)=\frac{P(Z>\mu + 2 \sigma \ \cap \ Z>\mu)}{Z>\mu}$
 - Investigate the correlation between Sales and Price. Create a contingency table using quartiles of Sales and Price, and then evaluate the marginal and joint probabilities.
 - Use Fisher’s Exact Test and the Chi-Square Test to check for independence between Sales and Price. Discuss which test is most appropriate and why.
 
+### Contingency, Joint and Marginal Table
+
+**Contingency**
+
+```{r}
+sales_qrtl <- cut(retail_df$Sales, 
+                        breaks = quantile(retail_df$Sales,
+                                          probs = seq(0, 1, 0.25)), 
+                        include.lowest = TRUE, 
+                        labels = c("Q1", "Q2", "Q3", "Q4"))
+
+
+price_qrtl <- cut(retail_df$Price, 
+                        breaks = quantile(retail_df$Price,
+                                          probs = seq(0, 1, 0.25)), 
+                        include.lowest = TRUE, 
+                        labels = c("Q1", "Q2", "Q3", "Q4"))
+cont_tbl <- table(sales_qrtl, price_qrtl)
+
+cont_tbl %>%
+    kable()
+```
+
+**Joint**
+
+```{r}
+jnt_tbl<-prop.table(cont_tbl)
+
+jnt_tbl %>%
+  kable() %>%
+  kable_paper()
+```
+
+
+**Marginal**
+
+```{r}
+# Marginal probabilities for Sales
+marginal_sales <- margin.table(jnt_tbl, 1)
+
+# Marginal probabilities for Price
+marginal_price <- margin.table(jnt_tbl, 2)
+
+marginal_sales%>%
+  kable()%>%
+  kable_classic_2()
+
+```
+
+
+```{r}
+marginal_price %>%
+  kable()%>%
+  kable_minimal()
+```
+
+The results seem balanced. Equal likelihood of the values for $Sales$ and $Price$ to end up in any quartile. So not much of a takeaway.
+
+### Fisher and Chi Square
+
+Use Fisher’s Exact Test and the Chi-Square Test to check for independence between Sales and Price. Discuss which test is most appropriate and why.
+
+**Fisher Exact Test**
+
+```{r}
+fisher.test(cont_tbl, workspace = 2e7)
+```
+
+```{r}
+chisq.test(cont_tbl)
+```
+
+If we can identify if the data is sparse we can decide which test to use. Sparse meaning the frequency output is all $\geq 5$. We can also base it off of if it theres a lot of data, but checking the frequency output is a more practical approach.
+
+```{r}
+chisq.test(cont_tbl)$expected
+```
+
+chi test seems most appropriate. regardless the $p-value$ here looks very similar. and since both are $>0.05$ there is not enough evidence to support a significant relationship.
+
 # Problem 2
 
 **Advanced Forecasting and Optimization (Calculus) in Retail**
@@ -649,6 +742,8 @@ $P(Z> \mu + 2\sigma | Z > \mu)=\frac{P(Z>\mu + 2 \sigma \ \cap \ Z>\mu)}{Z>\mu}$
 - Test the hypotheses that the correlations between the variables are zero and provide a 95% confidence interval.
 
 ### Univariate Descriptive Statistics
+
+**Generate univariate descriptive statistics for the Inventory_Levels and Sales variables.**
 
 I surprisingly did this for the first part, but will repeat this for completion sake
 
@@ -716,6 +811,8 @@ Repeating the conclusions from my initial analysis
 - Q-Q plot and, Histogram and Density plot, show the data as near normal.
 
 ### Scatterplots and Price
+
+**Create appropriate visualizations such as histograms and scatterplots for Inventory_Levels, Sales, and Price.**
 
 Considering I already generated a histogram for *Inventory_Levels* and *Sales* I will only create a histogram for *Price* to visualize the relationships
 
@@ -788,6 +885,8 @@ The data here is clearly left skewed, and interpreting this for a business took 
 
 ### Correlation Plot
 
+**Compute a correlation matrix for Sales, Price, and Inventory_Levels.**
+
 ```{r}
 cor_matrix_retail <-
   cor(retail_df[,c("Price",
@@ -816,6 +915,8 @@ The correlation plots are created using *corrplot()* and shows:
 - The negative relationship between Price and Inventory Levels; greater inventory of an item results in a decrease in Price, while scarcity or lower Inventory Levels of an item leads to a price hike.
 
 ### Hypothesis Test
+
+**Test the hypotheses that the correlations between the variables are zero and provide a 95% confidence interval.**
 
 **Price and Sales**:
 
@@ -876,17 +977,21 @@ colnames(cor_test_summary) <-
 The results are as follows.
 
 ```{r}
-cor_test_summary
+cor_test_summary %>%
+  kable() %>%
+  kable_classic()
 ```
 
-Regardless of the *Correlation (r)*
+The *p-value* for these *cor.test*'s $p-value \geq 0.05$ shows the correlations are not statistically significant which means we fail to reject $H_{0_{(Price \ and \ Sales), \ (Price \ and \ Inventory \ Levels) ,\ (Sales \ and \ Inventory \ Levels)}}$
 
 
 ## 2.
 
-**Discussion:**
+### Discussion:
 
 - Explain the meaning of your findings and discuss the implications of the correlations for inventory management. Would you be concerned about multicollinearity in a potential regression model? Why or why not?
+
+**With Sales, Price and Inventory Levels not being strongly correlated or statistically significant, we basically conclude there's a lack of linear association between them. This means the variables are not directly influenced by each other and do not have a predictable impact that the business can go off of. More variables could be considered through data collection, such as the *Seasonal_Index* or a new driver can be introduced to the dataset. Regardless further investigation would definitely be needed. I would **
 
 ## Part 2
 
@@ -903,6 +1008,104 @@ Regardless of the *Correlation (r)*
 - Discuss the implications of the diagonal elements of the precision matrix (which are variance inflation factors).
 - Perform LU decomposition on the correlation matrix and interpret the results in the context of price elasticity.
 
+### Linear Regression Model
+
+**Use linear regression to model the relationship between Sales and Price (assuming Sales as the dependent variable).**
+
+```{r}
+sales_price_model <- lm(Sales ~ Price, data = retail_df)
+summary(sales_price_model)
+par(mfrow = c(2, 2)) # aesthetics for the plots
+plot(sales_price_model)
+```
+
+With the model we see more of the same:
+
+- $p-value=0.1478>0.005$ therefore not statistically significant.
+- $F-statistic=2.112$ supports this.
+- *Residual vs Fitted* and *Scaled-Location** plots graphically show scattered data points with no clear pattern.
+- *Q-Q Plot* deviates from the diagonal line, which is an indication that it is not normalized. Again not surprising based on the analysis.
+
+What's somewhat telling is the $R-squared=0.01055$ showing that this does in fact capture 1.05% variability, making Price a weak predictor of Sale. So we can assume other variables may better explain what impacts this behavior.
+
+### Inverted Correlation Matrix
+
+**Invert the correlation matrix from your model, and calculate the precision matrix**
+
+In order to get the inverse matrix I can utilize the *solve()* function on my existing correlation matrix.
+
+Our existing correlation matrix is 
+
+```{r}
+print(cor_matrix_retail)
+```
+
+while the inversion or precision matrix would result in
+
+```{r}
+precision_matrix <-solve(cor_matrix_retail)
+print(precision_matrix)
+```
+
+### Precision Matrix Diagonals
+
+**Discuss the implications of the diagonal elements of the precision matrix (which are variance inflation factors).**
+
+The Variance Inflation Factor (VIF) can be computed or found within the diagonal value of a precision matrix:
+
+- $VIF_i - Diagonal \ Element \ of \ Precision \ Matrix\ for \ X_i$
+- $Price = 1.01203982$
+- $Sales = 1.01165983$
+- $Inventory\_Levels=1.00260894$
+
+Our VIF can be written as $VIF_1 =\frac{1}{1-R^2_i}$ we can rewrite this as $R^2_i = 1- \frac{1}{VIF_i}$. Through substitution we can see the R^2 values for these VIFs are small.
+
+```{r}
+1-1/1.01203982
+1-1/1.01165983
+1-1/1.00260894
+```
+
+which would indicate $>1.2\%$ of the variance is explained in $X_i$ or minimal multicollinearity.
+
+### LU Decomposition
+
+Perform LU decomposition on the correlation matrix and interpret the results in the context of price elasticity.
+
+I'm leveraging the *Matrix* package with the function *lu()*. Quick understanding of the Lower and Upper and Lower Triangular interactions.
+
+- LU decomposition is breaking of matrix $M$ to $L \cdot U$ 
+- $U$ represents the amount of variance that remains independently.
+- Basically a purely independent variable would contain a $1.00$ or $100\%$ of its own variance. 
+- The lower shows a measurement of the residual dependencies or the direct influence one variable has to another.
+
+
+```{r}
+retail_lu_decomp <- lu(cor_matrix_retail)
+retail_expand_decomp <- expand(retail_lu_decomp)
+retail_expand_decomp$L
+```
+
+Our $L$ shows the dependency of $Sales$ and $Price$.
+
+- $0.10272730$ is showing that $\approx 10.3\%$ of variability regarding $Price$ is explained by $Sales$
+- The third row $-0.04025941$ and $-0.03149279$ explains this for $Price$ and $Sales$ as it relates to their impact on inventory. The negative indicates a negative relationship but the value close to $0$ indicates explain minimal variability. So we're probably not looking at a linear model and we would likely have to search for a variable that is more significant than the ones we are analyzing.
+
+```{r}
+retail_expand_decomp$U
+```
+
+Our values for the diagonal of $U$ $0.98944710$ and $0.99739785$ Shows these values maintain a large portion of there variance or are close to independent. 
+
+Just to verify the process worked I am comparing a reconstructed matrix with the original
+
+```{r}
+retail_expand_decomp$L %*% retail_expand_decomp$U
+cor_matrix_retail
+```
+
+The Upper triangular interaction really clarifies a lack of multicollinearity and $Price$'s $0.10272730$ value makes it the best predictor as it relates to $Sales$ which is good news for forecasting. $Price$ and $Sale$ however do not appear currently to be a good predictor of inventory.
+
 ## Part 3:
 
 **Calculus-Based Probability & Statistics for Sales Forecasting (5 Points)**
@@ -918,11 +1121,98 @@ Regardless of the *Correlation (r)*
 - Calculate the 5th and 95th percentiles using the cumulative distribution function (CDF) of the exponential distribution.
 - Compute a 95% confidence interval for the original data assuming normality and compare it with the empirical percentiles.
 
+### Right-skewed | Exponential Distr.
+
+Identify a variable in the dataset that is skewed to the right (e.g., Sales or Price) and fit an exponential distribution to this data using the fitdistr function
+
+I know from earlier that this is Sales, but Ill test the skewness of both for completeness.
+
+```{r}
+skewness(retail_df$Sales, na.rm = TRUE)
+skewness(retail_df$Price, na.rm = TRUE)
+```
+Now Ill run the fitdistr.
+
+```{r}
+sale_exp_fit <- fitdistr(sales_retail_df, "exponential")
+sale_exp_fit
+```
+
+### Samples
+
+Generate 1,000 samples from the fitted exponential distribution and compare a histogram of these samples with the original data's histogram.
+
+Using this lambda I'll generate my 100 samples
+
+```{r}
+exp_fit_samples <- rexp(1000, rate = sale_exp_fit$estimate)
+```
+
+```{r}
+# Setting up panels like earlier
+par(mfrow = c(1, 2)) 
+
+# Plot the histogram of the original Sales data
+hist(retail_df$Sales, breaks = 30, main = "Original Sales Data",
+     xlab = "Sales", col = "steelblue", freq = FALSE)
+
+# Plot the histogram of the generated samples
+hist(exp_fit_samples, breaks = 30, main = "Fitted Exponential Samples",
+     xlab = "Sales", col = "royalblue", freq = FALSE)
+```
+
+### 5th and 95th Percentile
+
+Calculate the 5th and 95th percentiles using the cumulative distribution function (CDF) of the exponential distribution.
+
+So our CDF of an Exponential distribution given a probability $p$ is 
+
+$x=-\frac{ln(1-p)}{\lambda}$
+
+where our $p$ is either $0.05$ or $0.95$ respectively
+
+So our 5th percentile is 
+```{r}
+-log(1 - 0.05) / sale_exp_fit$estimate
+```
+
+and our 95th percentile is
+
+```{r}
+-log(1 - 0.95) / sale_exp_fit$estimate
+```
+
+### 95 \% Confidence Interval
+
+Compute a 95% confidence interval for the original data assuming normality and compare it with the empirical percentiles.
+
+Formula for confidence interval is $CI = \bar{x} \pm z \cdot \frac{\sigma}{\sqrt{n}}$
+but Ill be leveraging the *HMISC* package to calculate this.
+
+```{r}
+list(
+  CI_Normality = smean.cl.normal(retail_df$Sales, conf.int = 0.95),
+  Empirical_Percentiles = 
+    c(quantile(retail_df$Sales, 0.05),
+      quantile(retail_df$Sales, 0.95))
+)
+
+
+```
+
+
+
 ## 2.
 
-**Discussion:**
+### Discussion:
 
 - Discuss how well the exponential distribution models the data and what this implies for forecasting future sales or pricing. Consider whether a different distribution might be more appropriate.
+
+I felt the Gamma distribution earlier better captured the behavior of $Sales$ personally. Sure the exponential distribution shows the skewness, but it makes the sales at lower values appear more dense while removing the second peak noted within this values from the original data. The 5% percentile indicates that 5% of our sales are below $\approx 32.67$ but again as the exponential is more dense at lower values, it could be possible that this is overstating or over approximating.
+
+The same can be said about overstating with the higher values, as with the original data, values at 2500 appeared to be more like outliers and the exponential distribution stretches more to $\approx 4000$
+
+For normality the values centralize around the mean. I is definitely ideal to have a normalized data set for forecasting purposes, but the transformation does not capture the skewness and hence will likely be inaccurate, as it will not capture extreme outcomes like large sales. Overall Gamma was had the most precision, and lognormal was also a great choice for matching the skewed behavior.
 
 ## Part 4
 
@@ -937,13 +1227,78 @@ Regardless of the *Correlation (r)*
 - Build a multiple regression model to predict Inventory_Levels based on Sales, Lead_Time_Days, and Price.
 - Provide a full summary of your model, including coefficients, R-squared value, and residual analysis.
 
+```{r}
+inv_model <- lm(Inventory_Levels ~ Sales + Lead_Time_Days + Price, data = retail_df)
+summary(inv_model)
+```
+
+**Coefficients**
+
+- Sales: -0.007809, for every 1 unit of increase of Sales, Inventory decreases by 0.007809. With a $p-value=0.745$ its not very statistically significant b/c theres a $74.5\%$ chance that the observed relationship happened by chance.
+- Lead_Times_Days: Basically means time in days to complete a process. SO for every day it takes to complete, inventory increases by 7.316793, with a $p-value=0.168$ the chance this observation was purely by chance is $16%$, which is still technically considered statistically not significant but still the highest performing. 
+- Price: For every 1 unit increase in price Inventory decreases 1.087778. again $p-value = 0.638$ so not statistically significant.
+
+**R-Squared**
+
+R-squared - supports the lack of variance captured at $\approx 1.12\%$ so this doesn't do a good job of explaining inventory behavior, the adjusted of $-0.002887$ just shows that it is even less captured by these variables.
+
+**Residual Analysis**
+
+```{r}
+# Residuals vs. Fitted values
+plot(inv_model$fitted.values, inv_model$residuals,
+     main = "Residuals vs. Fitted", xlab = "Fitted Values", ylab = "Residuals")
+abline(h = 0, col = "red")
+
+# Histogram of residuals
+hist(inv_model$residuals, main = "Residuals Histogram", xlab = "Residuals")
+
+# QQ plot of residuals
+qqnorm(inv_model$residuals)
+qqline(inv_model$residuals, col = "red")
+
+```
+
+The QQ Plot and the histogram indicate normality, but Residual vs. Fitted supports that these values have a an issue with heteroscadicity. Which I believe supports the evidence of a lack of relationship between these variables.
+
 ## 2.
 
 **Optimization:**
 
 - Use your model to optimize inventory levels for a peak sales season, balancing minimizing stockouts with minimizing overstock. 
 
-# References
+Assuming where not going to use the Seasonality Metric in the data set, our goal is to ensure we have enough in, or do not run out of stock.
+
+Since I'm not really using variables that are good predictors, assuming our historical data would be a strong predictor for seasonal spikes makes no sense. My approach to optimization is straigh forward, lets calculate for 10%, 20% and 50% spikes. Business can decide the approach they want to use for the coming year. We can estimate if the percent chosen supported the inventory. This can be done simply by noting if there was still any surplus. From there we can adjust abritrarily or, if enough data has be stored, with the right variables having been researched and implemented, adjust the model altogether. The 95% confidence level is a $Z=1.645$ we can use this to predict the safety stock needed by each percentage.
+
+```{r}
+# Define sales increase scenarios (10%, 30%, and 50%)
+sales_scenarios <- c(1.1, 1.3, 1.5)  # Multipliers for increase
+
+inventory_scenarios <- lapply(sales_scenarios, function(increase) {
+  peak_sales <- mean(retail_df$Sales) * increase
+  peak_inputs <- data.frame(
+    Sales = peak_sales,
+    Lead_Time_Days = mean(retail_df$Lead_Time_Days),
+    Price = mean(retail_df$Price)
+  )
+  predicted_inventory <- predict(inv_model, newdata = peak_inputs)
+  safety_stock <- 1.645 * sd(retail_df$Sales) * sqrt(mean(retail_df$Lead_Time_Days))
+  optimal_inventory <- predicted_inventory + safety_stock
+  return(optimal_inventory)
+})
+
+# Name the scenarios for easy reference
+names(inventory_scenarios) <- c("10% Increase", "30% Increase", "50% Increase")
+inventory_scenarios
+
+
+```
+
+As a result of reviewing the inventory results at a spike of these levels, we see that the predicted inventory units needed are very close. Although not intentional, it does support having a stock close to 2480 units, for expected peak times.
+
+
+# Referenced sites.
 
 i. [Statology fitdistr-r](https://www.statology.org/fitdistr-r/)
 
@@ -958,3 +1313,15 @@ v. [rdocumentation qualtile](https://www.rdocumentation.org/packages/stats/versi
 vi. [statlect lognormal distribution](https://www.statlect.com/probability-distributions/log-normal-distribution)
 
 vii. [Penn State University Online Stat 200 book](https://online.stat.psu.edu/stat200/book/export/html/124)
+
+viii. [Geeks for Geeks: simple linear regression using r](https://www.geeksforgeeks.org/simple-linear-regression-using-r/)
+
+ix. [Yes I reference Reddit please do not judge](https://www.reddit.com/r/AskStatistics/comments/1dfoa4l/fishers_exact_vs_chisquare/)
+
+x. [LU Decomposition of Square Matrix](https://www.rdocumentation.org/packages/matrixcalc/versions/1.0-6/topics/lu.decomposition)
+
+xi. [Three simple matrix decompositions](https://tomroth.dev/decomp/)
+
+xii. LU Decomposition Method for Solving Simultaneous Linear Equations.
+
+xiii. [Geeks for Geeks LU decomposition linear equations](https://www.geeksforgeeks.org/l-u-decomposition-system-linear-equations/#)
